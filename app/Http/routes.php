@@ -17,7 +17,11 @@ Route::get('/', function () {
 
 
 Route::get('admin', function () {
-    return view('admin_template');
+    return view('admin');
 });
 
 Route::get('test', 'TestController@index');
+
+Route::auth();
+
+Route::get('/home', 'HomeController@index');
