@@ -6,6 +6,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    protected $table = 'users';
+    public $timestamps = false;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -14,7 +17,6 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password',
     ];
-
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -23,4 +25,16 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function orders(){
+        return $this->hasMany('App\Order');
+    }
+
+    public function shop(){
+        return $this->hasOne('App\Shop');
+    }
+
+    public function shipper(){
+        return $this->hasOne('App\Shipper');
+    }
 }

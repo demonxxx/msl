@@ -1,199 +1,268 @@
-<!-- Main Header -->
-<header class="main-header">
+<!-- ===============================================
+================= HEADER Content ===================
+================================================ -->
+<section id="header">
+    <header class="clearfix">
 
-    <!-- Logo -->
-    <a href="index2.html" class="logo">
-      <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>N</b>A</span>
-      <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Ngo Duy Anh</b></span>
-    </a>
-
-
-
-    <!-- Header Navbar -->
-    <nav class="navbar navbar-static-top" role="navigation">
-      <!-- Sidebar toggle button-->
-      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-        <span class="sr-only">Toggle navigation</span>
-      </a>
-
-     
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Link</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-            <li class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
-          </ul>
-        </li>
-      </ul>
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" id="navbar-search-input" placeholder="Search">
+        <!-- Branding -->
+        <div class="branding">
+            <a class="brand" href="index.html">
+                <span><strong>MSL</strong> Việt Nam</span>
+            </a>
+            <a role="button" tabindex="0" class="offcanvas-toggle visible-xs-inline"><i class="fa fa-bars"></i></a>
         </div>
-      </form>
-      
-  
-      <!-- Navbar Right Menu -->
-      <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">
-          <!-- Messages: style can be found in dropdown.less-->
-          <li class="dropdown messages-menu">
-            <!-- Menu toggle button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-envelope-o"></i>
-              <span class="label label-success">4</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">You have 4 messages</li>
-              <li>
-                <!-- inner menu: contains the messages -->
-                <ul class="menu">
-                  <li><!-- start message -->
-                    <a href="#">
-                      <div class="pull-left">
-                        <!-- User Image -->
-                        <img src="{{ asset("/bower_components/AdminLTE/dist/img/user2-160x160.jpg") }}" class="img-circle" alt="User Image">
-                      </div>
-                      <!-- Message title and timestamp -->
-                      <h4>
-                        Support Team
-                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                      </h4>
-                      <!-- The message -->
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <!-- end message -->
-                </ul>
-                <!-- /.menu -->
-              </li>
-              <li class="footer"><a href="#">See All Messages</a></li>
-            </ul>
-          </li>
-          <!-- /.messages-menu -->
+        <!-- Branding end -->
 
-          <!-- Notifications Menu -->
-          <li class="dropdown notifications-menu">
-            <!-- Menu toggle button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">10</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">You have 10 notifications</li>
-              <li>
-                <!-- Inner Menu: contains the notifications -->
-                <ul class="menu">
-                  <li><!-- start notification -->
-                    <a href="#">
-                      <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                    </a>
-                  </li>
-                  <!-- end notification -->
-                </ul>
-              </li>
-              <li class="footer"><a href="#">View all</a></li>
-            </ul>
-          </li>
-          <!-- Tasks Menu -->
-          <li class="dropdown tasks-menu">
-            <!-- Menu Toggle Button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-flag-o"></i>
-              <span class="label label-danger">9</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">You have 9 tasks</li>
-              <li>
-                <!-- Inner menu: contains the tasks -->
-                <ul class="menu">
-                  <li><!-- Task item -->
-                    <a href="#">
-                      <!-- Task title and progress text -->
-                      <h3>
-                        Design some buttons
-                        <small class="pull-right">20%</small>
-                      </h3>
-                      <!-- The progress bar -->
-                      <div class="progress xs">
-                        <!-- Change the css width attribute to simulate progress -->
-                        <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                          <span class="sr-only">20% Complete</span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                  <!-- end task item -->
-                </ul>
-              </li>
-              <li class="footer">
-                <a href="#">View all tasks</a>
-              </li>
-            </ul>
-          </li>
-          <!-- User Account Menu -->
-          <li class="dropdown user user-menu">
-            <!-- Menu Toggle Button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <!-- The user image in the navbar-->
-              <img src="{{ asset("/bower_components/AdminLTE/dist/img/user2-160x160.jpg") }}" class="user-image" alt="User Image">
-              <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">Alexander Pierce</span>
-            </a>
-            <ul class="dropdown-menu">
-              <!-- The user image in the menu -->
-              <li class="user-header">
-                <img src="{{ asset("/bower_components/AdminLTE/dist/img/user2-160x160.jpg") }}" class="img-circle" alt="User Image">
 
-                <p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
-                </p>
-              </li>
-              <!-- Menu Body -->
-              <li class="user-body">
-                <div class="row">
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
-                  </div>
-                </div>
-                <!-- /.row -->
-              </li>
-              <!-- Menu Footer-->
-              <li class="user-footer">
-                <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
-                </div>
-                <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                </div>
-              </li>
-            </ul>
-          </li>
-          <!-- Control Sidebar Toggle Button -->            
-          <li>
-            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-          </li>
+
+        <!-- Left-side navigation -->
+        <ul class="nav-left pull-left list-unstyled list-inline">
+            <li class="sidebar-collapse divided-right">
+                <a role="button" tabindex="0" class="collapse-sidebar">
+                    <i class="fa fa-outdent"></i>
+                </a>
+            </li>
+            
         </ul>
-      </div>
-    </nav>
-  </header>
-  <script type="text/javascript">
-    
+        <!-- Left-side navigation end -->
 
-  </script>
+
+
+
+        <!-- Search -->
+        <div class="search" id="main-search">
+            <input type="text" class="form-control underline-input" placeholder="Search...">
+        </div>
+        <!-- Search end -->
+
+
+
+
+        <!-- Right-side navigation -->
+        <ul class="nav-right pull-right list-inline">
+            <li class="dropdown users">
+
+                <a href class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-user"></i>
+                    <span class="badge bg-lightred">2</span>
+                </a>
+
+                <div class="dropdown-menu pull-right with-arrow panel panel-default animated littleFadeInUp" role="menu">
+
+                    <div class="panel-heading">
+                        You have <strong>2</strong> requests
+                    </div>
+
+                    <ul class="list-group">
+
+                        <li class="list-group-item">
+                            <a role="button" tabindex="0" class="media">
+                                <span class="pull-left media-object thumb thumb-sm">
+                                    <img src="{{ asset("themes/assets/images/arnold-avatar.jpg") }}  " alt="" class="img-circle">
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">Arnold sent you a request</span>
+                                    <small class="text-muted">15 minutes ago</small>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="list-group-item">
+                            <a role="button" tabindex="0" class="media">
+                                <span class="pull-left media-object  thumb thumb-sm">
+                                    <img src="{{ asset("themes/assets/images/george-avatar.jpg") }}  " alt="" class="img-circle">
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">George sent you a request</span>
+                                    <small class="text-muted">5 hours ago</small>
+                                </div>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                    <div class="panel-footer">
+                        <a role="button" tabindex="0">Show all requests <i class="fa fa-angle-right pull-right"></i></a>
+                    </div>
+
+                </div>
+
+            </li>
+
+            <li class="dropdown messages">
+
+                <a href class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-envelope"></i>
+                    <span class="badge bg-lightred">4</span>
+                </a>
+
+                <div class="dropdown-menu pull-right with-arrow panel panel-default animated littleFadeInDown" role="menu">
+
+                    <div class="panel-heading">
+                        You have <strong>4</strong> messages
+                    </div>
+
+                    <ul class="list-group">
+
+                        <li class="list-group-item">
+                            <a role="button" tabindex="0" class="media">
+                                <span class="pull-left media-object thumb thumb-sm">
+                                    <img src="{{ asset("themes/assets/images/ici-avatar.jpg") }} " alt="" class="img-circle">
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">Imrich sent you a message</span>
+                                    <small class="text-muted">12 minutes ago</small>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="list-group-item">
+                            <a role="button" tabindex="0" class="media">
+                                <span class="pull-left media-object  thumb thumb-sm">
+                                    <img src="{{ asset("themes/assets/images/peter-avatar.jpg") }} " alt="" class="img-circle">
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">Peter sent you a message</span>
+                                    <small class="text-muted">46 minutes ago</small>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="list-group-item">
+                            <a role="button" tabindex="0" class="media">
+                                <span class="pull-left media-object  thumb thumb-sm">
+                                    <img src="{{ asset("themes/assets/images/random-avatar1.jpg") }} " alt="" class="img-circle">
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">Bill sent you a message</span>
+                                    <small class="text-muted">1 hour ago</small>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="list-group-item">
+                            <a role="button" tabindex="0" class="media">
+                                <span class="pull-left media-object  thumb thumb-sm">
+                                    <img src="{{ asset("themes/assets/images/random-avatar3.jpg") }} " alt="" class="img-circle">
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">Ken sent you a message</span>
+                                    <small class="text-muted">3 hours ago</small>
+                                </div>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                    <div class="panel-footer">
+                        <a role="button" tabindex="0">Show all messages <i class="pull-right fa fa-angle-right"></i></a>
+                    </div>
+
+                </div>
+
+            </li>
+
+            <li class="dropdown notifications">
+
+                <a href class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-bell"></i>
+                    <span class="badge bg-lightred">3</span>
+                </a>
+
+                <div class="dropdown-menu pull-right with-arrow panel panel-default animated littleFadeInLeft">
+
+                    <div class="panel-heading">
+                        You have <strong>3</strong> notifications
+                    </div>
+
+                    <ul class="list-group">
+
+                        <li class="list-group-item">
+                            <a role="button" tabindex="0" class="media">
+                                <span class="pull-left media-object media-icon bg-danger">
+                                    <i class="fa fa-ban"></i>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">User Imrich cancelled account</span>
+                                    <small class="text-muted">6 minutes ago</small>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="list-group-item">
+                            <a role="button" tabindex="0" class="media">
+                                <span class="pull-left media-object media-icon bg-primary">
+                                    <i class="fa fa-bolt"></i>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">New user registered</span>
+                                    <small class="text-muted">12 minutes ago</small>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="list-group-item">
+                            <a role="button" tabindex="0" class="media">
+                                <span class="pull-left media-object media-icon bg-greensea">
+                                    <i class="fa fa-lock"></i>
+                                </span>
+                                <div class="media-body">
+                                    <span class="block">User Robert locked account</span>
+                                    <small class="text-muted">18 minutes ago</small>
+                                </div>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                    <div class="panel-footer">
+                        <a role="button" tabindex="0">Show all notifications <i class="fa fa-angle-right pull-right"></i></a>
+                    </div>
+
+                </div>
+
+            </li>
+
+            @if (Auth::guest())
+                <li><a href="{{ url('/login') }}">Login</a></li>
+                <li><a href="{{ url('/register') }}">Register</a></li>
+            @else
+                <li class="dropdown nav-profile">
+                    <a href class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="{{ asset("themes/assets/images/profile-photo.jpg") }} " alt="" class="img-circle size-30x30">
+                        <span>{{ Auth::user()->name }} <i class="fa fa-angle-down"></i></span>
+                    </a>
+                    <ul class="dropdown-menu animated littleFadeInRight" role="menu">
+                        <li>
+                            <a role="button" tabindex="0">
+                                <span class="badge bg-greensea pull-right">86%</span>
+                                <i class="fa fa-user"></i>Thông tin
+                            </a>
+                        </li>
+                  
+                        <li>
+                            <a role="button" tabindex="0">
+                                <i class="fa fa-cog"></i>Cài đặt
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a role="button" tabindex="0" href="{{ url('/logout') }}">
+                                <i class="fa fa-sign-out"></i>Đăng xuất
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
+
+            
+            <li class="toggle-right-sidebar">
+                <a role="button" tabindex="0">
+                    <i class="fa fa-comments"></i>
+                </a>
+            </li>
+        </ul>
+        <!-- Right-side navigation end -->
+    </header>
+</section>
+<!--/ HEADER Content  -->

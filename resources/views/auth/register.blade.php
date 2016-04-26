@@ -1,128 +1,206 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
     <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <title>Registration Page</title>
-      <!-- Tell the browser to be responsive to screen width -->
-      <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-      <!-- Bootstrap 3.3.6 -->
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-      <!-- Ionicons -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-      <!-- Theme style -->
-      <!-- iCheck -->
-      <link rel="stylesheet" href="{{ asset("/bower_components/AdminLTE/plugins/iCheck/square/blue.css")}}">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Minovate - Admin Dashboard</title>
+        <link rel="icon" type="image/ico" href="assets/images/favicon.ico" />
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- ============================================
+        ================= Stylesheets ===================
+        ============================================= -->
+        <!-- vendor css files -->
+        <link rel="stylesheet" href="{{ asset("themes/assets/css/vendor/bootstrap.min.css") }}">
+        <link rel="stylesheet" href="{{ asset("themes/assets/css/vendor/animate.css") }}">
+        <link rel="stylesheet" href="{{ asset("themes/assets/css/vendor/font-awesome.min.css") }}">
+        <link rel="stylesheet" href="{{ asset("themes/assets/js/vendor/animsition/css/animsition.min.css") }}">
 
-      <link href="{{ asset("/bower_components/AdminLTE/bootstrap/css/bootstrap.min.css") }}" rel="stylesheet" type="text/css" />
-        <!-- Font Awesome Icons -->
-        
-        <link href="{{ asset("/bower_components/AdminLTE/dist/css/AdminLTE.min.css")}}" rel="stylesheet" type="text/css" />
-
-      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-      <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-      <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-      <![endif]-->
+        <!-- project main css files -->
+         <link rel="stylesheet" href="{{ asset("themes/assets/css/main.css") }}">
+        <!--/ stylesheets -->
+        <!-- ==========================================
+        ================= Modernizr ===================
+        =========================================== -->
+        <script src="{{ asset("themes/assets/js/vendor/modernizr/modernizr-2.8.3-respond-1.4.2.min.js") }}  "></script>
+        <!--/ modernizr -->
     </head>
-    <body class="hold-transition register-page">
-        <div class="register-box">
-          <div class="register-logo">
-            <b>Registration</b>
-          </div>
-          <div class="register-box-body">
-            <p class="login-box-msg">Register a new membership</p>
 
-            <form role="form" method="POST" action="{{ url('/register') }}">
-                 {!! csrf_field() !!}
 
-                <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} has-feedback">
-                    
-                        <input type="text" class="form-control" placeholder="Full name" name="name" value="{{ old('name') }}">
-                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                        @if ($errors->has('name'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('name') }}</strong>
-                            </span>
-                        @endif
-                </div>
-                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }} has-feedback">
-                    
-                        <input type="email" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}">
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                        @if ($errors->has('email'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('email') }}</strong>
-                            </span>
-                        @endif
-                    
-                </div>
-                
-                <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }} has-feedback">
-                    <input type="password" placeholder="Password" class="form-control" name="password">
-                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                    @if ($errors->has('password'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('password') }}</strong>
-                        </span>
-                    @endif
-                </div>
 
-                <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }} has-feedback">
-                    <input type="password" placeholder="Retype password" class="form-control" name="password_confirmation">
-                    <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
-                    @if ($errors->has('password_confirmation'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('password_confirmation') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                    
-                <div class="row">
-                    <div class="col-xs-8">
-                        <div class="checkbox icheck">
-                            <label>
-                              <input type="checkbox"> I agree to the <a href="#">terms</a>
+
+
+    <body id="minovate" class="appWrapper">
+
+
+
+
+
+
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- ====================================================
+        ================= Application Content ===================
+        ===================================================== -->
+        <div id="wrap" class="animsition">
+
+
+
+
+            <div class="page page-core page-login">
+
+                <div class="text-center"><h3 class="text-light text-white"><span class="text-lightred">MSL</span>VietNam</h3></div>
+
+                <div class="container w-420 p-15 bg-white mt-40 text-center">
+
+                    <h2 class="text-light text-greensea">Sign Up</h2>
+
+                    <form role="form" method="POST" action="{{ url('/register') }}" class="form-validation mt-20">
+                    {!! csrf_field() !!}
+
+                        <p class="help-block text-left">
+                            Điền đủ những thông tin dưới đây:
+                        </p>
+
+                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                            <input type="text" class="form-control underline-input" placeholder="Full Name" name="name" value="{{ old('name') }}">
+                            @if ($errors->has('name'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('name') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+
+                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                            <input type="email" class="form-control underline-input" placeholder="Email" name="email" value="{{ old('email') }}">
+
+                            @if ($errors->has('email'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+
+                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <input type="password" placeholder="Password" class="form-control underline-input" name="password">
+
+                            @if ($errors->has('password'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('password') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+
+                        <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
+                            <input type="password" placeholder="Confirm Password" class="form-control underline-input" name="password_confirmation">
+
+                             @if ($errors->has('password_confirmation'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
+                                    </span>
+                                @endif
+                        </div>
+
+                        <div class="form-group text-left">
+                            <label class="checkbox checkbox-custom-alt checkbox-custom-sm inline-block">
+                                <input type="checkbox"><i></i> I agree to the <a href="javascript:;">Terms of Service</a> &amp; <a href="javascript:;">Privacy Policy</a>
                             </label>
                         </div>
-                    </div>
-                <!-- /.col -->
-                <div class="col-xs-4">
-                  <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
-                </div>
-                <!-- /.col -->
-                </div>
-            </form>
 
-            <div class="social-auth-links text-center">
-              <p>- OR -</p>
-              <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign up using
-                Facebook</a>
-              <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign up using
-                Google+</a>
+                        <div class="bg-slategray lt wrap-reset mt-20 text-left">
+                            <p class="m-0">
+                                <button type="submit" class="btn btn-greensea b-0 text-uppercase pull-right">Submit</button>
+                                <a href="{{ url('/login') }}" class="btn btn-lightred b-0 text-uppercase">Back</a>
+                            </p>
+                        </div>
+
+                    </form>
+
+                    
+
+                </div>
+
             </div>
 
-            <a href="{{ url('/login') }}"  class="text-center">I already have a membership</a>
-          </div>
-          <!-- /.form-box -->
-        </div>
-        <!-- /.register-box -->
 
-        <!-- jQuery 2.2.0 -->
-        <script src="{{ asset ("/bower_components/AdminLTE/plugins/jQuery/jQuery-2.2.0.min.js") }}"></script>
-        <!-- Bootstrap 3.3.2 JS -->
-        <script src="{{ asset ("/bower_components/AdminLTE/bootstrap/js/bootstrap.min.js") }}" type="text/javascript"></script>
-        <!-- iCheck -->
-        <script src="{{ asset ("/bower_components/AdminLTE/plugins/iCheck/icheck.min.js") }}"></script>
+
+        </div>
+        <!--/ Application Content -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- ============================================
+        ============== Vendor JavaScripts ===============
+        ============================================= -->
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery/jquery-1.11.2.min.js"><\/script>')</script>
+
+        <script src="{{ asset("themes/assets/js/vendor/bootstrap/bootstrap.min.js") }}"></script>
+        <script src="{{ asset("themes/assets/js/vendor/jRespond/jRespond.min.js") }}"></script>
+
+        <script src="{{ asset("themes/assets/js/vendor/sparkline/jquery.sparkline.min.js") }}"></script>
+        <script src="{{ asset("themes/assets/js/vendor/slimscroll/jquery.slimscroll.min.js") }}"></script>
+
+        <script src="{{ asset("themes/assets/js/vendor/animsition/js/jquery.animsition.min.js") }}"></script>
+
+        <script src="{{ asset("themes/assets/js/vendor/screenfull/screenfull.min.js") }}"></script>
+        <!--/ vendor javascripts -->
+        <!-- ============================================
+        ============== Custom JavaScripts ===============
+        ============================================= -->
+        <script src="{{ asset("themes/assets/js/main.js") }}"></script>
+        <!--/ custom javascripts -->
+        <!-- ===============================================
+        ============== Page Specific Scripts ===============
+        ================================================ -->
         <script>
-          $(function () {
-            $('input').iCheck({
-              checkboxClass: 'icheckbox_square-blue',
-              radioClass: 'iradio_square-blue',
-              increaseArea: '20%' // optional
+            $(window).load(function(){
+                
+
             });
-          });
         </script>
+        <!--/ Page Specific Scripts -->
+
+
+
+
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='https://www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+        </script>
+
     </body>
 </html>

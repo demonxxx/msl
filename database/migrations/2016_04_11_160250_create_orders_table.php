@@ -14,18 +14,19 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('shope_id')->nullable();
-            $table->string('name');
-            $table->text('description');
-            $table->integer('number_items');
-            $table->integer('number_shippers');
-            $table->dateTime('start_time');
-            $table->dateTime('end_time');
-            $table->string('phone');
-            $table->integer('cost');
-            $table->float('radius');
-            $table->smallInteger('status');
+            $table->integer('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('name')->nullable();
+            $table->text('description')->nullable();
+            $table->integer('number_items')->nullable();
+            $table->integer('number_shippers')->nullable();
+            $table->dateTime('start_time')->nullable();
+            $table->dateTime('end_time')->nullable();
+            $table->string('phone')->nullable();
+            $table->integer('cost')->nullable();
+            $table->float('radius')->nullable();
+            $table->smallInteger('status')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

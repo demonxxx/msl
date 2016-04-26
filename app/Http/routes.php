@@ -11,17 +11,18 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
-Route::get('admin', function () {
-    return view('admin');
-});
-
-Route::get('test', 'TestController@index');
-
+use Illuminate\Http\Request;
 Route::auth();
+// Route::group(['middleware' => 'web'], function () {
+	Route::group(['middleware' => 'auth'], function () {
+		Route::get('/', 'HomeController@index');
+		Route::resource('shop', 'ShopController');
+		Route::resource('order', 'OrderController');
+		Route::resource('shipper', 'ShipperController');
+		Route::get('/shop', 'ShopsController@index');
+		Route::get('/shop/create', 'ShopsController@create');
+		Route::post('/shop/store', 'ShopsController@store');
+	});
+// });
 
-Route::get('/home', 'HomeController@index');
+

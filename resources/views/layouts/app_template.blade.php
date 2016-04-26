@@ -69,7 +69,7 @@
 
     <!-- JavaScripts -->
     <!-- jQuery 2.2.0 -->
-<script src="{{ asset ("/bower_components/AdminLTE/plugins/jQuery/jQuery-2.2.0.min.js") }}"></script>
+<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
 <!-- Bootstrap 3.3.2 JS -->
 <script src="{{ asset ("/bower_components/AdminLTE/bootstrap/js/bootstrap.min.js") }}" type="text/javascript"></script>
 <!-- AdminLTE App -->
