@@ -58,7 +58,7 @@ class ShopsController extends Controller
             'id_card' => 'required',
         ]);
         if ($validator->fails()) {
-            flash("Tạo khách hàng mới không thành công!","danger");
+            flash_message("Tạo khách hàng mới không thành công!","danger");
             return back();
         }else {
             $user = new User;
@@ -71,7 +71,7 @@ class ShopsController extends Controller
             $shop->home_address = $request->home_ward.$request->home_district.$request->home_city;
             $shop->office_address = $request->office_ward.$request->office_district.$request->office_city;
             $user->shop()->save($shop);
-            flash("Tạo khách hàng mới thành công!");
+            flash_message("Tạo khách hàng mới thành công!");
             return back();
         }
     }
