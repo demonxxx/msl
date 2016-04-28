@@ -18,7 +18,6 @@ class CreateShopsTable extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('full_name')->nullable();
-            $table->string('id_card')->nullable();
             $table->string('home_address',300)->nullable();
             $table->string('office_address',300)->nullable();
             $table->integer('account_id')->nullable();

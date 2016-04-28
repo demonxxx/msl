@@ -35,7 +35,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- project main css files -->
         <link rel="stylesheet" href="{{ asset("themes/assets/css/main.css") }}">
         <script src="{{ asset("themes/assets/js/vendor/modernizr/modernizr-2.8.3-respond-1.4.2.min.js") }}  "></script>
-
+        
         
         <script src="{{ asset("themes/assets/js/vendor/jquery/jquery-1.11.2.min.js") }}"></script>
         <script src="{{ asset("themes/assets/js/vendor/datatables/js/jquery.dataTables.min.js") }}"></script>
