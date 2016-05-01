@@ -1,6 +1,6 @@
 @extends('app.shops.shop')
 @section('shop')
-@include('partials.flash')
+
         <!-- tile -->
 <section class="tile">
 
@@ -61,7 +61,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">Số điện thoại.</label>
                 <div class="col-sm-10">
-                    <input type="text" name="phone" class="form-control" placeholder="(XXX) XXXX XXX"
+                    <input type="text" name="phone_number" class="form-control" placeholder="(XXX) XXXX XXX"
                            data-parsley-trigger="change"
                            pattern="^[\d\+\-\.\(\)\/\s]*$" required>
                 </div>

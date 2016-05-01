@@ -57,18 +57,16 @@
     <div class="tile-body">
 
         <div class="table-responsive">
-            <table class="table table-striped table-hover table-custom" id="products-list">
+            <table class="table table-striped table-hover table-custom" id="shops-list">
                 <thead>
                     <tr>
-                        <th>Mã KH</th>
-                        <th>Tên đăng nhập</th>
-                        <th>Họ và tên</th>
-                        <th>Số đt</th>
-                        <th>Email</th>
-                        <th>Địa chỉ nhà</th>
-                        <th>Địa chỉ văn phòng</th>
-                        <th>Số CMT</th>
-                        <th class="no-sort">Chức năng</th>
+                        <th class="text-center">Mã KH</th>
+                        <th class="text-center">Họ và tên</th>
+                        <th class="text-center">Email đăng nhập</th>
+                        <th class="text-center">CMT</th>
+                        <th class="text-center">Đ/c nhà</th>
+                        <th class="text-center">Đ/c văn phòng</th>
+                        <th class="text-center">Chức năng</th>
                     </tr>
                 </thead>
             </table>
@@ -80,8 +78,60 @@
      
 <script >
     $(document).ready(function(){
+        var common_render = {
+            "render": function (data, type, row) {
+                return render_common(data);
+            },
+            "targets": [0, 1, 2, 3]
+        };
 
+        var home_address_render = {
+            "render": function (data, type, row) {
+                return "<div class='text-center'>" + row.home_ward + ", " + row.home_district + ", " + row.home_city + "</div>";
+
+            },
+            "targets": [4]
+        };
+
+        var office_address_render = {
+            "render": function (data, type, row) {
+                return "<div class='text-center'>" + row.office_ward + ", " + row.office_district + ", " + row.office_city + "</div>";
+
+            },
+            "targets": [5]
+        };
+
+        var function_render = {
+            "render": function (data, type, row) {
+                return render_function(data);
+            },
+            "targets": [6]
+        };
+
+        var data = {};
+        var renders = [];
+        renders.push(common_render);
+        renders.push(home_address_render);
+        renders.push(function_render);
+        renders.push(office_address_render);
+        data.colums = ["code","name","email","identity_card","home_city","office_city","id"];
+        data.url = "/shop/load_list";
+        data.id = "shops-list";
+        data.renders = renders;
+        setDatatable(data);
     });
+
+    function render_common(data){
+        return "<div class='text-center'>" + data + "</div>";
+    }
+
+    function render_function(data){
+        var edit_url = base_url + "/shop/" + data + "/edit";
+        return "<div class='text-center'>"  +
+                    "<a class='btn btn-primary' href='"+edit_url+"' style='width: 70px;'>Sửa</a>" +
+                    "<a class='btn btn-danger' style='width: 70px; margin-left: 10px;'>Xóa</a>"+
+                "</div>";
+    }
 </script>
 @endsection
 

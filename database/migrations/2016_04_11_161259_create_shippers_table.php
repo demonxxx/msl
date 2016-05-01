@@ -17,10 +17,12 @@ class CreateShippersTable extends Migration
             $table->integer('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->string('full_name')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('home_address',300)->nullable();
-            $table->string('office_address',300)->nullable();
+            $table->string('home_ward',255)->nullable();
+            $table->string('home_district',255)->nullable();
+            $table->string('home_city',255)->nullable();
+            $table->string('office_ward',255)->nullable();
+            $table->string('office_district',255)->nullable();
+            $table->string('office_city',255)->nullable();
             $table->integer('account_id')->nullable();
             $table->smallInteger('vehicle_type')->nullable();
             $table->string('license_plate')->nullable();
