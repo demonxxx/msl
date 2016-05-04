@@ -17,13 +17,14 @@
                 </ul>
             </div>
         </div>
+    @include('partials.flash')
         <!-- page content -->
         <div class="pagecontent">
             <!-- row -->
             <div class="row">
                 <!-- col -->
                 <div class="col-md-12">
-                    
+
                         @yield('shop')
                     
                 </div>

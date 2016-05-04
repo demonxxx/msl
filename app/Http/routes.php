@@ -16,12 +16,12 @@ Route::auth();
 // Route::group(['middleware' => 'web'], function () {
 	Route::group(['middleware' => 'auth'], function () {
 		Route::get('/', 'HomeController@index');
-		Route::resource('shop', 'ShopController');
-		Route::resource('order', 'OrderController');
-		Route::resource('shipper', 'ShipperController');
-		Route::get('/shop', 'ShopsController@index');
+		Route::get('/shop', 'ShopsController@index')->name("shops");
 		Route::get('/shop/create', 'ShopsController@create');
 		Route::post('/shop/store', 'ShopsController@store');
+		Route::post('/shop/load_list','ShopsController@load_list');
+		Route::get('/shop/{user_id}/edit','ShopsController@edit');
+		Route::post('/shop/{id}/update','ShopsController@update');
 	});
 // });
 

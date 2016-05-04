@@ -16,4 +16,5 @@ class Shop_shipper extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
-    protected $table = 'shop_shippers';}
+    protected $table = 'shop_shippers';
+}

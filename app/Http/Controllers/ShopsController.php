@@ -3,17 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
-
 use App\User;
-
 use App\Shop;
-
 use App\Helpers\helpers;
 
 class ShopsController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -21,8 +18,6 @@ class ShopsController extends Controller
      */
     public function index()
     {
-        //
-        $shops = Shop::all();
         return view('app.shops.index');
     }
 
@@ -33,43 +28,48 @@ class ShopsController extends Controller
      */
     public function create()
     {
-        return view('app.shops.create'  );
+        return view('app.shops.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $validator = \Validator::make($request->all(),  [
-            'code' => 'email',
-            'name' => 'email',
-            'phone' => 'required',
-            'email' => 'email',
-            'home_ward' => 'required',
-            'home_district' => 'required',
-            'home_city' => 'required',
-            'office_ward' => 'required',
+        $validator = \Validator::make($request->all(), [
+            'code'            => 'required',
+            'name'            => 'required',
+            'phone_number'    => 'required',
+            'email'           => 'email',
+            'home_ward'       => 'required',
+            'home_district'   => 'required',
+            'home_city'       => 'required',
+            'office_ward'     => 'required',
             'office_district' => 'required',
-            'office_city' => 'required',
-            'id_card' => 'required',
+            'office_city'     => 'required',
+            'identity_card'   => 'required',
         ]);
         if ($validator->fails()) {
-            flash_message("Tạo khách hàng mới không thành công!","danger");
+            flash_message("Tạo khách hàng mới không thành công!", "danger");
             return back();
-        }else {
+        } else {
             $user = new User;
             $user->code = $request->code;
             $user->name = $request->name;
             $user->email = $request->email;
+            $user->identity_card = $request->identity_card;
+            $user->phone_number = $request->phone_number;
             $user->save();
             $shop = new Shop;
-            $shop->full_name = $request->name;
-            $shop->home_address = $request->home_ward.$request->home_district.$request->home_city;
-            $shop->office_address = $request->office_ward.$request->office_district.$request->office_city;
+            $shop->home_ward = $request->home_ward;
+            $shop->home_district = $request->home_district;
+            $shop->home_city = $request->home_city;
+            $shop->office_ward = $request->office_ward;
+            $shop->office_district = $request->office_district;
+            $shop->office_city = $request->office_city;
             $user->shop()->save($shop);
             flash_message("Tạo khách hàng mới thành công!");
             return back();
@@ -79,7 +79,7 @@ class ShopsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -90,34 +90,85 @@ class ShopsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($user_id)
     {
-        //
+        $user = new User;
+        $user_obj = $user->find($user_id);
+        $shop_obj = $user_obj->shop;
+        return view("app/shops/edit", ["user" => $user_obj, "shop" => $shop_obj, "user_id" => $user_id]);
+
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request ffgg
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //
+//        dd($request->all());
+        $validator = \Validator::make($request->all(), [
+            'code'            => 'required',
+            'name'            => 'required',
+            'phone_number'    => 'required',
+            'email'           => 'email',
+            'home_ward'       => 'required',
+            'home_district'   => 'required',
+            'home_city'       => 'required',
+            'office_ward'     => 'required',
+            'office_district' => 'required',
+            'office_city'     => 'required',
+            'identity_card'   => 'required',
+        ]);
+        if ($validator->fails()) {
+            flash_message("Sửa khách hàng không thành công!", "danger");
+            return back();
+        } else {
+            $user = new User;
+            $user_obj = $user->find($id);
+            $user_obj->code = $request->code;
+            $user_obj->name = $request->name;
+            $user_obj->phone_number = $request->phone_number;
+            $user_obj->email = $request->email;
+            $user_obj->identity_card = $request->identity_card;
+            $user_obj->save();
+            $shop_obj = $user_obj->shop;
+            $shop_obj->home_ward = $request->home_ward;
+            $shop_obj->home_district = $request->home_district;
+            $shop_obj->home_city = $request->home_city;
+            $shop_obj->office_ward = $request->office_ward;
+            $shop_obj->office_district = $request->office_district;
+            $shop_obj->office_city = $request->office_city;
+            $shop_obj->save();
+            flash_message("Sửa khách hàng thành công!");
+            return redirect()->route('shops');
+        }
     }
 
-    /**
+    /**fi
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
     }
+
+    public function load_list(Request $request)
+    {
+        $posts = get_post_datatable($request->all());
+        $shop = new Shop();
+        $data = $shop->get_all_shops($posts);
+        $length = $shop->count_all($posts);
+        $result = build_json_datatable($data, $length, $posts);
+        return $result;
+    }
+
 }
