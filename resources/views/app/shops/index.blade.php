@@ -57,18 +57,16 @@
     <div class="tile-body">
 
         <div class="table-responsive">
-            <table class="table table-striped table-hover table-custom" id="products-list">
+            <table class="table table-striped table-hover table-custom" id="shops-list">
                 <thead>
                     <tr>
-                        <th>Mã KH</th>
-                        <th>Tên đăng nhập</th>
-                        <th>Họ và tên</th>
-                        <th>Số đt</th>
-                        <th>Email</th>
-                        <th>Địa chỉ nhà</th>
-                        <th>Địa chỉ văn phòng</th>
-                        <th>Số CMT</th>
-                        <th class="no-sort">Chức năng</th>
+                        <th class="text-center">Mã KH</th>
+                        <th class="text-center">Họ và tên</th>
+                        <th class="text-center">Email đăng nhập</th>
+                        <th class="text-center">CMT</th>
+                        <th class="text-center">Đ/c nhà</th>
+                        <th class="text-center">Đ/c văn phòng</th>
+                        <th class="text-center">Chức năng</th>
                     </tr>
                 </thead>
             </table>
@@ -80,76 +78,60 @@
      
 <script >
     $(document).ready(function(){
-        $('#products-list').DataTable(
-            {
-                "dom": '<"row"<"col-md-8 col-sm-12"<"inline-controls"l>><"col-md-4 col-sm-12"<"pull-right"f>>>t<"row"<"col-md-4 col-sm-12"<"inline-controls"l>><"col-md-4 col-sm-12"<"inline-controls text-center"i>><"col-md-4 col-sm-12"p>>',
-                "language": {
-                "sLengthMenu": 'View _MENU_ records',
-                "sInfo":  'Found _TOTAL_ records',
-                "oPaginate": {
-                    "sPage":    "Page ",
-                    "sPageOf":  "of",
-                    "sNext":  '<i class="fa fa-angle-right"></i>',
-                    "sPrevious":  '<i class="fa fa-angle-left"></i>'
-                }
+        var common_render = {
+            "render": function (data, type, row) {
+                return render_common(data);
             },
-            "pagingType": "input",
-            "ajax": 'assets/extras/products.json',
-            "order": [[ 1, "asc" ]],
-            "columns": [
-                {
-                    "data": "null",
-                    "defaultContent": '<label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0"><input type="checkbox" class="selectMe"><i></i></label>'
-                },
-                { "data": "id" },
-                { "data": "name" },
-                { "data": "category" },
-                {
-                    "data": "price",
-                    "type": "num-fmt",
-                    "render": function (data) {
-                        return '$' + parseFloat(data).toFixed(2);
-                    }
-                },
-                {
-                    "data": "date",
-                    "className": "formatDate"
-                },
-                {
-                    "type": "html",
-                    "data": "status",
-                    "render": function (data) {
-                        if (data === 'published') {
-                            return '<span class="label bg-success">' + data + '</span>'
-                        } else if (data === 'not published') {
-                            return '<span class="label bg-warning">' + data + '</span>'
-                        } else if (data === 'deleted') {
-                            return '<span class="label bg-lightred">' + data + '</span>'
-                        }
-                    }
-                },
-                {
-                    "data": null,
-                    "defaultContent": '<a href="shop-single-product" class="btn btn-xs btn-default mr-5"><i class="fa fa-search"></i> View</a><a href="javascript:;" class="btn btn-xs btn-lightred"><i class="fa fa-times"></i> Delete</a>'
-                }
-            ],
-            "aoColumnDefs": [
-              { 'bSortable': false, 'aTargets': [ "no-sort" ] }
-            ],
-            "drawCallback": function(settings, json) {
-                $(".formatDate").each(function (idx, elem) {
-                    $(elem).text($.format.date($(elem).text(), "MMM d, yyyy"));
-                });
-                $('#select-all').change(function() {
-                    if ($(this).is(":checked")) {
-                        $('#products-list tbody .selectMe').prop('checked', true);
-                    } else {
-                        $('#products-list tbody .selectMe').prop('checked', false);
-                    }
-                });
-            }
-        });
+            "targets": [0, 1, 2, 3]
+        };
+
+        var home_address_render = {
+            "render": function (data, type, row) {
+                return "<div class='text-center'>" + row.home_ward + ", " + row.home_district + ", " + row.home_city + "</div>";
+
+            },
+            "targets": [4]
+        };
+
+        var office_address_render = {
+            "render": function (data, type, row) {
+                return "<div class='text-center'>" + row.office_ward + ", " + row.office_district + ", " + row.office_city + "</div>";
+
+            },
+            "targets": [5]
+        };
+
+        var function_render = {
+            "render": function (data, type, row) {
+                return render_function(data);
+            },
+            "targets": [6]
+        };
+
+        var data = {};
+        var renders = [];
+        renders.push(common_render);
+        renders.push(home_address_render);
+        renders.push(function_render);
+        renders.push(office_address_render);
+        data.colums = ["code","name","email","identity_card","home_city","office_city","id"];
+        data.url = "/shop/load_list";
+        data.id = "shops-list";
+        data.renders = renders;
+        setDatatable(data);
     });
+
+    function render_common(data){
+        return "<div class='text-center'>" + data + "</div>";
+    }
+
+    function render_function(data){
+        var edit_url = base_url + "/shop/" + data + "/edit";
+        return "<div class='text-center'>"  +
+                    "<a class='btn btn-primary' href='"+edit_url+"' style='width: 70px;'>Sửa</a>" +
+                    "<a class='btn btn-danger' style='width: 70px; margin-left: 10px;'>Xóa</a>"+
+                "</div>";
+    }
 </script>
 @endsection
 
