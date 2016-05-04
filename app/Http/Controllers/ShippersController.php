@@ -63,13 +63,13 @@ class ShippersController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->phone_number = $request->phone_number;
+            $user->identity_card = $request->identity_card;
             $user->save();
             $shipper = new Shipper;
             $shipper->home_ward = $request->home_ward;
             $shipper->home_district = $request->home_district;
             $shipper->home_city = $request->home_city;
             $shipper->vehicle_type = $request->vehicle_type;
-            $shipper->identity_card = $request->identity_card;
             $shipper->licence_plate = $request->licence_plate;
             $user->shipper()->save($shipper);
             flash_message("Tạo tài xế mới thành công!");
@@ -137,6 +137,7 @@ class ShippersController extends Controller
             $user_obj->name = $request->name;
             $user_obj->email = $request->email;
             $user_obj->phone_number = $request->phone_number;
+            $user_obj->identity_card = $request->identity_card;
             $user_obj->save();
             $shipper_obj = $user_obj->shipper;
             $shipper_obj->home_ward = $request->home_ward;
@@ -146,7 +147,6 @@ class ShippersController extends Controller
             $shipper_obj->office_district = $request->office_district;
             $shipper_obj->office_city = $request->office_city;
             $shipper_obj->vehicle_type = $request->vehicle_type;
-            $shipper_obj->identity_card = $request->identity_card;
             $shipper_obj->licence_plate = $request->licence_plate;
             $shipper_obj->save();
             flash_message("Sửa tài xế thành công!");
