@@ -22,6 +22,14 @@ Route::auth();
 		Route::post('/shop/load_list','ShopsController@load_list');
 		Route::get('/shop/{user_id}/edit','ShopsController@edit');
 		Route::post('/shop/{id}/update','ShopsController@update');
+                
+                Route::get('/shipper', 'ShippersController@index')->name("shippers");
+                Route::get('/shipper/create', 'ShippersController@create');
+                Route::post('/shipper/store', 'ShippersController@store');
+                Route::get('/shipper/{shipper_id}/edit','ShippersController@edit');
+                Route::post('/shipper/{id}/update','ShippersController@update');
+                Route::post('/shipper/load_list','ShippersController@load_list');
+                
 	});
 // });
 
