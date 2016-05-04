@@ -50,7 +50,9 @@ class ShippersController extends Controller
             'home_ward' => 'required',
             'home_district' => 'required',
             'home_city' => 'required',
-            'id_card' => 'required',
+            'identity_card' => 'required',
+            'vehicle_type' => 'required',
+            'licence_plate' => 'required',
         ]);
         if ($validator->fails()) {
             flash_message("Tạo tài xế mới không thành công!","danger");
@@ -66,6 +68,9 @@ class ShippersController extends Controller
             $shipper->home_ward = $request->home_ward;
             $shipper->home_district = $request->home_district;
             $shipper->home_city = $request->home_city;
+            $shipper->vehicle_type = $request->vehicle_type;
+            $shipper->identity_card = $request->identity_card;
+            $shipper->licence_plate = $request->licence_plate;
             $user->shipper()->save($shipper);
             flash_message("Tạo tài xế mới thành công!");
             return back();
@@ -116,6 +121,8 @@ class ShippersController extends Controller
             'home_district'   => 'required',
             'home_city'       => 'required',
             'identity_card'   => 'required',
+            'vehicle_type' => 'required',
+            'licence_plate' => 'required',
         ]);
         if ($validator->fails()) {
             flash_message("Sửa tài xế không thành công!", "danger");
@@ -133,7 +140,12 @@ class ShippersController extends Controller
             $shipper_obj->home_ward = $request->home_ward;
             $shipper_obj->home_district = $request->home_district;
             $shipper_obj->home_city = $request->home_city;
+            $shipper_obj->office_ward = $request->office_ward;
+            $shipper_obj->office_district = $request->office_district;
+            $shipper_obj->office_city = $request->office_city;
+            $shipper_obj->vehicle_type = $request->vehicle_type;
             $shipper_obj->identity_card = $request->identity_card;
+            $shipper_obj->licence_plate = $request->licence_plate;
             $shipper_obj->save();
             flash_message("Sửa tài xế thành công!");
             return redirect()->route('shippers');
