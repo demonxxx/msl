@@ -6,7 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use App\User;
 
+use App\Shipper;
+
+use App\Helpers\helpers;
 
 class ShippersController extends Controller
 {
@@ -17,7 +21,7 @@ class ShippersController extends Controller
      */
     public function index()
     {
-        //
+        return view('app.shippers.index');
     }
 
     /**
@@ -27,7 +31,7 @@ class ShippersController extends Controller
      */
     public function create()
     {
-        //
+        return view('app.shippers.create');
     }
 
     /**
@@ -38,7 +42,34 @@ class ShippersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = \Validator::make($request->all(),  [
+            'code' => 'required',
+            'name' => 'required',
+            'phone' => 'required',
+            'email' => 'email',
+            'home_ward' => 'required',
+            'home_district' => 'required',
+            'home_city' => 'required',
+            'id_card' => 'required',
+        ]);
+        if ($validator->fails()) {
+            flash_message("Tạo tài xế mới không thành công!","danger");
+            return back();
+        }else {
+            $user = new User;
+            $user->code = $request->code;
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->save();
+            $shipper = new Shipper;
+            $shipper->full_name = $request->name;
+            $shipper->home_ward = $request->home_ward;
+            $shipper->home_district = $request->home_district;
+            $shipper->home_city = $request->home_city;
+            $user->shipper()->save($shipper);
+            flash_message("Tạo tài xế mới thành công!");
+            return back();
+        }
     }
 
     /**
@@ -58,9 +89,12 @@ class ShippersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($user_id)
     {
-        //
+        $user = new User;
+        $user_obj = $user->find($user_id);
+        $shipper_obj = $user_obj->shipper;
+        return view("app/shippers/edit", [ "shipper" => $shipper_obj, "user" => $user_obj, "user_id" => $user_id]);
     }
 
     /**
@@ -72,7 +106,38 @@ class ShippersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //dd($request->all());
+        $validator = \Validator::make($request->all(), [
+            'code'            => 'required',
+            'name'            => 'required',
+            'phone'           => 'required',
+            'email'           => 'email',
+            'home_ward'       => 'required',
+            'home_district'   => 'required',
+            'home_city'       => 'required',
+            'identity_card'   => 'required',
+        ]);
+        if ($validator->fails()) {
+            flash_message("Sửa tài xế không thành công!", "danger");
+            return back();
+        } else {
+            $user = new User;
+            $user_obj = $user->find($id);
+            $user_obj->code = $request->code;
+            $user_obj->name = $request->name;
+            $user_obj->email = $request->email;
+            $user_obj->save();
+            $shipper_obj = $user_obj->shipper;
+            $shipper_obj->full_name = $request->name;
+            $shipper_obj->phone = $request->phone;
+            $shipper_obj->home_ward = $request->home_ward;
+            $shipper_obj->home_district = $request->home_district;
+            $shipper_obj->home_city = $request->home_city;
+            $shipper_obj->identity_card = $request->identity_card;
+            $shipper_obj->save();
+            flash_message("Sửa tài xế thành công!");
+            return redirect()->route('shippers');
+        }
     }
 
     /**
@@ -84,5 +149,15 @@ class ShippersController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    public function load_list(Request $request)
+    {
+        $posts = get_post_datatable($request->all());
+        $shipper = new Shipper();
+        $data = $shipper->get_all_shippers($posts);
+        $length = $shipper->count_all($posts);
+        $result = build_json_datatable($data, $length, $posts);
+        return $result;
     }
 }

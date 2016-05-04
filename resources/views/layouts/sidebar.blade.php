@@ -41,8 +41,8 @@
                             <li>
                                 <a role="button" tabindex="0"><i class="fa fa-pencil"></i> <span>Tài xế</span></a>
                                 <ul>
-                                    <li><a href="ui-general.html"><i class="fa fa-caret-right"></i> Thêm tài xế</a></li>
-                                    <li><a href="ui-buttons-icons.html"><i class="fa fa-caret-right"></i> Danh sách tài xế</a></li>
+                                    <li><a href="{{url( '/shipper/create' )}}"><i class="fa fa-caret-right"></i> Thêm tài xế</a></li>
+                                    <li><a href="{{url('/shipper')}}"><i class="fa fa-caret-right"></i> Danh sách tài xế</a></li>
                                     <li><a href="ui-typography.html"><i class="fa fa-caret-right"></i> Danh sách tài xế yêu thích</a></li>
                                     <li><a href="ui-navs.html"><i class="fa fa-caret-right"></i> Danh sách tài xế cấm nhận</a></li>
                                     <li><a href="ui-modals.html"><i class="fa fa-caret-right"></i> Danh sách tài xế thuê theo tháng</a></li>
