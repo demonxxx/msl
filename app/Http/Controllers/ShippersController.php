@@ -43,16 +43,16 @@ class ShippersController extends Controller
     public function store(Request $request)
     {
         $validator = \Validator::make($request->all(),  [
-            'code' => 'required',
-            'name' => 'required',
-            'phone' => 'required',
-            'email' => 'email',
-            'home_ward' => 'required',
-            'home_district' => 'required',
-            'home_city' => 'required',
-            'identity_card' => 'required',
-            'vehicle_type' => 'required',
-            'licence_plate' => 'required',
+            'code'              => 'required',
+            'name'              => 'required',
+            'phone_number'      => 'required',
+            'email'             => 'email',
+            'home_ward'         => 'required',
+            'home_district'     => 'required',
+            'home_city'         => 'required',
+            'identity_card'     => 'required',
+            'vehicle_type'      => 'required',
+            'licence_plate'     => 'required',
         ]);
         if ($validator->fails()) {
             flash_message("Tạo tài xế mới không thành công!","danger");
@@ -62,9 +62,9 @@ class ShippersController extends Controller
             $user->code = $request->code;
             $user->name = $request->name;
             $user->email = $request->email;
+            $user->phone_number = $request->phone_number;
             $user->save();
             $shipper = new Shipper;
-            $shipper->phone = $request->phone;
             $shipper->home_ward = $request->home_ward;
             $shipper->home_district = $request->home_district;
             $shipper->home_city = $request->home_city;
@@ -115,17 +115,17 @@ class ShippersController extends Controller
         $validator = \Validator::make($request->all(), [
             'code'            => 'required',
             'name'            => 'required',
-            'phone'           => 'required',
+            'phone_number'    => 'required',
             'email'           => 'email',
             'home_ward'       => 'required',
             'home_district'   => 'required',
             'home_city'       => 'required',
-            'office_ward'       => 'required',
-            'office_district'   => 'required',
-            'office_city'       => 'required',
+            'office_ward'     => 'required',
+            'office_district' => 'required',
+            'office_city'     => 'required',
             'identity_card'   => 'required',
-            'vehicle_type' => 'required',
-            'licence_plate' => 'required',
+            'vehicle_type'    => 'required',
+            'licence_plate'   => 'required',
         ]);
         if ($validator->fails()) {
             flash_message("Sửa tài xế không thành công!", "danger");
@@ -136,9 +136,9 @@ class ShippersController extends Controller
             $user_obj->code = $request->code;
             $user_obj->name = $request->name;
             $user_obj->email = $request->email;
+            $user_obj->phone_number = $request->phone_number;
             $user_obj->save();
             $shipper_obj = $user_obj->shipper;
-            $shipper_obj->phone = $request->phone;
             $shipper_obj->home_ward = $request->home_ward;
             $shipper_obj->home_district = $request->home_district;
             $shipper_obj->home_city = $request->home_city;
