@@ -105,7 +105,7 @@
         renders.push(common_render);
         renders.push(home_address_render);
         renders.push(function_render);
-        data.colums = ["code","name","email","identity_card","home_city","phone","id"];
+        data.colums = ["code","name","email","identity_card","home_city","phone_number","id"];
         data.url = "/shipper/load_list";
         data.id = "shippers-list";
         data.renders = renders;
