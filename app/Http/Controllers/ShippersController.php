@@ -64,7 +64,7 @@ class ShippersController extends Controller
             $user->email = $request->email;
             $user->save();
             $shipper = new Shipper;
-            $shipper->full_name = $request->name;
+            $shipper->phone = $request->phone;
             $shipper->home_ward = $request->home_ward;
             $shipper->home_district = $request->home_district;
             $shipper->home_city = $request->home_city;
@@ -135,7 +135,6 @@ class ShippersController extends Controller
             $user_obj->email = $request->email;
             $user_obj->save();
             $shipper_obj = $user_obj->shipper;
-            $shipper_obj->full_name = $request->name;
             $shipper_obj->phone = $request->phone;
             $shipper_obj->home_ward = $request->home_ward;
             $shipper_obj->home_district = $request->home_district;
