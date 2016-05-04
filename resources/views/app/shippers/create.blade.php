@@ -86,7 +86,21 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Chứng minh nhân dân</label>
             <div class="col-sm-10">
-                <input type="number" name="id_card" class="form-control" placeholder="Chứng minh nhân dân" data-parsley-trigger="change" required>
+                <input type="number" name="identity_card" class="form-control" placeholder="Chứng minh nhân dân" data-parsley-trigger="change" required>
+            </div>
+        </div>
+        <hr class="line-dashed line-full" />
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Loại xe</label>
+            <div class="col-sm-10">
+                <input type="number" name="vehicle_type" class="form-control" placeholder="Loại xe" data-parsley-trigger="change" required>
+            </div>
+        </div>
+        <hr class="line-dashed line-full" />
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Biển số xe</label>
+            <div class="col-sm-10">
+                <input type="text" name="licence_plate" class="form-control" placeholder="Biển số xe" data-parsley-trigger="change" required>
             </div>
         </div>
         <div class="tile-footer text-right bg-tr-black lter dvd dvd-top">

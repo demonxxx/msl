@@ -90,10 +90,42 @@
         </div>
         <hr class="line-dashed line-full" />
         <div class="form-group">
+            <label class="col-sm-2 control-label">Địa chỉ văn phòng </label>
+            <div class="col-sm-3">
+                <input type="text" name="office_ward" class="form-control" placeholder="Xã/Phường" 
+                       data-parsley-trigger="change" value="{{$shipper->office_ward}}" required>
+            </div>
+            <div class="col-sm-3">
+                <input type="text" name="office_district" class="form-control" placeholder="Quận/huyện" 
+                       data-parsley-trigger="change" value="{{$shipper->office_district}}" required>
+            </div>
+            <div class="col-sm-3">
+                <input type="text" name="office_city" class="form-control" placeholder="Tỉnh/Thành phố" 
+                       data-parsley-trigger="change" value="{{$shipper->office_city}}" required>
+            </div>
+        </div>
+        <hr class="line-dashed line-full" />
+        <div class="form-group">
             <label class="col-sm-2 control-label">Chứng minh nhân dân</label>
             <div class="col-sm-10">
                 <input type="number" name="identity_card" class="form-control" placeholder="Chứng minh nhân dân" 
                        data-parsley-trigger="change" value="{{$shipper->identity_card}}" required>
+            </div>
+        </div>
+        <hr class="line-dashed line-full" />
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Loại xe</label>
+            <div class="col-sm-5">
+                <input type="number" name="vehicle_type" class="form-control" placeholder="Loại xe" 
+                       data-parsley-trigger="change" value="{{$shipper->vehicle_type}}" required>
+            </div>
+        </div>
+        <hr class="line-dashed line-full" />
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Biển số xe</label>
+            <div class="col-sm-5">
+                <input type="text" name="licence_plate" class="form-control" placeholder="Biển số xe" 
+                       data-parsley-trigger="change" value="{{$shipper->licence_plate}}" required>
             </div>
         </div>
         <div class="tile-footer text-right bg-tr-black lter dvd dvd-top">
