@@ -127,9 +127,10 @@
 
     function render_function(data){
         var edit_url = base_url + "/shop/" + data + "/edit";
+        var delete_url = base_url + "/shop/" + data + "/delete";
         return "<div class='text-center'>"  +
                     "<a class='btn btn-primary' href='"+edit_url+"' style='width: 70px;'>Sửa</a>" +
-                    "<a class='btn btn-danger' style='width: 70px; margin-left: 10px;'>Xóa</a>"+
+                    "<a class='btn btn-danger' href='"+delete_url+"' style='width: 70px; margin-left: 10px;'>Xóa</a>"+
                 "</div>";
     }
 </script>
