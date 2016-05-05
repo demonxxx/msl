@@ -22,7 +22,6 @@ Route::auth();
 		Route::post('/shop/load_list','ShopsController@load_list');
 		Route::get('/shop/{user_id}/edit','ShopsController@edit');
 		Route::post('/shop/{id}/update','ShopsController@update');
-		Route::post('/shop/{id}/update','ShopsController@destroy');
 	});
 // });
 

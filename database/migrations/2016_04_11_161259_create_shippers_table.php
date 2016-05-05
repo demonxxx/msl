@@ -25,7 +25,7 @@ class CreateShippersTable extends Migration
             $table->string('office_city',255)->nullable();
             $table->integer('account_id')->nullable();
             $table->smallInteger('vehicle_type')->nullable();
-            $table->string('license_plate')->nullable();
+            $table->string('licence_plate')->nullable();
             $table->smallInteger('shipper_type')->nullable();
             $table->smallInteger('month_register')->nullable();
             $table->smallInteger('insurance_level')->nullable();
