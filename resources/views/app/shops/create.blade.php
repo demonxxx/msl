@@ -38,14 +38,38 @@
     <!-- /tile header -->
     <!-- tile body -->
     <div class="tile-body">
+
+        @if (count($errors) > 0)
+            {{--{{dd($errors)}}--}}
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        {{--<label>{{count($errs)}}</label>--}}
         <form class="form-horizontal" method="POST" action="{{url('shop/store')}}" name="create-shop-form" role="form"
               id="create-shop-form" data-parsley-validate>
             {!! csrf_field() !!}
             <div class="form-group">
                 <label class="col-sm-2 control-label">Mã khách hàng</label>
                 <div class="col-sm-10">
-                    <input type="text" name="code" id="code" class="form-control" placeholder="Mã khách hàng"
-                           data-parsley-trigger="change" required>
+                    <input type="text" name="code" id="code" onfocusout="check_user_duplicate(this, 'code')" class="form-control"
+                           placeholder="Mã khách hàng" readonly="readonly" value="KH{{$shop_code}}" data-parsley-trigger="change" required>
+                </div>
+            </div>
+            <hr class="line-dashed line-full"/>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Tài khoản đăng nhập</label>
+                <div class="col-sm-10">
+                    <input type="text" name="username" onfocusout="check_user_duplicate(this, 'username')" id="username" class="form-control"
+                           placeholder="Tài khoản đăng nhập"
+                           data-parsley-trigger="change"
+                           required>
+
                 </div>
             </div>
             <hr class="line-dashed line-full"/>
@@ -61,7 +85,8 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">Số điện thoại.</label>
                 <div class="col-sm-10">
-                    <input type="text" name="phone_number" class="form-control" placeholder="(XXX) XXXX XXX"
+                    <input type="text" name="phone_number" onfocusout="check_user_duplicate(this, 'phone_number')"
+                           class="form-control" placeholder="(XXX) XXXX XXX"
                            data-parsley-trigger="change"
                            pattern="^[\d\+\-\.\(\)\/\s]*$" required>
                 </div>
@@ -70,14 +95,18 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">Thư điện tử</label>
                 <div class="col-sm-10">
-                    <input type="email" name="email" id="email" class="form-control" placeholder="Email"
+                    <input type="email" name="email" onfocusout="check_user_duplicate(this, 'email')" id="email" class="form-control" placeholder="Email"
                            data-parsley-trigger="change" required>
                 </div>
             </div>
             <hr class="line-dashed line-full"/>
             <div class="form-group">
                 <label class="col-sm-2 control-label">Địa chỉ nhà </label>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
+                    <input type="text" name="home_number" class="form-control" placeholder="Xóm/Số nhà"
+                           data-parsley-trigger="change" required>
+                </div>
+                <div class="col-sm-2">
                     <input type="text" name="home_ward" class="form-control" placeholder="Xã/Phường"
                            data-parsley-trigger="change" required>
                 </div>
@@ -93,7 +122,11 @@
             <hr class="line-dashed line-full"/>
             <div class="form-group">
                 <label class="col-sm-2 control-label">Địa chỉ văn phòng </label>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
+                    <input type="text" name="office_number" class="form-control" placeholder="Xóm/Số nhà"
+                           data-parsley-trigger="change" required>
+                </div>
+                <div class="col-sm-2">
                     <input type="text" name="office_ward" class="form-control" placeholder="Xã/Phường"
                            data-parsley-trigger="change" required>
                 </div>
@@ -110,7 +143,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">Chứng minh nhân dân</label>
                 <div class="col-sm-10">
-                    <input type="number" name="id_card" class="form-control" placeholder="Chứng minh nhân dân"
+                    <input type="number" name="identity_card" class="form-control" placeholder="Chứng minh nhân dân"
                            data-parsley-trigger="change" required>
                 </div>
             </div>
@@ -120,15 +153,7 @@
             </div>
         </form>
 
-        @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+
     </div>
 
     <!-- /tile footer -->
@@ -139,6 +164,32 @@
         //     $('#form4').submit();
         // });
     });
+
+    function check_user_duplicate(selector, colum_name) {
+//        debugger;
+        $.ajax({
+            url: "/shop/check_user_duplicate",
+            type: 'POST',
+            data: {colum_name: colum_name, value: $(selector).val()},
+            success: function (result) {
+//                debugger;
+                if(result == "ok"){
+                    $(selector).removeClass('parsley-error');
+                    $(selector).addClass('parsley-success');
+                    $("#error_" + colum_name).remove();
+                }else {
+                    if($("#error_" + colum_name).html() == undefined) {
+                        $(selector).removeClass('parsley-success');
+                        $(selector).addClass('parsley-error');
+                        $(selector).after(
+                                "<ul class='parsley-errors-list filled' id='error_" + colum_name + "'>" +
+                                "<li class='parsley-required'>" + $(selector).val() + " đã tồn tại!" + "</li></ul>"
+                        );
+                    }
+                }
+            }
+        });
+    }
 </script>
 @endsection
 
