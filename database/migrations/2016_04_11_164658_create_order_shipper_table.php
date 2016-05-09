@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOrderShippersTable extends Migration
+class CreateOrderShipperTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateOrderShippersTable extends Migration
      */
     public function up()
     {
-        Schema::create('order_shippers', function (Blueprint $table) {
+        Schema::create('order_shipper', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->integer('shipper_id')->references('id')->on('users')->onDelete('cascade');

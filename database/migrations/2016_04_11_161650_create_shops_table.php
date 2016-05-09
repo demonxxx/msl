@@ -17,9 +17,11 @@ class CreateShopsTable extends Migration
             $table->integer('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('first_name',255)->nullable();
             $table->string('last_name',255)->nullable();
+            $table->string('home_number',255)->nullable();
             $table->string('home_ward',255)->nullable();
             $table->string('home_district',255)->nullable();
             $table->string('home_city',255)->nullable();
+            $table->string('office_number',255)->nullable();
             $table->string('office_ward',255)->nullable();
             $table->string('office_district',255)->nullable();
             $table->string('office_city',255)->nullable();
