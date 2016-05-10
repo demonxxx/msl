@@ -22,7 +22,7 @@ Route::auth();
 
 Route::group(['middleware' => ['auth','permissions']], function () {
     Route::get('/', 'HomeController@index');
-    Route::group(['roles' => ['admin']], function () {
+    Route::group(['roles' => ['shop', 'admin']], function () {
         Route::get('/shop','ShopsController@index')->name("shops");
         Route::get('/shop/create', 'ShopsController@create')->name("createShop");
         Route::post('/shop/store', 'ShopsController@store')->name("storeShop");
