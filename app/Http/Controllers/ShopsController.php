@@ -17,6 +17,7 @@ class ShopsController extends Controller
         "store"  => "Lưu khách hàng",
         "show"   => "Xem chi tiết khách hàng",
     );
+    
 
     public function __construct()
     {
@@ -30,11 +31,14 @@ class ShopsController extends Controller
      */
     public function index()
     {
-        $user =  User::find(1);
+//        $user =  User::find(1);
 //        $roles = $user->roles;
 
 //        $roles = $user->roles();
-        dd($user->roles->toArray());
+//        dd($user->getUserRoles());
+//        foreach ($user->roles as $role){
+//            dd($role->pivot->user_id);
+//        }
         return view('app.shops.index');
     }
 

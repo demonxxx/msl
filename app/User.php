@@ -7,21 +7,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     protected $table = 'users';
+
     public $timestamps = true;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'name', 'email', 'password', 'api_token',
     ];
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
+
     protected $hidden = [
         'password', 'remember_token', 'api_token',
     ];
@@ -31,7 +23,7 @@ class User extends Authenticatable
         return $this->hasMany('App\Order');
     }
 
-        public function roles()
+    public function roles()
     {
         return $this->belongsToMany('App\Role', 'role_user');
     }
@@ -39,6 +31,16 @@ class User extends Authenticatable
     public function permissions()
     {
         return $this->hasMany('App\Permission');
+    }
+
+    public function getUserRoles()
+    {
+        $have_roles = array();
+        $roleUsers = $this->roles()->getResults();
+        foreach ($roleUsers as $role) {
+            array_push($have_roles, $role->name);
+        }
+        return $have_roles;
     }
 
     public function shop()
@@ -72,6 +74,6 @@ class User extends Authenticatable
 
     private function checkIfUserHasRole($need_role)
     {
-        return (strtolower($need_role) == strtolower($this->have_role->name)) ? true : false;
+        return in_array($need_role, $this->getUserRoles());
     }
 }

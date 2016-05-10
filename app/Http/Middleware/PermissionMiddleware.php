@@ -19,16 +19,16 @@ class PermissionMiddleware
 //        if ($request->user()->hasPermission($permissions) || !$permissions) {
 //            return $next($request);
 //        }
-//        $roles = $this->getRequiredRolesForRoute($request->route());
-//        if ($request->user()->hasRole($roles) || !$roles) {
-//            return $next($request);
-//        }
-//        return response([
-//            'error' => [
-//                'code'        => 'INSUFFICIENT_ROLE',
-//                'description' => 'You are not authorized to access this resource.'
-//            ]
-//        ], 401);
+        $roles = $this->getRequiredRolesForRoute($request->route());
+        if ($request->user()->hasRole($roles) || !$roles) {
+            return $next($request);
+        }
+        return response([
+            'error' => [
+                'code'        => 'INSUFFICIENT_ROLE',
+                'description' => 'You are not authorized to access this resource.'
+            ]
+        ], 401);
     }
 
     private function getRequiredPermissionsRoute($route){
