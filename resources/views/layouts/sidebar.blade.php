@@ -27,6 +27,7 @@
                                     <li><a href="mail-single.html"><i class="fa fa-caret-right"></i> Hộp thư đi</a></li>
                                 </ul>
                             </li>
+                            @can('shop')
                             <li>
                                 <a role="button" tabindex="0"><i class="fa fa-list"></i> <span>Khách hàng</span></a>
                                 <ul>
@@ -38,6 +39,8 @@
                                     <li><a href="form-imgcrop.html"><i class="fa fa-caret-right"></i> Danh sách đơn hàng</a></li>
                                 </ul>
                             </li>
+                            @endcan
+                            @can('shipper')
                             <li>
                                 <a role="button" tabindex="0"><i class="fa fa-pencil"></i> <span>Tài xế</span></a>
                                 <ul>
@@ -49,7 +52,7 @@
                                 
                                 </ul>
                             </li>
-                            
+                            @endcan
                              <li>
                                 <a role="button" tabindex="0"><i class="fa fa-list"></i> <span>Cài đặt</span></a>
                                 <ul>

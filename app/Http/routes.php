@@ -20,15 +20,17 @@ Route::auth();
 //});
 // });
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth','permissions']], function () {
     Route::get('/', 'HomeController@index');
-    Route::get('/shop', 'ShopsController@index')->name("shops");
-    Route::get('/shop/create', 'ShopsController@create');
-    Route::post('/shop/store', 'ShopsController@store');
-    Route::post('/shop/load_list', 'ShopsController@load_list');
-    Route::get('/shop/{user_id}/edit', 'ShopsController@edit');
-    Route::post('/shop/{id}/update', 'ShopsController@update');
-    Route::post('/shop/check_user_duplicate','ShopsController@check_user_duplicate');
+    Route::group(['roles' => ['admin']], function () {
+        Route::get('/shop','ShopsController@index')->name("shops");
+        Route::get('/shop/create', 'ShopsController@create')->name("createShop");
+        Route::post('/shop/store', 'ShopsController@store')->name("storeShop");
+        Route::post('/shop/load_list', 'ShopsController@load_list');
+        Route::get('/shop/{user_id}/edit', 'ShopsController@edit')->name("editShop");
+        Route::post('/shop/{id}/update', 'ShopsController@update')->name("updateShop");
+        Route::post('/shop/check_user_duplicate', 'ShopsController@check_user_duplicate');
+    });
 });
 
 
