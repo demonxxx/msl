@@ -6,10 +6,23 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;
 use App\Shop;
-use App\Helpers\helpers;
+use Validator;
 
 class ShopsController extends Controller
 {
+    protected $controller_name = "ShopsController";
+    protected $permissions = array(
+        "index"  => "Danh sách khách hàng",
+        "create" => "Giao diện tạo khách hàng",
+        "store"  => "Lưu khách hàng",
+        "show"   => "Xem chi tiết khách hàng",
+    );
+    
+
+    public function __construct()
+    {
+//        $this->middleware('auth');
+    }
 
     /**
      * Display a listing of the resource.
@@ -18,6 +31,14 @@ class ShopsController extends Controller
      */
     public function index()
     {
+//        $user =  User::find(1);
+//        $roles = $user->roles;
+
+//        $roles = $user->roles();
+//        dd($user->getUserRoles());
+//        foreach ($user->roles as $role){
+//            dd($role->pivot->user_id);
+//        }
         return view('app.shops.index');
     }
 
@@ -28,7 +49,9 @@ class ShopsController extends Controller
      */
     public function create()
     {
-        return view('app.shops.create');
+        $max_id = User::max('id');
+        $shop_code = $max_id + 1;
+        return view('app.shops.create', ['shop_code' => $shop_code]);
     }
 
     /**
@@ -39,14 +62,17 @@ class ShopsController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = \Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'code'            => 'required',
             'name'            => 'required',
             'phone_number'    => 'required',
             'email'           => 'email',
+            'username'        => 'required',
+            'home_number'     => 'required',
             'home_ward'       => 'required',
             'home_district'   => 'required',
             'home_city'       => 'required',
+            'office_number'   => 'required',
             'office_ward'     => 'required',
             'office_district' => 'required',
             'office_city'     => 'required',
@@ -54,23 +80,42 @@ class ShopsController extends Controller
         ]);
         if ($validator->fails()) {
             flash_message("Tạo khách hàng mới không thành công!", "danger");
-            return back();
+            return redirect('shop/create')->withErrors($validator)->withInput();
         } else {
             $user = new User;
+            $check_code = $user->where('code', $request->code)->first();
+            if (!empty($check_code)) {
+                return redirect('shop/create')->withErrors(['Mã khách hàng đã tồn tại!'])->withInput();
+            }
+            $check_username = $user->where('username', $request->username)->first();
+            if (!empty($check_username)) {
+                return redirect('shop/create')->withErrors(['Tài khoản đăng nhập đã tồn tại!'])->withInput();
+            }
+            $check_email = User::where('email', $request->email)->first();
+            if (!empty($check_email)) {
+                return redirect('shop/create')->withErrors(['Tài khoản email đã tồn tại!'])->withInput();
+            }
+            $check_phone = User::where('phone_number', $request->phone_number)->first();
+            if (!empty($check_phone)) {
+                return redirect('shop/create')->withErrors(['Số điện thoại đã tồn tại!'])->withInput();
+            }
             $user->code = $request->code;
             $user->name = $request->name;
+            $user->username = $request->username;
             $user->email = $request->email;
             $user->identity_card = $request->identity_card;
             $user->phone_number = $request->phone_number;
             $user->save();
             $shop = new Shop;
+            $shop->home_number = $request->home_number;
             $shop->home_ward = $request->home_ward;
             $shop->home_district = $request->home_district;
             $shop->home_city = $request->home_city;
+            $shop->office_number = $request->office_number;
             $shop->office_ward = $request->office_ward;
-            $shop->office_district = $request->office_district;
             $shop->office_city = $request->office_city;
             $user->shop()->save($shop);
+            $shop->office_district = $request->office_district;
             flash_message("Tạo khách hàng mới thành công!");
             return back();
         }
@@ -169,6 +214,19 @@ class ShopsController extends Controller
         $length = $shop->count_all($posts);
         $result = build_json_datatable($data, $length, $posts);
         return $result;
+    }
+
+    public function check_user_duplicate(Request $request)
+    {
+        $params = $request->all();
+        $colum = $params['colum_name'];
+        $value = $params['value'];
+        $user = User::where($colum, $value)->first();
+        if (empty($user)) {
+            return "ok";
+        } else {
+            return "fail";
+        }
     }
 
 }
