@@ -31,7 +31,9 @@ class ShippersController extends Controller
      */
     public function create()
     {
-        return view('app.shippers.create');
+        $max_id = User::max('id');
+        $shipper_code = $max_id + 1;
+        return view('app.shippers.create', ['shipper_code' => $shipper_code]);
     }
 
     /**
@@ -45,6 +47,7 @@ class ShippersController extends Controller
         $validator = \Validator::make($request->all(),  [
             'code'              => 'required',
             'name'              => 'required',
+            'username'          => 'required',
             'phone_number'      => 'required',
             'email'             => 'email',
             'home_ward'         => 'required',
@@ -56,14 +59,31 @@ class ShippersController extends Controller
         ]);
         if ($validator->fails()) {
             flash_message("Tạo tài xế mới không thành công!","danger");
-            return back();
+            return redirect('shipper/create')->withErrors($validator)->withInput();
         }else {
             $user = new User;
+            $check_code = $user->where('code', $request->code)->first();
+            if (!empty($check_code)) {
+                return redirect('shop/create')->withErrors(['Mã tài xế đã tồn tại!'])->withInput();
+            }
+            $check_username = $user->where('username', $request->username)->first();
+            if (!empty($check_username)) {
+                return redirect('shipper/create')->withErrors(['Tài khoản đăng nhập đã tồn tại!'])->withInput();
+            }
+            $check_email = User::where('email', $request->email)->first();
+            if (!empty($check_email)) {
+                return redirect('shipper/create')->withErrors(['Tài khoản email đã tồn tại!'])->withInput();
+            }
+            $check_phone = User::where('phone_number', $request->phone_number)->first();
+            if (!empty($check_phone)) {
+                return redirect('shipper/create')->withErrors(['Số điện thoại đã tồn tại!'])->withInput();
+            }
             $user->code = $request->code;
             $user->name = $request->name;
             $user->email = $request->email;
             $user->phone_number = $request->phone_number;
             $user->identity_card = $request->identity_card;
+            $user->api_token = str_random(60);
             $user->save();
             $shipper = new Shipper;
             $shipper->home_ward = $request->home_ward;
@@ -173,5 +193,32 @@ class ShippersController extends Controller
         $length = $shipper->count_all($posts);
         $result = build_json_datatable($data, $length, $posts);
         return $result;
+    }
+    
+    public function check_new_user_duplicate(Request $request)
+    {
+        $params = $request->all();
+        $colum = $params['colum_name'];
+        $value = $params['value'];
+        $user = User::where($colum, $value)->first();
+        if (empty($user)) {
+            return "ok";
+        } else {
+            return "fail";
+        }
+    }
+    
+    public function check_update_user_duplicate(Request $request)
+    {
+        $params = $request->all();
+        $colum = $params['colum_name'];
+        $value = $params['value'];
+        $user_id = $params['user_id'];
+        $user = User::where($colum, $value)->where('id', '<>', $user_id)->first();
+        if (empty($user)) {
+            return "ok";
+        } else {
+            return "fail";
+        }
     }
 }

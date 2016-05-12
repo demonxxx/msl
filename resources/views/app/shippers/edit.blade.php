@@ -44,13 +44,14 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Mã shipper</label>
             <div class="col-sm-10">
-                <input type="text" name="code" id="code" class="form-control" placeholder="Mã shipper" 
-                       data-parsley-trigger="change" value="{{$user->code}}" required>
+                <input type="text" name="code" id="code" onfocusout="check_update_user_duplicate(this, 'code',{{$user_id}})" 
+                       class="form-control" placeholder="Mã shipper" 
+                       data-parsley-trigger="change" value="{{$user->code}}" readonly="readonly" required>
             </div>
         </div>
         <hr class="line-dashed line-full" />
         <div class="form-group">
-            <label class="col-sm-2 control-label">Họ và tên shipper</label>
+            <label class="col-sm-2 control-label">Họ và tên tài xế</label>
             <div class="col-sm-10">
                 <input type="text" name="name" id="name" class="form-control" placeholder="Họ và tên shipper" 
                        data-parsley-trigger="change" value="{{$user->name}}" required>
@@ -60,7 +61,8 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Số điện thoại.</label>
             <div class="col-sm-10">
-                <input type="text" name="phone_number" class="form-control" placeholder="(XXX) XXXX XXX" data-parsley-trigger="change"
+                <input type="text" name="phone_number" onfocusout="check_update_user_duplicate(this, 'phone_number',{{$user_id}})" 
+                       class="form-control" placeholder="(XXX) XXXX XXX" data-parsley-trigger="change"
                        pattern="^[\d\+\-\.\(\)\/\s]*$" value="{{$user->phone_number}}" required>
             </div>
         </div>
@@ -68,7 +70,8 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Thư điện tử</label>
             <div class="col-sm-10">
-                <input type="email" name="email" id="email" class="form-control" placeholder="Email" 
+                <input type="email" name="email" id="email" onfocusout="check_update_user_duplicate(this, 'email',{{$user_id}})" 
+                       class="form-control" placeholder="Email" 
                        data-parsley-trigger="change" value="{{$user->email}}" required>
             </div>
         </div>
@@ -109,7 +112,7 @@
             <label class="col-sm-2 control-label">Chứng minh nhân dân</label>
             <div class="col-sm-10">
                 <input type="number" name="identity_card" class="form-control" placeholder="Chứng minh nhân dân" 
-                       data-parsley-trigger="change" value="{{$shipper->identity_card}}" required>
+                       data-parsley-trigger="change" value="{{$user->identity_card}}" required>
             </div>
         </div>
         <hr class="line-dashed line-full" />
@@ -153,6 +156,29 @@
         //     $('#form4').submit();
         // });
     });
+    function check_update_user_duplicate(selector, colum_name, user_id) {
+        $.ajax({
+            url: "/shipper/check_update_user_duplicate",
+            type: 'POST',
+            data: {colum_name: colum_name, value: $(selector).val(), user_id: user_id},
+            success: function (result) {
+                if(result == "ok"){
+                    $(selector).removeClass('parsley-error');
+                    $(selector).addClass('parsley-success');
+                    $("#error_" + colum_name).remove();
+                }else {
+                    if($("#error_" + colum_name).html() == undefined) {
+                        $(selector).removeClass('parsley-success');
+                        $(selector).addClass('parsley-error');
+                        $(selector).after(
+                                "<ul class='parsley-errors-list filled' id='error_" + colum_name + "'>" +
+                                "<li class='parsley-required'>" + $(selector).val() + " đã tồn tại!" + "</li></ul>"
+                        );
+                    }
+                }
+            }
+        });
+    }
 </script>
 @endsection
 
