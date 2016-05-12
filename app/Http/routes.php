@@ -31,6 +31,16 @@ Route::group(['middleware' => ['auth','permissions']], function () {
         Route::post('/shop/{id}/update', 'ShopsController@update')->name("updateShop");
         Route::post('/shop/check_user_duplicate', 'ShopsController@check_user_duplicate');
     });
+    Route::group(['roles' => ['shipper', 'admin']], function () {
+        Route::get('/shipper', 'ShippersController@index')->name("shippers");
+        Route::get('/shipper/create', 'ShippersController@create');
+        Route::post('/shipper/store', 'ShippersController@store');
+        Route::get('/shipper/{shipper_id}/edit','ShippersController@edit');
+        Route::post('/shipper/{id}/update','ShippersController@update');
+        Route::post('/shipper/load_list','ShippersController@load_list');
+        Route::post('/shipper/check_new_user_duplicate', 'ShippersController@check_new_user_duplicate');
+        Route::post('/shipper/check_update_user_duplicate', 'ShippersController@check_update_user_duplicate');
+    });
 });
 
 
