@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Auth;
+use App\User;
 use App\Http\Requests;
-use App\Http\Controllers\Auth;
+use Illuminate\Support\Facades\Response;
+//use Au;
 
 class UserRest extends Controller
 {
@@ -14,18 +16,48 @@ class UserRest extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function login(){
-
+    public function login(Request $request){
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            // The user is active, not suspended, and exists.
+            $user = Auth::user();
+            $info = $user->shop;
+            return Response::json(
+                array(
+                    'accept' => 1,
+                    'user' => Auth::user()->toArray(),
+                    'info' => $info
+                ),
+                200
+            );
+        }else {
+            return Response::json(
+                array(
+                    'accept' => 0,
+                ),
+                200
+            );
+        }
     }
 
     public function logout(){
-
+        Auth::logout();
+        return Response::json(
+            array(
+                'accept' => 1,
+            ),
+            200
+        );
     }
 
     public function index()
     {
         //
-        return 1;
+        return Response::json(
+            array(
+                'values' => "User index",
+            ),
+            200
+        );
     }
 
     /**
@@ -35,8 +67,12 @@ class UserRest extends Controller
      */
     public function create()
     {
-        //
-        return "Create";
+        return Response::json(
+            array(
+                'values' => "Create User",
+            ),
+            200
+        );
     }
 
     /**
@@ -48,7 +84,13 @@ class UserRest extends Controller
     public function store(Request $request)
     {
         //
-        return "Store";
+
+        return Response::json(
+            array(
+                'values' => "Store User",
+            ),
+            200
+        );
     }
 
     /**
@@ -59,8 +101,12 @@ class UserRest extends Controller
      */
     public function show($id)
     {
-        //
-        return "Show";
+        return Response::json(
+            array(
+                'values' => "Show an User",
+            ),
+            200
+        );
     }
 
     /**
@@ -72,7 +118,12 @@ class UserRest extends Controller
     public function edit($id)
     {
         //
-        return "Edit";
+        return Response::json(
+            array(
+                'values' => "Edit info User",
+            ),
+            200
+        );
     }
 
     /**
@@ -85,7 +136,12 @@ class UserRest extends Controller
     public function update(Request $request, $id)
     {
         //
-        return "update";
+        return Response::json(
+            array(
+                'values' => "Update info  User",
+            ),
+            200
+        );
     }
 
     /**
@@ -96,7 +152,11 @@ class UserRest extends Controller
      */
     public function destroy($id)
     {
-        //
-        return "Destroy";
+        return Response::json(
+            array(
+                'values' => "Deletes User",
+            ),
+            200
+        );
     }
 }

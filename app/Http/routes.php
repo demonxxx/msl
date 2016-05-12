@@ -19,6 +19,7 @@ Route::auth();
 //
 //});
 // });
+Route::post('api/v1/login','UserRest@login');
 
 Route::group(['middleware' => ['auth','permissions']], function () {
     Route::get('/', 'HomeController@index');
@@ -34,7 +35,9 @@ Route::group(['middleware' => ['auth','permissions']], function () {
 });
 
 
-Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
+
+Route::group(['prefix' => 'api/v1','middleware' => 'auth:api'], function () {
+    Route::post('logout','UserRest@logout');
     Route::resource('user', 'UserRest');
     Route::resource('shop', 'ShopRest');
     Route::resource('shipper', 'ShipperRest');
