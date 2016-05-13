@@ -7,6 +7,7 @@ use Auth;
 use App\User;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Response;
+
 //use Au;
 
 class UserRest extends Controller
@@ -16,20 +17,20 @@ class UserRest extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            // The user is active, not suspended, and exists.
             $user = Auth::user();
             $info = $user->shop;
             return Response::json(
                 array(
                     'accept' => 1,
-                    'user' => Auth::user()->toArray(),
-                    'info' => $info
+                    'user'   => Auth::user()->toArray(),
+                    'info'   => $info
                 ),
                 200
             );
-        }else {
+        } else {
             return Response::json(
                 array(
                     'accept' => 0,
@@ -39,7 +40,8 @@ class UserRest extends Controller
         }
     }
 
-    public function logout(){
+    public function logout()
+    {
         Auth::logout();
         return Response::json(
             array(
@@ -78,7 +80,7 @@ class UserRest extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -96,7 +98,7 @@ class UserRest extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -112,7 +114,7 @@ class UserRest extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -129,8 +131,8 @@ class UserRest extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -147,7 +149,7 @@ class UserRest extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
