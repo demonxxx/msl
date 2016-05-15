@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRolesTable extends Migration
+class CreateVehicleTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,12 @@ class CreateRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('vehicle_types', function (Blueprint $table) {
             $table->increments('id')->unsigned();
-            $table->string('name');
-            $table->string('display_name')->nullable();
-            $table->string('description')->nullable();
+            $table->string('code')->unique()->comment('Code of Vehicle type, ex:VH123');
+            $table->string('name')->comment('Name of vehicle type, Ex: Motorbike, Car, Bicycle');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -28,6 +28,6 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('roles');
+        Schema::drop('vehicle_types');
     }
 }

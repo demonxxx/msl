@@ -16,9 +16,8 @@ class CreateShopShipperTable extends Migration
             $table->increments('id');
             $table->integer('shop_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('shipper_id')->references('id')->on('users')->onDelete('cascade');
-            $table->smallInteger('status')->nullable();
+            $table->smallInteger('type')->default(1)->comment('1:like, 2:block');
             $table->text('description')->nullable();
-            $table->float('score')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
