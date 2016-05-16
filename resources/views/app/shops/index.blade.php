@@ -87,7 +87,7 @@
 
         var home_address_render = {
             "render": function (data, type, row) {
-                return "<div class='text-center'>" + row.home_ward + ", " + row.home_district + ", " + row.home_city + "</div>";
+                return "<div class='text-center'>" + row.home_number + ", " + row.home_ward + ", " + row.home_district + ", " + row.home_city + "</div>";
 
             },
             "targets": [4]
@@ -95,7 +95,7 @@
 
         var office_address_render = {
             "render": function (data, type, row) {
-                return "<div class='text-center'>" + row.office_ward + ", " + row.office_district + ", " + row.office_city + "</div>";
+                return "<div class='text-center'>" + row.office_number + ", " + row.office_ward + ", " + row.office_district + ", " + row.office_city + "</div>";
 
             },
             "targets": [5]
