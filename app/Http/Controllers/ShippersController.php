@@ -50,6 +50,7 @@ class ShippersController extends Controller
             'username'          => 'required',
             'phone_number'      => 'required',
             'email'             => 'email',
+            'home_number'       => 'required',
             'home_ward'         => 'required',
             'home_district'     => 'required',
             'home_city'         => 'required',
@@ -79,6 +80,7 @@ class ShippersController extends Controller
                 return redirect('shipper/create')->withErrors(['Số điện thoại đã tồn tại!'])->withInput();
             }
             $user->code = $request->code;
+            $user->username = $request->username;
             $user->name = $request->name;
             $user->email = $request->email;
             $user->phone_number = $request->phone_number;
@@ -86,6 +88,7 @@ class ShippersController extends Controller
             $user->api_token = str_random(60);
             $user->save();
             $shipper = new Shipper;
+            $shipper->home_number = $request->home_number;
             $shipper->home_ward = $request->home_ward;
             $shipper->home_district = $request->home_district;
             $shipper->home_city = $request->home_city;
@@ -140,9 +143,6 @@ class ShippersController extends Controller
             'home_ward'       => 'required',
             'home_district'   => 'required',
             'home_city'       => 'required',
-            'office_ward'     => 'required',
-            'office_district' => 'required',
-            'office_city'     => 'required',
             'identity_card'   => 'required',
             'vehicle_type'    => 'required',
             'licence_plate'   => 'required',
@@ -154,20 +154,28 @@ class ShippersController extends Controller
             $user = new User;
             $user_obj = $user->find($id);
             $user_obj->code = $request->code;
+            $user_obj->username = $request->username;
             $user_obj->name = $request->name;
             $user_obj->email = $request->email;
             $user_obj->phone_number = $request->phone_number;
             $user_obj->identity_card = $request->identity_card;
             $user_obj->save();
             $shipper_obj = $user_obj->shipper;
+            $shipper_obj->home_number = $request->home_number;
             $shipper_obj->home_ward = $request->home_ward;
             $shipper_obj->home_district = $request->home_district;
             $shipper_obj->home_city = $request->home_city;
+            $shipper_obj->office_number = $request->office_number;
             $shipper_obj->office_ward = $request->office_ward;
             $shipper_obj->office_district = $request->office_district;
             $shipper_obj->office_city = $request->office_city;
             $shipper_obj->vehicle_type = $request->vehicle_type;
             $shipper_obj->licence_plate = $request->licence_plate;
+            $shipper_obj->shipper_type = $request->shipper_type;
+            $shipper_obj->month_register = $request->month_register;
+            $shipper_obj->insurance_level = $request->insurance_level;
+            $shipper_obj->average_score = $request->average_score;
+            $shipper_obj->profile_status = $request->profile_status;
             $shipper_obj->save();
             flash_message("Sửa tài xế thành công!");
             return redirect()->route('shippers');

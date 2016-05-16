@@ -25,8 +25,8 @@ class Shop extends Model
     public function get_all_shops($post){
         $data = DB::table("shops")
                     ->select("users.id","users.code","users.name", "users.email","users.identity_card",
-                        "shops.home_ward", "shops.home_district","shops.home_city",
-                        "shops.office_ward", "shops.office_district","shops.office_city")
+                        "shops.home_number","shops.home_ward", "shops.home_district","shops.home_city",
+                        "shops.office_number","shops.office_ward", "shops.office_district","shops.office_city")
                     ->join("users","shops.user_id","=","users.id")
                     ->skip($post["start"])->take($post["length"])
                     ->get();

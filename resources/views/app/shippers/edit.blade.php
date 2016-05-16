@@ -42,11 +42,19 @@
           role="form" id="edit-shipper-form" data-parsley-validate>
         {!! csrf_field() !!}
         <div class="form-group">
-            <label class="col-sm-2 control-label">Mã shipper</label>
+            <label class="col-sm-2 control-label">Mã tài xế</label>
             <div class="col-sm-10">
                 <input type="text" name="code" id="code" onfocusout="check_update_user_duplicate(this, 'code',{{$user_id}})" 
-                       class="form-control" placeholder="Mã shipper" 
-                       data-parsley-trigger="change" value="{{$user->code}}" readonly="readonly" required>
+                       class="form-control" placeholder="Mã tài xế" 
+                       data-parsley-trigger="change" value="{{$user->code}}" readonly required>
+            </div>
+        </div>
+        <hr class="line-dashed line-full"/>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Tài khoản đăng nhập</label>
+            <div class="col-sm-10">
+                <input type="text" name="username" id="username" onfocusout="check_update_user_duplicate(this, 'username')"  value="{{$user->username}}"
+                       class="form-control" placeholder="Tài khoản đăng nhập" data-parsley-trigger="change" readonly required>
             </div>
         </div>
         <hr class="line-dashed line-full" />
@@ -72,21 +80,25 @@
             <div class="col-sm-10">
                 <input type="email" name="email" id="email" onfocusout="check_update_user_duplicate(this, 'email',{{$user_id}})" 
                        class="form-control" placeholder="Email" 
-                       data-parsley-trigger="change" value="{{$user->email}}" required>
+                       data-parsley-trigger="change" value="{{$user->email}}">
             </div>
         </div>
         <hr class="line-dashed line-full" />
         <div class="form-group">
             <label class="col-sm-2 control-label">Địa chỉ nhà </label>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
+                <input type="text" name="home_number" class="form-control" placeholder="Xóm/Số nhà"
+                       data-parsley-trigger="change" value="{{$shipper->home_number}}" required>
+            </div>
+            <div class="col-sm-2">
                 <input type="text" name="home_ward" class="form-control" placeholder="Xã/Phường" 
                        data-parsley-trigger="change" value="{{$shipper->home_ward}}" required>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <input type="text" name="home_district" class="form-control" placeholder="Quận/huyện" 
                        data-parsley-trigger="change" value="{{$shipper->home_district}}" required>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <input type="text" name="home_city" class="form-control" placeholder="Tỉnh/Thành phố" 
                        data-parsley-trigger="change" value="{{$shipper->home_city}}" required>
             </div>
@@ -94,17 +106,21 @@
         <hr class="line-dashed line-full" />
         <div class="form-group">
             <label class="col-sm-2 control-label">Địa chỉ văn phòng </label>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
+                <input type="text" name="office_number" class="form-control" placeholder="Xóm/Số nhà" 
+                       data-parsley-trigger="change" value="{{$shipper->office_number}}">
+            </div>
+            <div class="col-sm-2">
                 <input type="text" name="office_ward" class="form-control" placeholder="Xã/Phường" 
-                       data-parsley-trigger="change" value="{{$shipper->office_ward}}" required>
+                       data-parsley-trigger="change" value="{{$shipper->office_ward}}">
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <input type="text" name="office_district" class="form-control" placeholder="Quận/huyện" 
-                       data-parsley-trigger="change" value="{{$shipper->office_district}}" required>
+                       data-parsley-trigger="change" value="{{$shipper->office_district}}">
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <input type="text" name="office_city" class="form-control" placeholder="Tỉnh/Thành phố" 
-                       data-parsley-trigger="change" value="{{$shipper->office_city}}" required>
+                       data-parsley-trigger="change" value="{{$shipper->office_city}}">
             </div>
         </div>
         <hr class="line-dashed line-full" />
@@ -118,17 +134,76 @@
         <hr class="line-dashed line-full" />
         <div class="form-group">
             <label class="col-sm-2 control-label">Loại xe</label>
-            <div class="col-sm-5">
-                <input type="number" name="vehicle_type" class="form-control" placeholder="Loại xe" 
-                       data-parsley-trigger="change" value="{{$shipper->vehicle_type}}" required>
+            <div class="col-sm-10">
+                <select id="vehicle_type" name="vehicle_type" class="form-control" pre_value="{{$shipper->vehicle_type}}" 
+                        data-parsley-trigger="change" required>
+                    <option value="0">Xe máy</option>
+                    <option value="1">Ô tô</option>
+                </select>
             </div>
         </div>
         <hr class="line-dashed line-full" />
         <div class="form-group">
             <label class="col-sm-2 control-label">Biển số xe</label>
-            <div class="col-sm-5">
+            <div class="col-sm-10">
                 <input type="text" name="licence_plate" class="form-control" placeholder="Biển số xe" 
                        data-parsley-trigger="change" value="{{$shipper->licence_plate}}" required>
+            </div>
+        </div>
+        <hr class="line-dashed line-full" />
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Loại tài xế</label>
+            <div class="col-sm-10">
+                <select id="shipper_type" name="shipper_type" class="form-control" pre_value="{{$shipper->shipper_type}}" 
+                        data-parsley-trigger="change">
+                    <option value="0">Team</option>
+                    <option value="1">Doanh nghiệp</option>
+                    <option value="2">Tự do</option>
+                </select>
+            </div>
+        </div>
+        <hr class="line-dashed line-full" />
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Thuê theo tháng</label>
+            <div class="col-sm-10">
+                <select id="month_register" name="month_register" class="form-control" pre_value="{{$shipper->month_register}}" 
+                        data-parsley-trigger="change">
+                    <option value="0">Không</option>
+                    <option value="1">Có</option>
+                </select>
+            </div>
+        </div>
+        <hr class="line-dashed line-full" />
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Mức bảo hiểm</label>
+            <div class="col-sm-10">
+                <select id="insurance_level" name="insurance_level" class="form-control" pre_value="{{$shipper->month_register}}" 
+                        data-parsley-trigger="change">
+                    <option value="0">Bình thường</option>
+                    <option value="1">Cao</option>
+                </select>
+            </div>
+        </div>
+        <hr class="line-dashed line-full" />
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Đánh giá trung bình</label>
+            <div class="col-sm-10">
+                <input type="double" name="average_score" class="form-control" readonly="" value="5.0"
+                       data-parsley-trigger="change" value="{{$shipper->average_score}}" required>
+            </div>
+        </div>
+        <hr class="line-dashed line-full" />
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Tình trạng hồ sơ</label>
+            <div class="col-sm-10">
+                <select id="profile_status" name="profile_status" class="form-control" pre_value="{{$shipper->profile_status}}" 
+                        data-parsley-trigger="change">
+                    <option value="0">20%</option>
+                    <option value="1">40%</option>
+                    <option value="2">60%</option>
+                    <option value="3">80%</option>
+                    <option value="4">100%</option>
+                </select>
             </div>
         </div>
         <div class="tile-footer text-right bg-tr-black lter dvd dvd-top">
@@ -152,9 +227,12 @@
 </section>
 <script type="text/javascript">
     $(document).ready(function(){
-        // $('#form4Submit').on('click', function(){
-        //     $('#form4').submit();
-        // });
+        $('#vehicle_type').val($('#vehicle_type').attr("pre_value"));
+        $('#shipper_type').val($('#shipper_type').attr("pre_value"));
+        $('#month_register').val($('#month_register').attr("pre_value"));
+        $('#insurance_level').val($('#insurance_level').attr("pre_value"));
+        $('#average_score').val($('#average_score').attr("pre_value"));
+        $('#profile_status').val($('#profile_status').attr("pre_value"));
     });
     function check_update_user_duplicate(selector, colum_name, user_id) {
         $.ajax({

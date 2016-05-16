@@ -89,19 +89,22 @@
             <label class="col-sm-2 control-label">Thư điện tử</label>
             <div class="col-sm-10">
                 <input type="email" name="email" id="email" onfocusout="check_new_user_duplicate(this, 'email')" 
-                       class="form-control" placeholder="Email" data-parsley-trigger="change" required>
+                       class="form-control" placeholder="Email" data-parsley-trigger="change">
             </div>
         </div>
         <hr class="line-dashed line-full" />
         <div class="form-group">
             <label class="col-sm-2 control-label">Địa chỉ nhà </label>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
+                <input type="text" name="home_number" class="form-control" placeholder="Xóm/Số nhà" data-parsley-trigger="change" required>
+            </div>
+            <div class="col-sm-2">
                 <input type="text" name="home_ward" class="form-control" placeholder="Xã/Phường" data-parsley-trigger="change" required>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <input type="text" name="home_district" class="form-control" placeholder="Quận/huyện" data-parsley-trigger="change" required>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <input type="text" name="home_city" class="form-control" placeholder="Tỉnh/Thành phố" data-parsley-trigger="change" required>
             </div>
         </div>
@@ -116,7 +119,10 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Loại xe</label>
             <div class="col-sm-10">
-                <input type="number" name="vehicle_type" class="form-control" placeholder="Loại xe" data-parsley-trigger="change" required>
+                <select name="vehicle_type" class="form-control" placeholder="Loại xe" data-parsley-trigger="change" required>
+                    <option value="0">Xe máy</option>
+                    <option value="1">Ô tô</option>
+                </select>
             </div>
         </div>
         <hr class="line-dashed line-full" />
