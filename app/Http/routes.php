@@ -14,7 +14,9 @@
 use Illuminate\Http\Request;
 
 Route::auth();
+//Route::resource('user', 'UserRest');
 Route::post('api/v1/login','UserRest@login');
+Route::get('api/v1/logout','UserRest@logout');
 Route::post('api/v1/register','Auth\AuthController@mobile_register');
 
 Route::group(['middleware' => ['auth','permissions']], function () {
@@ -34,7 +36,7 @@ Route::group(['middleware' => ['auth','permissions']], function () {
 
 Route::group(['prefix' => 'api/v1','middleware' => 'auth:api'], function () {
     Route::post('logout','UserRest@logout');
-    Route::resource('user', 'UserRest');
+
     Route::resource('shop', 'ShopRest');
     Route::resource('shipper', 'ShipperRest');
     Route::resource('order', 'OrderRest');

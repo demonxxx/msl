@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->smallInteger('user_type')->nullable();
             $table->smallInteger('status')->nullable();
             $table->string('api_token', 60)->unique();
+            $table->string('avatar')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
