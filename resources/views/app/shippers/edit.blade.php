@@ -164,28 +164,6 @@
         </div>
         <hr class="line-dashed line-full" />
         <div class="form-group">
-            <label class="col-sm-2 control-label">Thuê theo tháng</label>
-            <div class="col-sm-10">
-                <select id="month_register" name="month_register" class="form-control" pre_value="{{$shipper->month_register}}" 
-                        data-parsley-trigger="change">
-                    <option value="0">Không</option>
-                    <option value="1">Có</option>
-                </select>
-            </div>
-        </div>
-        <hr class="line-dashed line-full" />
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Mức bảo hiểm</label>
-            <div class="col-sm-10">
-                <select id="insurance_level" name="insurance_level" class="form-control" pre_value="{{$shipper->month_register}}" 
-                        data-parsley-trigger="change">
-                    <option value="0">Bình thường</option>
-                    <option value="1">Cao</option>
-                </select>
-            </div>
-        </div>
-        <hr class="line-dashed line-full" />
-        <div class="form-group">
             <label class="col-sm-2 control-label">Đánh giá trung bình</label>
             <div class="col-sm-10">
                 <input type="double" name="average_score" class="form-control" readonly="" value="5.0"
@@ -229,8 +207,6 @@
     $(document).ready(function(){
         $('#vehicle_type_id').val($('#vehicle_type_id').attr("pre_value"));
         $('#shipper_type_id').val($('#shipper_type_id').attr("pre_value"));
-        $('#month_register').val($('#month_register').attr("pre_value"));
-        $('#insurance_level').val($('#insurance_level').attr("pre_value"));
         $('#average_score').val($('#average_score').attr("pre_value"));
         $('#profile_status').val($('#profile_status').attr("pre_value"));
     });

@@ -172,8 +172,6 @@ class ShippersController extends Controller
             $shipper_obj->vehicle_type_id = $request->vehicle_type_id;
             $shipper_obj->licence_plate = $request->licence_plate;
             $shipper_obj->shipper_type_id = $request->shipper_type_id;
-            $shipper_obj->month_register = $request->month_register;
-            $shipper_obj->insurance_level = $request->insurance_level;
             $shipper_obj->average_score = $request->average_score;
             $shipper_obj->profile_status = $request->profile_status;
             $shipper_obj->save();

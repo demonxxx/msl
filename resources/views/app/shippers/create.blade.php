@@ -89,7 +89,7 @@
             <label class="col-sm-2 control-label">Thư điện tử</label>
             <div class="col-sm-10">
                 <input type="email" name="email" id="email" onfocusout="check_new_user_duplicate(this, 'email')" 
-                       class="form-control" placeholder="Email" data-parsley-trigger="change">
+                       class="form-control" placeholder="Email" data-parsley-trigger="change" required>
             </div>
         </div>
         <hr class="line-dashed line-full" />
@@ -119,7 +119,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Loại xe</label>
             <div class="col-sm-10">
-                <select name="vehicle_type" class="form-control" placeholder="Loại xe" data-parsley-trigger="change" required>
+                <select name="vehicle_type_id" class="form-control" placeholder="Loại xe" data-parsley-trigger="change" required>
                     <option value="0">Xe máy</option>
                     <option value="1">Ô tô</option>
                 </select>
