@@ -135,7 +135,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Loại xe</label>
             <div class="col-sm-10">
-                <select id="vehicle_type" name="vehicle_type" class="form-control" pre_value="{{$shipper->vehicle_type}}" 
+                <select id="vehicle_type" name="vehicle_type" class="form-control" pre_value="{{$shipper->vehicle_type_id}}" 
                         data-parsley-trigger="change" required>
                     <option value="0">Xe máy</option>
                     <option value="1">Ô tô</option>
