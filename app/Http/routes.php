@@ -14,12 +14,8 @@
 use Illuminate\Http\Request;
 
 Route::auth();
-// Route::group(['middleware' => 'web'], function () {
-//Route::group(['middleware' => ['admin']], function () {
-//
-//});
-// });
 Route::post('api/v1/login','UserRest@login');
+Route::post('api/v1/register','Auth\AuthController@mobile_register');
 
 Route::group(['middleware' => ['auth','permissions']], function () {
     Route::get('/', 'HomeController@index');

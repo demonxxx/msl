@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRolesTable extends Migration
+class CreateDiscountOrderTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,12 @@ class CreateRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('discount_order', function (Blueprint $table) {
             $table->increments('id')->unsigned();
-            $table->string('name');
-            $table->string('display_name')->nullable();
-            $table->string('description')->nullable();
+            $table->integer('discount_id')->references('id')->on('discounts')->onDelete('cascade');
+            $table->integer('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -28,6 +28,6 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('roles');
+        Schema::drop('discount_order');
     }
 }

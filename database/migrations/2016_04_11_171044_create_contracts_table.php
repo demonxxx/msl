@@ -14,13 +14,13 @@ class CreateContractsTable extends Migration
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('order_id')->references('id')->on('orders')->onDelete('cascade');
+            $table->string('code')->nullable();
+            $table->integer('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('shipper_id')->references('id')->on('users')->onDelete('cascade');
-            $table->date('start_time')->nullable();
-            $table->date('end_time')->nullable();
-            $table->smallInteger('satisfy_level')->nullable();
-            $table->float('score')->nullable();
-            $table->smallInteger('status')->nullable();
+            $table->date('start_date')->comment('start date of contract');
+            $table->date('end_date')->comment('end date of contract');
+            $table->smallInteger('status')->default(1)->comment('status of contract, 1: ongoing, 2: completed, 3: cancel');
+            $table->text('description')->nullable()->comment('description of contract');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -33,6 +33,6 @@ class CreateContractsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('shipper_contract');
+        Schema::drop('contracts');
     }
 }

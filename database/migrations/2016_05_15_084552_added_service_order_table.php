@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRolesTable extends Migration
+class AddedServiceOrderTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,12 @@ class CreateRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('added_service_order', function (Blueprint $table) {
             $table->increments('id')->unsigned();
-            $table->string('name');
-            $table->string('display_name')->nullable();
-            $table->string('description')->nullable();
+            $table->string('order_id')->references('id')->on('orders')->onDelete('cascade');
+            $table->string('added_service_id')->references('id')->on('added_services')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -28,6 +28,6 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('roles');
+        Schema::drop('added_service_order');
     }
 }

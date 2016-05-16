@@ -73,7 +73,12 @@
 
                     <form role="form" method="POST" action="{{ url('/register') }}" class="form-validation mt-20">
                     {!! csrf_field() !!}
-
+                        {{--<div class="form-group{{ $errors->has('user_type') ? ' has-error' : '' }}">--}}
+                            {{--<select name="user_type" class="form-control" >--}}
+                                {{--<option value="1">Shop</option>--}}
+                                {{--<option value="2">Shipper</option>--}}
+                            {{--</select>--}}
+                        {{--</div>--}}
                         <p class="help-block text-left">
                             Điền đủ những thông tin dưới đây:
                         </p>
@@ -87,12 +92,30 @@
                             @endif
                         </div>
 
+                        {{--<div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">--}}
+                            {{--<input type="text" class="form-control underline-input" placeholder="Username" name="username" value="{{ old('username') }}">--}}
+                            {{--@if ($errors->has('username'))--}}
+                                {{--<span class="help-block">--}}
+                                    {{--<strong>{{ $errors->first('username') }}</strong>--}}
+                                {{--</span>--}}
+                            {{--@endif--}}
+                        {{--</div>--}}
+
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <input type="email" class="form-control underline-input" placeholder="Email" name="email" value="{{ old('email') }}">
 
                             @if ($errors->has('email'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('email') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+
+                        <div class="form-group{{ $errors->has('phone_number') ? ' has-error' : '' }}">
+                            <input type="number" class="form-control underline-input" placeholder="Phone Number" name="phone_number" value="{{ old('phone_number') }}">
+                            @if ($errors->has('phone_number'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('phone_number') }}</strong>
                                 </span>
                             @endif
                         </div>
@@ -119,7 +142,7 @@
 
                         <div class="form-group text-left">
                             <label class="checkbox checkbox-custom-alt checkbox-custom-sm inline-block">
-                                <input type="checkbox"><i></i> I agree to the <a href="javascript:;">Terms of Service</a> &amp; <a href="javascript:;">Privacy Policy</a>
+                                <input type="checkbox"><i></i> Tôi chấp nhận mọi <a href="javascript:;">Điều khoản hoạt động</a> &amp; <a href="javascript:;">Quy định pháp luật</a>
                             </label>
                         </div>
 
