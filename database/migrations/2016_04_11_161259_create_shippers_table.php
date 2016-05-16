@@ -24,7 +24,7 @@ class CreateShippersTable extends Migration
             $table->integer('account_id')->nullable()->references('id')->on('accounts')->onDelete('cascade');
             $table->smallInteger('vehicle_type_id')->nullable()->references('id')->on('vehicle_types')->onDelete('cascade');
             $table->string('licence_plate');
-            $table->smallInteger('shipper_type')->nullable()->references('id')->on('shipper_types')->onDelete('cascade');
+            $table->smallInteger('shipper_type_id')->nullable()->references('id')->on('shipper_types')->onDelete('cascade');
             $table->float('average_score')->nullable();
             $table->integer('profile_status')->nullable();
             $table->smallInteger('status')->nullable();

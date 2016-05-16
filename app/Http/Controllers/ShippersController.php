@@ -55,7 +55,7 @@ class ShippersController extends Controller
             'home_district'     => 'required',
             'home_city'         => 'required',
             'identity_card'     => 'required',
-            'vehicle_type'      => 'required',
+            'vehicle_type_id'   => 'required',
             'licence_plate'     => 'required',
         ]);
         if ($validator->fails()) {
@@ -92,7 +92,7 @@ class ShippersController extends Controller
             $shipper->home_ward = $request->home_ward;
             $shipper->home_district = $request->home_district;
             $shipper->home_city = $request->home_city;
-            $shipper->vehicle_type = $request->vehicle_type;
+            $shipper->vehicle_type_id = $request->vehicle_type_id;
             $shipper->licence_plate = $request->licence_plate;
             $user->shipper()->save($shipper);
             flash_message("Tạo tài xế mới thành công!");
@@ -144,7 +144,7 @@ class ShippersController extends Controller
             'home_district'   => 'required',
             'home_city'       => 'required',
             'identity_card'   => 'required',
-            'vehicle_type'    => 'required',
+            'vehicle_type_id' => 'required',
             'licence_plate'   => 'required',
         ]);
         if ($validator->fails()) {
@@ -169,11 +169,9 @@ class ShippersController extends Controller
             $shipper_obj->office_ward = $request->office_ward;
             $shipper_obj->office_district = $request->office_district;
             $shipper_obj->office_city = $request->office_city;
-            $shipper_obj->vehicle_type = $request->vehicle_type;
+            $shipper_obj->vehicle_type_id = $request->vehicle_type_id;
             $shipper_obj->licence_plate = $request->licence_plate;
-            $shipper_obj->shipper_type = $request->shipper_type;
-            $shipper_obj->month_register = $request->month_register;
-            $shipper_obj->insurance_level = $request->insurance_level;
+            $shipper_obj->shipper_type_id = $request->shipper_type_id;
             $shipper_obj->average_score = $request->average_score;
             $shipper_obj->profile_status = $request->profile_status;
             $shipper_obj->save();
