@@ -56,7 +56,7 @@
             <label class="col-sm-2 control-label">Mã shipper</label>
             <div class="col-sm-10">
                 <input type="text" name="code" id="code" onfocusout="check_new_user_duplicate(this, 'code')" class="form-control" 
-                       placeholder="Mã shipper" disabled="" value="TX{{$shipper_code}}" required>
+                       placeholder="Mã shipper" value="TX{{$shipper_code}}" readonly required>
             </div>
         </div>
         <hr class="line-dashed line-full"/>
