@@ -56,80 +56,155 @@
             <label class="col-sm-2 control-label">Mã shipper</label>
             <div class="col-sm-10">
                 <input type="text" name="code" id="code" onfocusout="check_new_user_duplicate(this, 'code')" class="form-control" 
-                       placeholder="Mã shipper" readonly="readonly" value="TX{{$shipper_code}}" data-parsley-trigger="change" required>
+                       placeholder="Mã shipper" disabled="" value="TX{{$shipper_code}}" required>
             </div>
         </div>
         <hr class="line-dashed line-full"/>
-        <div class="form-group">
+        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
             <label class="col-sm-2 control-label">Tài khoản đăng nhập</label>
             <div class="col-sm-10">
                 <input type="text" name="username" id="username" onfocusout="check_new_user_duplicate(this, 'username')" 
-                       class="form-control" placeholder="Tài khoản đăng nhập" data-parsley-trigger="change" required>
+                       class="form-control" placeholder="Tài khoản đăng nhập" value="{{ old('username') }}" required>
+                @if ($errors->has('username'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('username') }}</strong>
+                    </span>
+                @endif
+            </div>
+        </div>
+        <hr class="line-dashed line-full"/>
+        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+            <label class="col-sm-2 control-label">Mật khẩu</label>
+            <div class="col-sm-10">
+                <input type="password" name="password" id="password"
+                       class="form-control" placeholder="Mật khẩu" required>
+                @if ($errors->has('password'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('password') }}</strong>
+                    </span>
+                @endif
+            </div>
+        </div>
+        <hr class="line-dashed line-full"/>
+        <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
+            <label class="col-sm-2 control-label">Nhập lại mật khẩu</label>
+            <div class="col-sm-10">
+                <input type="password" name="password_confirmation" id="password_confirmation"
+                       class="form-control" placeholder="Mật khẩu" required>
+                @if ($errors->has('password_confirmation'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('password_confirmation') }}</strong>
+                    </span>
+                @endif
             </div>
         </div>
         <hr class="line-dashed line-full" />
-        <div class="form-group">
+        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
             <label class="col-sm-2 control-label">Họ và tên shipper</label>
             <div class="col-sm-10">
-                <input type="text" name="name" id="name" class="form-control" placeholder="Họ và tên shipper" data-parsley-trigger="change"
-                    required>
+                <input type="text" name="name" id="name" class="form-control" placeholder="Họ và tên shipper" value="{{ old('name') }}" required>
+                @if ($errors->has('name'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('name') }}</strong>
+                    </span>
+                @endif
             </div>
         </div>
         <hr class="line-dashed line-full" />
-        <div class="form-group">
+        <div class="form-group{{ $errors->has('phone_number') ? ' has-error' : '' }}">
             <label class="col-sm-2 control-label">Số điện thoại.</label>
             <div class="col-sm-10">
                 <input type="text" name="phone_number" onfocusout="check_new_user_duplicate(this, 'phone_number')"
-                       class="form-control" placeholder="(XXX) XXXX XXX" data-parsley-trigger="change"
+                       class="form-control" placeholder="(XXX) XXXX XXX" value="{{ old('phone_number') }}"
                        pattern="^[\d\+\-\.\(\)\/\s]*$" required>
+                @if ($errors->has('phone_number'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('phone_number') }}</strong>
+                    </span>
+                @endif
             </div>
         </div>
         <hr class="line-dashed line-full" />
-        <div class="form-group">
+        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
             <label class="col-sm-2 control-label">Thư điện tử</label>
             <div class="col-sm-10">
                 <input type="email" name="email" id="email" onfocusout="check_new_user_duplicate(this, 'email')" 
-                       class="form-control" placeholder="Email" data-parsley-trigger="change" required>
+                       class="form-control" placeholder="Email" value="{{ old('email') }}" required>
+                @if ($errors->has('email'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('email') }}</strong>
+                    </span>
+                @endif
             </div>
         </div>
         <hr class="line-dashed line-full" />
         <div class="form-group">
             <label class="col-sm-2 control-label">Địa chỉ nhà </label>
-            <div class="col-sm-2">
-                <input type="text" name="home_number" class="form-control" placeholder="Xóm/Số nhà" data-parsley-trigger="change" required>
+            <div class="col-sm-2{{ $errors->has('home_number') ? ' has-error' : '' }}">
+                <input type="text" name="home_number" class="form-control" placeholder="Xóm/Số nhà" value="{{ old('home_number') }}" required>
+                @if ($errors->has('home_number'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('home_number') }}</strong>
+                    </span>
+                @endif
             </div>
-            <div class="col-sm-2">
-                <input type="text" name="home_ward" class="form-control" placeholder="Xã/Phường" data-parsley-trigger="change" required>
+            <div class="col-sm-2{{ $errors->has('home_ward') ? ' has-error' : '' }}">
+                <input type="text" name="home_ward" class="form-control" placeholder="Xã/Phường" value="{{ old('home_ward') }}" required>
+                @if ($errors->has('home_ward'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('home_ward') }}</strong>
+                    </span>
+                @endif
             </div>
-            <div class="col-sm-2">
-                <input type="text" name="home_district" class="form-control" placeholder="Quận/huyện" data-parsley-trigger="change" required>
+            <div class="col-sm-2{{ $errors->has('home_district') ? ' has-error' : '' }}">
+                <input type="text" name="home_district" class="form-control" placeholder="Quận/huyện" value="{{ old('home_district') }}" required>
+                @if ($errors->has('home_district'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('home_district') }}</strong>
+                    </span>
+                @endif
             </div>
-            <div class="col-sm-2">
-                <input type="text" name="home_city" class="form-control" placeholder="Tỉnh/Thành phố" data-parsley-trigger="change" required>
+            <div class="col-sm-2{{ $errors->has('home_city') ? ' has-error' : '' }}">
+                <input type="text" name="home_city" class="form-control" placeholder="Tỉnh/Thành phố" value="{{ old('home_city') }}" required>
+                @if ($errors->has('home_city'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('home_city') }}</strong>
+                    </span>
+                @endif
             </div>
         </div>
         <hr class="line-dashed line-full" />
-        <div class="form-group">
+        <div class="form-group{{ $errors->has('identity_card') ? ' has-error' : '' }}">
             <label class="col-sm-2 control-label">Chứng minh nhân dân</label>
             <div class="col-sm-10">
-                <input type="number" name="identity_card" class="form-control" placeholder="Chứng minh nhân dân" data-parsley-trigger="change" required>
+                <input type="number" name="identity_card" class="form-control" placeholder="Chứng minh nhân dân" value="{{ old('identity_card') }}" required>
+                @if ($errors->has('identity_card'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('identity_card') }}</strong>
+                    </span>
+                @endif
             </div>
         </div>
         <hr class="line-dashed line-full" />
         <div class="form-group">
             <label class="col-sm-2 control-label">Loại xe</label>
             <div class="col-sm-10">
-                <select name="vehicle_type_id" class="form-control" placeholder="Loại xe" data-parsley-trigger="change" required>
+                <select name="vehicle_type_id" class="form-control" placeholder="Loại xe" value="{{ old('vehicle_type_id') }}" required>
                     <option value="0">Xe máy</option>
                     <option value="1">Ô tô</option>
                 </select>
             </div>
         </div>
         <hr class="line-dashed line-full" />
-        <div class="form-group">
+        <div class="form-group{{ $errors->has('licence_plate') ? ' has-error' : '' }}">
             <label class="col-sm-2 control-label">Biển số xe</label>
             <div class="col-sm-10">
-                <input type="text" name="licence_plate" class="form-control" placeholder="Biển số xe" data-parsley-trigger="change" required>
+                <input type="text" name="licence_plate" class="form-control" placeholder="Biển số xe" value="{{ old('licence_plate') }}" required>
+                @if ($errors->has('licence_plate'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('licence_plate') }}</strong>
+                    </span>
+                @endif
             </div>
         </div>
         <div class="tile-footer text-right bg-tr-black lter dvd dvd-top">
