@@ -19,8 +19,8 @@ class CreateOrderShipperTable extends Migration
             $table->integer('status')->default(1)->comment('1:taken, 2: success, 3: payed, 4: cancel');
             $table->dateTime('take_at')->nullable()->comment('when shipper take orders, this field is insert');
             $table->dateTime('finish_at')->nullable()->comment('when shipper ship successfully');
-            $table->dateTime('pay_at')->nullable()->commnet('in case order type is COD, shipper have to pay for company');
-            $table->dateTime('cancel_at')->nullable()->commnet('when order is cancelled');
+            $table->dateTime('pay_at')->nullable()->comment('in case order type is COD, shipper have to pay for company');
+            $table->dateTime('cancel_at')->nullable()->comment('when order is cancelled');
             $table->timestamps();
             $table->softDeletes();
         });

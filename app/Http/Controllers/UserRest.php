@@ -19,7 +19,7 @@ class UserRest extends Controller
      */
     public function login(Request $request)
     {
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (Auth::check()) {
             $user = Auth::user();
             $info = $user->shop;
             return Response::json(
@@ -31,24 +31,47 @@ class UserRest extends Controller
                 200
             );
         } else {
-            return Response::json(
-                array(
-                    'accept' => 0,
-                ),
-                200
-            );
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+                $user = Auth::user();
+                $info = $user->shop;
+                return Response::json(
+                    array(
+                        'accept' => 1,
+                        'user'   => Auth::user()->toArray(),
+                        'info'   => $info
+                    ),
+                    200
+                );
+            } else {
+                return Response::json(
+                    array(
+                        'accept' => 0,
+                    ),
+                    200
+                );
+            }
         }
     }
 
     public function logout()
     {
-        Auth::logout();
-        return Response::json(
-            array(
-                'accept' => 1,
-            ),
-            200
-        );
+        if (Auth::check()) {
+            Auth::logout();
+            return Response::json(
+                array(
+                    'accept' => 1,
+                ),
+                200
+            );
+        } else {
+            return Response::json(
+                array(
+                    'accept' => 1,
+                ),
+                200
+            );
+        }
+
     }
 
     public function index()
