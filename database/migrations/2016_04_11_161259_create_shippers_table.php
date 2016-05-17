@@ -29,7 +29,7 @@ class CreateShippersTable extends Migration
             $table->integer('profile_status')->nullable();
             $table->smallInteger('status')->nullable();
             $table->smallInteger('isActive')->default(0)->comment('0: not active, 1: activated');
-            $table->string('avatar')->nullable();
+            
             $table->timestamps();
             $table->softDeletes();
         });

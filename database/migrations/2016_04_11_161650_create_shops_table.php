@@ -23,7 +23,6 @@ class CreateShopsTable extends Migration
             $table->string('office_ward',255)->nullable();
             $table->string('office_district',255)->nullable();
             $table->string('office_city',255)->nullable();
-            $table->string('avatar',255)->nullable();
             $table->integer('account_id')->nullable()->references('id')->on('accounts')->onDelete('cascade');
             $table->smallInteger('shop_scope_id')->nullable()->references('id')->on('shop_scopes')->onDelete('cascade')->comment('scope of shop ex');
             $table->smallInteger('shop_type_id')->nullable()->references('id')->on('shop_types')->onDelete('cascade');
