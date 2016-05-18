@@ -3,24 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
-
 use App\User;
-
 use App\Shipper;
-
 use App\Helpers\helpers;
 
-class ShippersController extends Controller
-{
+class ShippersController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         return view('app.shippers.index');
     }
 
@@ -29,8 +24,7 @@ class ShippersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $max_id = User::max('id');
         $shipper_code = $max_id + 1;
         return view('app.shippers.create', ['shipper_code' => $shipper_code]);
@@ -42,26 +36,25 @@ class ShippersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        $validator = \Validator::make($request->all(),  [
-            'code'              => 'required',
-            'name'              => 'required',
-            'username'          => 'required',
-            'phone_number'      => 'required',
-            'email'             => 'email',
-            'home_number'       => 'required',
-            'home_ward'         => 'required',
-            'home_district'     => 'required',
-            'home_city'         => 'required',
-            'identity_card'     => 'required',
-            'vehicle_type_id'   => 'required',
-            'licence_plate'     => 'required',
+    public function store(Request $request) {
+        $validator = \Validator::make($request->all(), [
+                    'code' => 'required',
+                    'name' => 'required',
+                    'username' => 'required',
+                    'phone_number' => 'required',
+                    'email' => 'email',
+                    'home_number' => 'required',
+                    'home_ward' => 'required',
+                    'home_district' => 'required',
+                    'home_city' => 'required',
+                    'identity_card' => 'required',
+                    'vehicle_type_id' => 'required',
+                    'licence_plate' => 'required',
         ]);
         if ($validator->fails()) {
-            flash_message("Tạo tài xế mới không thành công!","danger");
+            flash_message("Tạo tài xế mới không thành công!", "danger");
             return redirect('shipper/create')->withErrors($validator)->withInput();
-        }else {
+        } else {
             $user = new User;
             $check_code = $user->where('code', $request->code)->first();
             if (!empty($check_code)) {
@@ -106,8 +99,7 @@ class ShippersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -117,8 +109,7 @@ class ShippersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($user_id)
-    {
+    public function edit($user_id) {
         $user = new User;
         $user_obj = $user->find($user_id);
         $shipper_obj = $user_obj->shipper;
@@ -132,20 +123,19 @@ class ShippersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         //dd($request->all());
         $validator = \Validator::make($request->all(), [
-            'code'            => 'required',
-            'name'            => 'required',
-            'phone_number'    => 'required',
-            'email'           => 'email',
-            'home_ward'       => 'required',
-            'home_district'   => 'required',
-            'home_city'       => 'required',
-            'identity_card'   => 'required',
-            'vehicle_type_id' => 'required',
-            'licence_plate'   => 'required',
+                    'code' => 'required',
+                    'name' => 'required',
+                    'phone_number' => 'required',
+                    'email' => 'email',
+                    'home_ward' => 'required',
+                    'home_district' => 'required',
+                    'home_city' => 'required',
+                    'identity_card' => 'required',
+                    'vehicle_type_id' => 'required',
+                    'licence_plate' => 'required',
         ]);
         if ($validator->fails()) {
             flash_message("Sửa tài xế không thành công!", "danger");
@@ -186,23 +176,20 @@ class ShippersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
-    
-    public function load_list(Request $request)
-    {
-        $posts = get_post_datatable($request->all());
+
+    public function load_list(Request $request) {
+        $posts = get_post_datatable_new($request->all());
         $shipper = new Shipper();
         $data = $shipper->get_all_shippers($posts);
         $length = $shipper->count_all($posts);
-        $result = build_json_datatable($data, $length, $posts);
+        $result = build_json_datatable_new($data, $length, $posts);
         return $result;
     }
-    
-    public function check_new_user_duplicate(Request $request)
-    {
+
+    public function check_new_user_duplicate(Request $request) {
         $params = $request->all();
         $colum = $params['colum_name'];
         $value = $params['value'];
@@ -213,9 +200,8 @@ class ShippersController extends Controller
             return "fail";
         }
     }
-    
-    public function check_update_user_duplicate(Request $request)
-    {
+
+    public function check_update_user_duplicate(Request $request) {
         $params = $request->all();
         $colum = $params['colum_name'];
         $value = $params['value'];
@@ -227,4 +213,5 @@ class ShippersController extends Controller
             return "fail";
         }
     }
+
 }
