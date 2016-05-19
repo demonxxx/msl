@@ -63,20 +63,21 @@ class ShopsController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'code'            => 'required',
-            'name'            => 'required',
-            'phone_number'    => 'required',
-            'email'           => 'email',
-            'username'        => 'required',
-            'home_number'     => 'required',
-            'home_ward'       => 'required',
-            'home_district'   => 'required',
-            'home_city'       => 'required',
-            'office_number'   => 'required',
-            'office_ward'     => 'required',
-            'office_district' => 'required',
-            'office_city'     => 'required',
-            'identity_card'   => 'required',
+            'code'            => 'required|max:15|unique:users',
+            'name'            => 'required|max:255',
+            'password'        => 'required|min:6|confirmed',
+            'phone_number'    => 'required|max:15',
+            'email'           => 'email|max:255|unique:users',
+            'username'        => 'required|max:255|unique:users',
+            'home_number'     => 'required|max:255',
+            'home_ward'       => 'required|max:255',
+            'home_district'   => 'required|max:255',
+            'home_city'       => 'required|max:255',
+            'office_number'   => 'required|max:255',
+            'office_ward'     => 'required|max:255',
+            'office_district' => 'required|max:255',
+            'office_city'     => 'required|max:255',
+            'identity_card'   => 'required|max:12',
         ]);
         if ($validator->fails()) {
             flash_message("Tạo khách hàng mới không thành công!", "danger");
@@ -102,6 +103,7 @@ class ShopsController extends Controller
             $user->code = $request->code;   
             $user->name = $request->name;
             $user->username = $request->username;
+            $user->password = bcrypt($request->password);
             $user->email = $request->email;
             $user->identity_card = $request->identity_card;
             $user->phone_number = $request->phone_number;
@@ -159,17 +161,19 @@ class ShopsController extends Controller
     {
 //        dd($request->all());
         $validator = \Validator::make($request->all(), [
-            'code'            => 'required',
-            'name'            => 'required',
-            'phone_number'    => 'required',
-            'email'           => 'email',
-            'home_ward'       => 'required',
-            'home_district'   => 'required',
-            'home_city'       => 'required',
-            'office_ward'     => 'required',
-            'office_district' => 'required',
-            'office_city'     => 'required',
-            'identity_card'   => 'required',
+            'code'            => 'required|max:15|unique:users',
+            'name'            => 'required|max:255',
+            'phone_number'    => 'required|max:15',
+            'email'           => 'email|max:255|unique:users',
+            'home_number'     => 'required|max:255',
+            'home_ward'       => 'required|max:255',
+            'home_district'   => 'required|max:255',
+            'home_city'       => 'required|max:255',
+            'office_number'   => 'required|max:255',
+            'office_ward'     => 'required|max:255',
+            'office_district' => 'required|max:255',
+            'office_city'     => 'required|max:255',
+            'identity_card'   => 'required|max:12',
         ]);
         if ($validator->fails()) {
             flash_message("Sửa khách hàng không thành công!", "danger");
