@@ -3,24 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
-
 use App\User;
-
 use App\Shipper;
-
 use App\Helpers\helpers;
 
-class ShippersController extends Controller
-{
+class ShippersController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         return view('app.shippers.index');
     }
 
@@ -29,8 +24,7 @@ class ShippersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $max_id = User::max('id');
         $shipper_code = $max_id + 1;
         return view('app.shippers.create', ['shipper_code' => $shipper_code]);
@@ -42,27 +36,26 @@ class ShippersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $validator = \Validator::make($request->all(),  [
             'code'              => 'required|max:15|unique:users',
             'name'              => 'required|max:255',
             'username'          => 'required|max:255|unique:users',
             'password'          => 'required|min:6|confirmed',
-            'phone_number'      => 'required|max:15',
+            'phone_number'      => 'required|min10|max:11',
             'email'             => 'email|max:255|unique:users',
             'home_number'       => 'required|max:255',
             'home_ward'         => 'required|max:255',
             'home_district'     => 'required|max:255',
             'home_city'         => 'required|max:255',
-            'identity_card'     => 'required|max:12',
+            'identity_card'     => 'required|min9|max:12',
             'vehicle_type_id'   => 'required',
             'licence_plate'     => 'required|max:10',
         ]);
         if ($validator->fails()) {
-            flash_message("Tạo tài xế mới không thành công!","danger");
+            flash_message("Tạo tài xế mới không thành công!", "danger");
             return redirect('shipper/create')->withErrors($validator)->withInput();
-        }else {
+        } else {
             $user = new User;
             $check_code = $user->where('code', $request->code)->first();
             if (!empty($check_code)) {
@@ -80,10 +73,8 @@ class ShippersController extends Controller
             if (!empty($check_phone)) {
                 return redirect('shipper/create')->withErrors(['Số điện thoại đã tồn tại!'])->withInput();
             }
-
             $user->code = $request->code;
             $user->username = $request->username;
-            $user->password = bcrypt($request->password);
             $user->name = $request->name;
             $user->email = $request->email;
             $user->phone_number = $request->phone_number;
@@ -109,8 +100,7 @@ class ShippersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -120,8 +110,7 @@ class ShippersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($user_id)
-    {
+    public function edit($user_id) {
         $user = new User;
         $user_obj = $user->find($user_id);
         $shipper_obj = $user_obj->shipper;
@@ -135,18 +124,17 @@ class ShippersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         //dd($request->all());
         $validator = \Validator::make($request->all(), [
             'code'            => 'required|max:15|unique:users',
             'name'            => 'required|max:255',
-            'phone_number'    => 'required|max:15',
+            'phone_number'    => 'required|min10|max:11',
             'email'           => 'email|max:255|unique:users',
             'home_ward'       => 'required|max:255',
             'home_district'   => 'required|max:255',
             'home_city'       => 'required|max:255',
-            'identity_card'   => 'required|max:12',
+            'identity_card'   => 'required|min9|max:12',
             'vehicle_type_id' => 'required',
             'licence_plate'   => 'required|max:10',
         ]);
@@ -189,23 +177,20 @@ class ShippersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
-    
-    public function load_list(Request $request)
-    {
-        $posts = get_post_datatable($request->all());
+
+    public function load_list(Request $request) {
+        $posts = get_post_datatable_new($request->all());
         $shipper = new Shipper();
         $data = $shipper->get_all_shippers($posts);
         $length = $shipper->count_all($posts);
-        $result = build_json_datatable($data, $length, $posts);
+        $result = build_json_datatable_new($data, $length, $posts);
         return $result;
     }
-    
-    public function check_new_user_duplicate(Request $request)
-    {
+
+    public function check_new_user_duplicate(Request $request) {
         $params = $request->all();
         $colum = $params['colum_name'];
         $value = $params['value'];
@@ -216,9 +201,8 @@ class ShippersController extends Controller
             return "fail";
         }
     }
-    
-    public function check_update_user_duplicate(Request $request)
-    {
+
+    public function check_update_user_duplicate(Request $request) {
         $params = $request->all();
         $colum = $params['colum_name'];
         $value = $params['value'];
@@ -230,4 +214,5 @@ class ShippersController extends Controller
             return "fail";
         }
     }
+
 }

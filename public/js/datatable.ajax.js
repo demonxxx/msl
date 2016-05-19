@@ -88,7 +88,6 @@ jQuery.fn.dataTableExt.oApi.fnPagingInfo = function (oSettings)
 function setAjaxDataTable(config) {
     var table = document.getElementById(config['id']);
     var url = config['url'];
-    var convert_colums = [];
     var colums = config['colums'];
     config['table'] = document.getElementById(config['id']);
     // config sort of all column table
@@ -207,7 +206,27 @@ function setAjaxDataTable(config) {
             return nRow;
         },
         "aoColumns": convert_colums,
-        "aoColumnDefs": colums_render
+        "aoColumnDefs": colums_render,
+        "language": {
+            "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",
+            "zeroRecords": "Không tìm thấy thông tin",
+            "info": "Hiển thị trang _PAGE_ trên _PAGES_",
+            "infoEmpty": "Không có thông tin",
+            "infoFiltered": "(lọc từ _MAX_ tổng số kết quả)",
+            "paginate": {
+                "first": "Trang đầu",
+                "last": "Trang cuối",
+                "next": "Tiếp",
+                "previous": "Trước"
+            },
+            "decimal": "",
+            "infoEmpty": "Hiển thị 0 đến 0 của 0 kết quả",
+                    "infoPostFix": "",
+            "thousands": ",",
+            "loadingRecords": "Đang tải dữ liệu...",
+            "processing": "Đang xử lý dữ liệu...",
+            "search": "Tìm kiếm:",
+        }
     });
     config['oTable'] = oTable;
     // add action listener
