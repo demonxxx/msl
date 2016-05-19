@@ -24,8 +24,8 @@ class Shipper extends Model
     
     public function get_all_shippers($post){
         $data = DB::table("shippers")
-                    ->select("users.id","users.code","users.name", "users.email","shippers.identity_card",
-                        "shippers.home_ward", "shippers.home_district","shippers.home_city","shippers.phone")
+                    ->select("users.id","users.code","users.name", "users.email","users.identity_card","shippers.home_number",
+                        "shippers.home_ward", "shippers.home_district","shippers.home_city","users.phone_number")
                     ->join("users","shippers.user_id","=","users.id")
                     ->skip($post["start"])->take($post["length"])
                     ->get();

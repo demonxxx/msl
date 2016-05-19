@@ -17,7 +17,17 @@ class Order extends Model
      */
     protected $dates = ['deleted_at'];
 
+    protected $fillable = [
+        
+    ];
+
+    protected $hidden = [
+
+    ];
+
     public function user(){
     	$this->belongsTo('App\Models\User');
     }
+
+//    public function
 }

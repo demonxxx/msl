@@ -99,7 +99,7 @@ class ShopsController extends Controller
             if (!empty($check_phone)) {
                 return redirect('shop/create')->withErrors(['Số điện thoại đã tồn tại!'])->withInput();
             }
-            $user->code = $request->code;
+            $user->code = $request->code;   
             $user->name = $request->name;
             $user->username = $request->username;
             $user->email = $request->email;
@@ -113,6 +113,7 @@ class ShopsController extends Controller
             $shop->home_city = $request->home_city;
             $shop->office_number = $request->office_number;
             $shop->office_ward = $request->office_ward;
+            $shop->office_district = $request->office_district;
             $shop->office_city = $request->office_city;
             $user->shop()->save($shop);
             $shop->office_district = $request->office_district;
@@ -189,6 +190,8 @@ class ShopsController extends Controller
             $shop_obj->office_ward = $request->office_ward;
             $shop_obj->office_district = $request->office_district;
             $shop_obj->office_city = $request->office_city;
+            $shop_obj->shop_type = $request->shop_type;
+            $shop_obj->profile_status = $request->profile_status;
             $shop_obj->save();
             flash_message("Sửa khách hàng thành công!");
             return redirect()->route('shops');

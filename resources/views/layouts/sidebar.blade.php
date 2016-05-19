@@ -42,6 +42,14 @@
                                             </ul>
                                         </li>
 
+                                        <li>
+                                            <a role="button" tabindex="0"><i class="fa fa-list"></i> <span>Đơn hàng</span></a>
+                                            <ul>
+                                                <li><a href="{{url( '/order/create' )}}"><i class="fa fa-caret-right"></i> Thêm đơn hàng mới</a></li>
+                                                <li><a href="{{url('/order')}}"><i class="fa fa-caret-right"></i> Danh sách đơn hàng</a></li>
+                                            </ul>
+                                        </li>
+
                                 @endcan
                                 @can('shipper')
 

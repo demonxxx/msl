@@ -87,7 +87,7 @@
 
         var home_address_render = {
             "render": function (data, type, row) {
-                return "<div class='text-center'>" + row.home_ward + ", " + row.home_district + ", " + row.home_city + "</div>";
+                return "<div class='text-center'>" + row.home_number + ", " + row.home_ward + ", " + row.home_district + ", " + row.home_city + "</div>";
 
             },
             "targets": [4]
@@ -105,7 +105,7 @@
         renders.push(common_render);
         renders.push(home_address_render);
         renders.push(function_render);
-        data.colums = ["code","name","email","identity_card","home_city","phone","id"];
+        data.colums = ["code","name","email","identity_card","home_city","phone_number","id"];
         data.url = "/shipper/load_list";
         data.id = "shippers-list";
         data.renders = renders;
