@@ -7,7 +7,7 @@
         <h1 class="custom-font"><strong>Danh sách tài xế</strong></h1>
         <ul class="controls">
             <li><a href="{{url( '/shipper/create' )}}"><i class="fa fa-plus mr-5"></i> Thêm tài xế</a></li>
-            <li class="dropdown">       
+            <li class="dropdown">
                 <a role="button" tabindex="0" class="dropdown-toggle" data-toggle="dropdown">Công cụ <i class="fa fa-angle-down ml-5"></i></a>
                 <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
                     <li>
@@ -60,13 +60,38 @@
             <table class="table table-striped table-hover table-custom" id="shippers-list">
                 <thead>
                     <tr>
-                        <th class="text-center">Mã TX</th>
+                        <th class="text-center" width="4%">Mã TX</th>
                         <th class="text-center">Họ và tên</th>
-                        <th class="text-center">Email đăng nhập</th>
                         <th class="text-center">CMT</th>
-                        <th class="text-center">Đ/c nhà</th>
+                        <th class="text-center">Phường/xã</th>
+                        <th class="text-center">Quận/huyện</th>
+                        <th class="text-center">Thành phố</th>
                         <th class="text-center">SĐT</th>
                         <th class="text-center">Chức năng</th>
+                    </tr>
+                    <tr class="table-header-search">
+                        <th class="text-center" width="4%">
+                            <input class="text-center" name="code" value="" placeholder="Mã TX" />
+                        </th>
+                        <th class="text-center">
+                            <input class="text-center" name="name" value="" placeholder="Họ và tên" />
+                        </th>
+                        <th class="text-center">
+                            <input class="text-center" name="identity_card" value="" placeholder="CMT" />
+                        </th>
+                        <th class="text-center">
+                            <input class="text-center" name="home_ward" value="" placeholder="Phường/xã" />
+                        </th>
+                        <th class="text-center">
+                            <input class="text-center" name="home_district" value="" placeholder="Quận/huyện" />
+                        </th>
+                        <th class="text-center">
+                            <input class="text-center" name="home_city" value="" placeholder="Thành phố" />
+                        </th>
+                        <th class="text-center">
+                            <input class="text-center" name="phone_number" value="" placeholder="SĐT" />
+                        </th>
+                        <th class="text-center clear-filter"></th>
                     </tr>
                 </thead>
             </table>
@@ -75,54 +100,49 @@
     <!-- /tile body -->
 </section>
 <!-- /tile -->
-     
+
 <script >
-    $(document).ready(function(){
+    $(document).ready(function () {
         var common_render = {
             "render": function (data, type, row) {
                 return render_common(data);
             },
-            "targets": [0, 1, 2, 3, 5]
-        };
-
-        var home_address_render = {
-            "render": function (data, type, row) {
-                return "<div class='text-center'>" + row.home_number + ", " + row.home_ward + ", " + row.home_district + ", " + row.home_city + "</div>";
-
-            },
-            "targets": [4]
+            "targets": [0, 1, 2, 3, 4, 5, 6]
         };
 
         var function_render = {
             "render": function (data, type, row) {
                 return render_function(data);
             },
-            "targets": [6]
+            "targets": [7]
         };
 
-        var data = {};
+        function render_common(data) {
+            return "<div class='text-center'>" + data + "</div>";
+        }
+
+        function render_function(data) {
+            var edit_url = base_url + "/shipper/" + data + "/edit";
+            return "<div class='text-center'>" +
+                    "<a class='btn btn-primary' href='" + edit_url + "' style='width: 70px;'>Sửa</a>" +
+                    "<a class='btn btn-danger' style='width: 70px; margin-left: 10px;'>Xóa</a>" +
+                    "</div>";
+        }
+
+        var config = [];
         var renders = [];
         renders.push(common_render);
-        renders.push(home_address_render);
         renders.push(function_render);
-        data.colums = ["code","name","email","identity_card","home_city","phone_number","id"];
-        data.url = "/shipper/load_list";
-        data.id = "shippers-list";
-        data.renders = renders;
-        setDatatable(data);
+        config['colums'] = ["code", "name", "identity_card", "home_ward", "home_district", "home_city", "phone_number", "id"];
+        config['url'] = "/shipper/load_list";
+        config['id'] = "shippers-list";
+        config['data_array'] = renders;
+        config['clear_filter'] = true;
+        config['sort_off'] = [6];
+        config['hidden_global_seach'] = true;
+        setAjaxDataTable(config);
     });
 
-    function render_common(data){
-        return "<div class='text-center'>" + data + "</div>";
-    }
-
-    function render_function(data){
-        var edit_url = base_url + "/shipper/" + data + "/edit";
-        return "<div class='text-center'>"  +
-                    "<a class='btn btn-primary' href='"+edit_url+"' style='width: 70px;'>Sửa</a>" +
-                    "<a class='btn btn-danger' style='width: 70px; margin-left: 10px;'>Xóa</a>"+
-                "</div>";
-    }
 </script>
 @endsection
 
