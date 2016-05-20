@@ -29,5 +29,13 @@ class Order extends Model
     	$this->belongsTo('App\User','users');
     }
 
+    public function shippers(){
+        $this->belongsToMany('App\User','order_shipper');
+    }
+
+    public function orderShippers(){
+        return $this->hasMany('App\Order_shipper');
+    }
+
 //    public function
 }
