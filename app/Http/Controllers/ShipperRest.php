@@ -8,8 +8,10 @@ use App\Http\Requests;
 use Gate;
 use App\User;
 use App\Order;
+use App\Order_shipper;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Response;
 
 class ShipperRest extends Controller
@@ -67,8 +69,62 @@ class ShipperRest extends Controller
         }
     }
 
-    public function updateOrderStatus(){
-        
+    public function takeOrder($id)
+    {
+        $order = Order::find($id);
+        if (empty($order)) {
+            return Response::json(
+                array(
+                    'accept'   => 1,
+                    'messages' => "Order do not exist!",
+                ),
+                200
+            );
+        } else {
+            if($order->status == ORDER_TAKEN){
+                return Response::json(
+                    array(
+                        'accept'   => 0,
+                        'messages' => "Đơn hàng đã được nhận!",
+                    ),
+                    200
+                );
+            }
+            $owner_tmp = User::find($order->user_id);
+            if (!empty($owner_tmp)) {
+                $owner = array("email"        => $owner_tmp->email,
+                               "phone_number" => $owner_tmp->phone_number,
+                               "id"           => $owner_tmp->id,
+                );
+            }
+            $user = User::find(Auth::guard('api')->id());
+            if (empty($user)) {
+                return Response::json(
+                    array(
+                        'accept'   => 1,
+                        'messages' => "User do not exist!",
+                    ),
+                    200
+                );
+            } else {
+                $order_shipper = new Order_shipper;
+                $order_shipper->user_id = $user->id;
+                $order_shipper->order_id = $order->id;
+                $order_shipper->take_at = Carbon::now();
+                $order_shipper->save();
+                $order->status = ORDER_TAKEN;
+                $order->save();
+                return Response::json(
+                    array(
+                        'accept'        => 1,
+                        'order'         => $order->toArray(),
+                        'owner'         => $owner,
+                        'order_shipper' => $order_shipper->toArray(),
+                    ),
+                    200
+                );
+            }
+        }
     }
 
     /**

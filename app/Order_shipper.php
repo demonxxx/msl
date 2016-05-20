@@ -15,5 +15,13 @@ class Order_shipper extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
-    protected $table = 'order_shippers';
+    protected $table = 'order_shipper';
+
+    public function user(){
+        $this->belongsTo('App\User','users');
+    }
+
+    public function order(){
+        $this->belongsTo('App\Order','orders');
+    }
 }
