@@ -51,6 +51,8 @@ Route::group(['middleware' => ['auth','permissions']], function () {
 
 
 Route::group(['prefix' => 'api/v1','middleware' => 'auth:api'], function () {
+    Route::post('order/{id}', 'OrderRest@update');
+    Route::post('find', 'ShipperRest@findByLocation');
     Route::resource('shop', 'ShopRest');
     Route::resource('shipper', 'ShipperRest');
     Route::resource('order', 'OrderRest');

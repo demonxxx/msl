@@ -38,5 +38,9 @@ class AuthServiceProvider extends ServiceProvider
         $gate->define('admin', function ($user) {
             return $user->hasRole('admin');
         });
+
+        $gate->define('order-owner', function ($order,$user ) {
+            return $user->id === $order->user_id;
+        });
     }
 }
