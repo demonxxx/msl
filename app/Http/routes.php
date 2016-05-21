@@ -24,11 +24,17 @@ Route::group(['middleware' => ['auth','permissions']], function () {
     Route::group(['roles' => ['shop', 'admin']], function () {
         Route::get('/shop','ShopsController@index')->name("shops");
         Route::get('/shop/create', 'ShopsController@create')->name("createShop");
-        Route::post('/shop/store', 'ShopsController@store')->name("storeShop");
+        Route::post('/shop/store', 'ShopsController@store');
         Route::post('/shop/load_list', 'ShopsController@load_list');
         Route::get('/shop/{user_id}/edit', 'ShopsController@edit')->name("editShop");
         Route::post('/shop/{id}/update', 'ShopsController@update')->name("updateShop");
         Route::post('/shop/check_user_duplicate', 'ShopsController@check_user_duplicate');
+
+        Route::get('/order','OrdersController@index')->name("orders");
+        Route::get('/order/create','OrdersController@create')->name("createOrder");
+        Route::post('/order/store','OrdersController@store');
+
+
     });
     Route::group(['roles' => ['shipper', 'admin']], function () {
         Route::get('/shipper', 'ShippersController@index')->name("shippers");
@@ -45,8 +51,9 @@ Route::group(['middleware' => ['auth','permissions']], function () {
 
 
 Route::group(['prefix' => 'api/v1','middleware' => 'auth:api'], function () {
-    Route::post('logout','UserRest@logout');
-
+    Route::post('order/{id}', 'OrderRest@update');
+    Route::post('find', 'ShipperRest@findByLocation');
+    Route::get('shipper/take/{id}','ShipperRest@takeOrder');
     Route::resource('shop', 'ShopRest');
     Route::resource('shipper', 'ShipperRest');
     Route::resource('order', 'OrderRest');
