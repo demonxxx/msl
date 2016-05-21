@@ -18,7 +18,7 @@ class OrdersController extends Controller
      */
     public function index()
     {
-
+        return view('app.orders.index');
     }
 
     /**
@@ -138,5 +138,15 @@ class OrdersController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    public function load_list(Request $request) {
+        $user_id = $request->user()["id"];
+        $posts = get_post_datatable_new($request->all());
+        $order = new Order();
+        $data = $order->get_all_orders($posts, $user_id);
+        $length = $order->count_all($posts, $user_id);
+        $result = build_json_datatable_new($data, $length, $posts);
+        return $result;
     }
 }

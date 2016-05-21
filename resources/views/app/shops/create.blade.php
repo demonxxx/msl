@@ -212,7 +212,7 @@
                 </div>
                 <div class="col-sm-3{{ $errors->has('office_city') ? ' has-error' : '' }}">
                     <input type="text" name="office_city" class="form-control" placeholder="Tỉnh/Thành phố"
-                           value="{{ old('office_city') }}"" required>
+                           value="{{ old('office_city') }}" required>
                     @if ($errors->has('office_city'))
                         <span class="help-block">
                             <strong>{{ $errors->first('office_city') }}</strong>

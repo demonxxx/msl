@@ -11,3 +11,5 @@ define("ONGOING_SHIP",1 );
 define("SUCCESS_SHIP",2 );
 define("PAYED_SHIP",3 );
 define("CANCELLED_SHIP", 4);
+// Mobile notification
+define("IOS_CERTIFICATE_FILE", "ios_certificate.pem");

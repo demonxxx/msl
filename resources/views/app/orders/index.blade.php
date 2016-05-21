@@ -1,12 +1,12 @@
-@extends('app.shippers.shipper')
-@section('shipper')
+@extends('app.orders.order')
+@section('order')
 <!-- tile -->
 <section class="tile">
     <!-- tile header -->
     <div class="tile-header dvd dvd-btm">
-        <h1 class="custom-font"><strong>Danh sách tài xế</strong></h1>
+        <h1 class="custom-font"><strong>Danh sách đơn hàng</strong></h1>
         <ul class="controls">
-            <li><a href="{{url( '/shipper/create' )}}"><i class="fa fa-plus mr-5"></i> Thêm tài xế</a></li>
+            <li><a href="{{url( '/order/create' )}}"><i class="fa fa-plus mr-5"></i> Thêm đơn hàng</a></li>
             <li class="dropdown">
                 <a role="button" tabindex="0" class="dropdown-toggle" data-toggle="dropdown">Công cụ <i class="fa fa-angle-down ml-5"></i></a>
                 <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
@@ -57,39 +57,43 @@
     <div class="tile-body">
 
         <div class="table-responsive">
-            <table class="table table-striped table-hover table-custom" id="shippers-list" style="width: 100%;">
+            <table class="table table-striped table-hover table-custom" id="orders-list" style="width: 100%;">
                 <thead>
                     <tr>
-                        <th class="text-center" width="4%">Mã TX</th>
-                        <th class="text-center">Họ và tên</th>
-                        <th class="text-center">CMT</th>
-                        <th class="text-center">Phường/xã</th>
-                        <th class="text-center">Quận/huyện</th>
-                        <th class="text-center">Thành phố</th>
-                        <th class="text-center">SĐT</th>
+                        <th class="text-center" width="4%">Mã ĐH</th>
+                        <th class="text-center">Tên đơn hàng</th>
+                        <th class="text-center">Tên người nhận</th>
+                        <th class="text-center">SĐT người nhận</th>
+                        <th class="text-center">Phường/xã Từ</th>
+                        <th class="text-center">Quận/huyện Từ</th>
+                        <th class="text-center">Phường/xã Đến</th>
+                        <th class="text-center">Quận/huyện Đến</th>
                         <th class="text-center">Chức năng</th>
                     </tr>
                     <tr class="table-header-search">
                         <th class="text-center" width="4%">
-                            <input class="text-center" name="code" value="" placeholder="Mã TX" />
+                            <input class="text-center" name="code" value="" placeholder="Mã ĐH" />
                         </th>
                         <th class="text-center">
-                            <input class="text-center" name="name" value="" placeholder="Họ và tên" />
+                            <input class="text-center" name="name" value="" placeholder="Tên đơn hàng" />
                         </th>
                         <th class="text-center">
-                            <input class="text-center" name="identity_card" value="" placeholder="CMT" />
+                            <input class="text-center" name="recipient_name" value="" placeholder="Tên người nhận" />
                         </th>
                         <th class="text-center">
-                            <input class="text-center" name="home_ward" value="" placeholder="Phường/xã" />
+                            <input class="text-center" name="recipient_phone" value="" placeholder="SĐT người nhận" />
                         </th>
                         <th class="text-center">
-                            <input class="text-center" name="home_district" value="" placeholder="Quận/huyện" />
+                            <input class="text-center" name="ward_from" value="" placeholder="Phường/xã Từ" />
                         </th>
                         <th class="text-center">
-                            <input class="text-center" name="home_city" value="" placeholder="Thành phố" />
+                            <input class="text-center" name="district_from" value="" placeholder="Quận/huyện Từ" />
                         </th>
                         <th class="text-center">
-                            <input class="text-center" name="phone_number" value="" placeholder="SĐT" />
+                            <input class="text-center" name="ward_to" value="" placeholder="Phường/xã Đến" />
+                        </th>
+                        <th class="text-center">
+                            <input class="text-center" name="district_to" value="" placeholder="Quận/huyện Đến" />
                         </th>
                         <th class="text-center clear-filter"></th>
                     </tr>
@@ -107,14 +111,14 @@
             "render": function (data, type, row) {
                 return render_common(data);
             },
-            "targets": [0, 1, 2, 3, 4, 5, 6]
+            "targets": [0, 1, 2, 3, 4, 5, 6, 7]
         };
 
         var function_render = {
             "render": function (data, type, row) {
                 return render_function(data);
             },
-            "targets": [7]
+            "targets": [8]
         };
 
         function render_common(data) {
@@ -122,10 +126,10 @@
         }
 
         function render_function(data) {
-            var edit_url = base_url + "/shipper/" + data + "/edit";
+            var edit_url = base_url + "/order/" + data + "/edit";
             return "<div class='text-center'>" +
-                    "<a class='btn btn-primary' href='" + edit_url + "' style='width: 70px;'>Sửa</a>" +
-                    "<a class='btn btn-danger' style='width: 70px; margin-left: 10px;'>Xóa</a>" +
+                    "<a class='btn btn-primary' disabled href='" + edit_url + "' style='width: 70px;'>Sửa</a>" +
+                    "<a class='btn btn-danger' disabled style='width: 70px; margin-left: 10px;'>Xóa</a>" +
                     "</div>";
         }
 
@@ -133,12 +137,12 @@
         var renders = [];
         renders.push(common_render);
         renders.push(function_render);
-        config['colums'] = ["code", "name", "identity_card", "home_ward", "home_district", "home_city", "phone_number", "id"];
-        config['url'] = "/shipper/load_list";
-        config['id'] = "shippers-list";
+        config['colums'] = ["code", "name", "recipient_name", "recipient_phone", "ward_from", "district_from", "ward_to", "district_to", "id"];
+        config['url'] = "/order/load_list";
+        config['id'] = "orders-list";
         config['data_array'] = renders;
         config['clear_filter'] = true;
-        config['sort_off'] = [6];
+        config['sort_off'] = [8];
         config['hidden_global_seach'] = true;
         setAjaxDataTable(config);
     });

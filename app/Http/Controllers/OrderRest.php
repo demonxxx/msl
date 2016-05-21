@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Response;
 
 class OrderRest extends Controller
 {
+    use NotificationService;
     /**
      * Display a listing of the resource.
      *
@@ -89,6 +90,10 @@ class OrderRest extends Controller
             $order->latitude = $request->latitude;
             $order->description = $request->description;
             $user->orders()->save($order);
+
+            // run push notification service
+            $this->pushOrderNotification($order);
+
             return Response::json(
                 array(
                     'accept'   => 1,
