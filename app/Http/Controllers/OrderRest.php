@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Order_shipper;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -137,6 +138,96 @@ class OrderRest extends Controller
         }
     }
 
+    public function getOrderTaken($id)
+    {
+        $order = Order::find($id);
+        if (empty($order)) {
+            return Response::json(
+                array(
+                    'accept'   => 1,
+                    'messages' => "Đơn hàng không tồn tại!",
+                ),
+                200
+            );
+        } else {
+            $user = User::find(Auth::guard('api')->id());
+            if ($user->id == $order->user_id) {
+                if ($order->status == ORDER_PENDING || $order->status == ORDER_SUCCESS) {
+                    return Response::json(
+                        array(
+                            'accept' => 1,
+                            'order'  => $order->toArray(),
+                        ),
+                        200
+                    );
+                } else {
+                    $order_shipper = Order_shipper::where('order_id', $order->id)
+                        ->where('status', '<>', CANCELLED_SHIP)->first();
+                    if (!empty($order_shipper)) {
+                        $shipper = User::where('id', $order_shipper->user_id)
+                            ->first(['id', 'email', 'name', 'phone_number']);
+                        return Response::json(
+                            array(
+                                'accept'  => 1,
+                                'order'   => $order->toArray(),
+                                'shipper' => $shipper->toArray(),
+                            ),
+                            200
+                        );
+                    } else {
+                        return Response::json(
+                            array(
+                                'accept' => 1,
+                                'order'  => $order->toArray(),
+                            ),
+                            200
+                        );
+                    }
+                }
+            } else {
+                return Response::json(
+                    array(
+                        'accept'   => 0,
+                        'messages' => "Bạn không được xem đơn hàng này.",
+                    ),
+                    200
+                );
+            }
+        }
+    }
+
+    public function updateOrderStatus($id){
+        $order = Order::find($id);
+        if (empty($order)) {
+            return Response::json(
+                array(
+                    'accept'   => 1,
+                    'messages' => "Order do not exist!",
+                ),
+                200
+            );
+        } else {
+            $user = User::find(Auth::guard('api')->id());
+            if ($user->id == $order->user_id) {
+                return Response::json(
+                    array(
+                        'accept'   => 1,
+                        'messages' => $order->toArray(),
+                    ),
+                    200
+                );
+            } else {
+                return Response::json(
+                    array(
+                        'accept'   => 0,
+                        'messages' => "You do not have permission",
+                    ),
+                    200
+                );
+            }
+        }
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -178,9 +269,9 @@ class OrderRest extends Controller
                     "recipient_phone"   => "required|numeric",
                     "full_address_to"   => "required",
                     "full_address_from" => "required",
-                    "order_values"      => "required",
-                    "longitude"         => "required",
-                    "latitude"          => "required"
+                    "order_values"      => "required|numeric",
+                    "longitude"         => "required|numeric",
+                    "latitude"          => "required|numeric"
                 ]);
                 if ($validator->fails()) {
                     return Response::json(
@@ -211,7 +302,7 @@ class OrderRest extends Controller
                         200
                     );
                 }
-            }else {
+            } else {
                 return Response::json(
                     array(
                         'accept'   => 0,
