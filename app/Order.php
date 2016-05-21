@@ -17,7 +17,25 @@ class Order extends Model
      */
     protected $dates = ['deleted_at'];
 
+    protected $fillable = [
+        
+    ];
+
+    protected $hidden = [
+
+    ];
+
     public function user(){
-    	$this->belongsTo('App\Models\User');
+    	$this->belongsTo('App\User','users');
     }
+
+    public function shippers(){
+        $this->belongsToMany('App\User','order_shipper');
+    }
+
+    public function orderShippers(){
+        return $this->hasMany('App\Order_shipper');
+    }
+
+//    public function
 }

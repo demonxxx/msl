@@ -15,10 +15,6 @@ class PermissionMiddleware
      */
     public function handle($request, Closure $next)
     {
-//        $permissions = $this->getRequiredPermissionsRoute($request->route());
-//        if ($request->user()->hasPermission($permissions) || !$permissions) {
-//            return $next($request);
-//        }
         $roles = $this->getRequiredRolesForRoute($request->route());
         if ($request->user()->hasRole($roles) || !$roles) {
             return $next($request);

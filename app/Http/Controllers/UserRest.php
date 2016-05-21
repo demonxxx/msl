@@ -28,7 +28,7 @@ class UserRest extends Controller
                     'user'   => Auth::user()->toArray(),
                     'info'   => $info
                 ),
-                200
+                200 
             );
         } else {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {

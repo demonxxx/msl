@@ -100,7 +100,7 @@ class ShopsController extends Controller
             if (!empty($check_phone)) {
                 return redirect('shop/create')->withErrors(['Số điện thoại đã tồn tại!'])->withInput();
             }
-            $user->code = $request->code;
+            $user->code = $request->code;   
             $user->name = $request->name;
             $user->username = $request->username;
             $user->password = bcrypt($request->password);
