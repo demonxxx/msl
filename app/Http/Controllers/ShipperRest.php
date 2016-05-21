@@ -127,6 +127,70 @@ class ShipperRest extends Controller
         }
     }
 
+    public function updateOrderStatus(Request $request, $id)
+    {
+        $order = Order::find($id);
+        if (empty($order)) {
+            return Response::json(
+                array(
+                    'accept'   => 1,
+                    'messages' => "Order do not exist!",
+                ),
+                200
+            );
+        } else {
+            $shipper_id = Auth::guard('api')->id();
+            $order_shipper = Order_shipper::where('user_id', $shipper_id)->where('order_id', $id)->first();
+            if (empty($order_shipper)) {
+                return Response::json(array(
+                    'accept'   => 0,
+                    'messages' => 'không tồn tại đợt vận chuyển.',
+                ),
+                    200
+                );
+            } else {
+                $validator = Validator::make($request->all(), [
+                    "status"   => "required|numeric",
+                ]);
+                if ($validator->fails()) {
+                    return Response::json(
+                        array(
+                            'accept'   => 0,
+                            'messages' => $validator->messages(),
+                        ),
+                        200
+                    );
+                } else {
+                    $status = $request->status;
+                    $description = empty($request->description) ? null : $request->description;
+                    if ($status == SUCCESS_SHIP){
+                        $order_shipper->finish_at = Carbon::now();
+                        $order->status = ORDER_SUCCESS;
+                    }else if($status == PAYED_SHIP){
+                        $order_shipper->pay_at = Carbon::now();
+                        $order->status = ORDER_SUCCESS;
+                    }else if($status == CANCELLED_SHIP){
+                        $order_shipper->cancel_at = Carbon::now();
+                        $order->status = ORDER_PENDING;
+                    }else if($status == ONGOING_SHIP){
+                        $order->status = ORDER_TAKEN;
+                    }
+                    $order_shipper->status = $status;
+                    $order_shipper->description = $description;
+                    $order_shipper->save();
+                    $order->save();
+                    return Response::json(
+                        array(
+                            'accept'   => 1,
+                            'messages' => array("status" => $status, "description" => $description),
+                        ),
+                        200
+                    );
+                }
+            }
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
