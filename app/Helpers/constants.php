@@ -7,3 +7,6 @@ define("ADMIN_TYPE", 3);
 define("ORDER_PENDING", 1);
 define("ORDER_TAKEN", 2);
 define("ORDER_SUCCESS", 3);
+
+// Mobile notification
+define("IOS_CERTIFICATE_FILE", "ios_certificate.pem");
