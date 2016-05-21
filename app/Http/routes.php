@@ -33,6 +33,8 @@ Route::group(['middleware' => ['auth','permissions']], function () {
         Route::get('/order','OrdersController@index')->name("orders");
         Route::get('/order/create','OrdersController@create')->name("createOrder");
         Route::post('/order/store','OrdersController@store');
+        Route::post('/order/load_list', 'OrdersController@load_list');
+        
 
 
     });
