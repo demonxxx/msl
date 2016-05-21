@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Response;
 class OrderRest extends Controller
 {
     use NotificationService;
+
     /**
      * Display a listing of the resource.
      *
@@ -201,37 +202,7 @@ class OrderRest extends Controller
         }
     }
 
-    public function updateOrderStatus($id){
-        $order = Order::find($id);
-        if (empty($order)) {
-            return Response::json(
-                array(
-                    'accept'   => 1,
-                    'messages' => "Order do not exist!",
-                ),
-                200
-            );
-        } else {
-            $user = User::find(Auth::guard('api')->id());
-            if ($user->id == $order->user_id) {
-                return Response::json(
-                    array(
-                        'accept'   => 1,
-                        'messages' => $order->toArray(),
-                    ),
-                    200
-                );
-            } else {
-                return Response::json(
-                    array(
-                        'accept'   => 0,
-                        'messages' => "You do not have permission",
-                    ),
-                    200
-                );
-            }
-        }
-    }
+    
 
     /**
      * Show the form for editing the specified resource.
