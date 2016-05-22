@@ -81,7 +81,7 @@ class ShipperRest extends Controller
                 200
             );
         } else {
-            if($order->status == ORDER_TAKEN){
+            if($order->status != ORDER_PENDING){
                 return Response::json(
                     array(
                         'accept'   => 0,
@@ -101,25 +101,20 @@ class ShipperRest extends Controller
             if (empty($user)) {
                 return Response::json(
                     array(
-                        'accept'   => 1,
-                        'messages' => "User do not exist!",
+                        'accept'   => 0,
+                        'messages' => "Bạn không được nhận đơn hàng này.!",
                     ),
                     200
                 );
             } else {
-                $order_shipper = new Order_shipper;
-                $order_shipper->user_id = $user->id;
-                $order_shipper->order_id = $order->id;
-                $order_shipper->take_at = Carbon::now();
-                $order_shipper->save();
-                $order->status = ORDER_TAKEN;
+                $order->shipper_id = $user->id;
+                $order->taken_order_at = Carbon::now();
+                $order->status = ORDER_TAKEN_ORDER;
                 $order->save();
                 return Response::json(
                     array(
                         'accept'        => 1,
                         'order'         => $order->toArray(),
-                        'owner'         => $owner,
-                        'order_shipper' => $order_shipper->toArray(),
                     ),
                     200
                 );
@@ -127,24 +122,23 @@ class ShipperRest extends Controller
         }
     }
 
-    public function updateOrderStatus(Request $request, $id)
+    public function updateOrderStatusShipper(Request $request, $id)
     {
         $order = Order::find($id);
         if (empty($order)) {
             return Response::json(
                 array(
                     'accept'   => 1,
-                    'messages' => "Order do not exist!",
+                    'messages' => "Đơn hàng không tồn tại!",
                 ),
                 200
             );
         } else {
             $shipper_id = Auth::guard('api')->id();
-            $order_shipper = Order_shipper::where('user_id', $shipper_id)->where('order_id', $id)->first();
-            if (empty($order_shipper)) {
+            if ($shipper_id != $order->shipper_id) {
                 return Response::json(array(
                     'accept'   => 0,
-                    'messages' => 'không tồn tại đợt vận chuyển.',
+                    'messages' => 'Bạn không có quyền cập nhật trạng thái.',
                 ),
                     200
                 );
@@ -163,25 +157,26 @@ class ShipperRest extends Controller
                 } else {
                     $status = $request->status;
                     $description = empty($request->description) ? null : $request->description;
-                    if ($status == SUCCESS_SHIP){
-                        $order_shipper->finish_at = Carbon::now();
-                        $order->status = ORDER_SUCCESS;
-                    }else if($status == PAYED_SHIP){
-                        $order_shipper->pay_at = Carbon::now();
-                        $order->status = ORDER_SUCCESS;
-                    }else if($status == CANCELLED_SHIP){
-                        $order_shipper->cancel_at = Carbon::now();
-                        $order->status = ORDER_PENDING;
-                    }else if($status == ONGOING_SHIP){
-                        $order->status = ORDER_TAKEN;
+                    if ($status == ORDER_TAKEN_ORDER){
+                        $order->taken_order_at = Carbon::now()->toDateTimeString();
+                    }else if($status == ORDER_TAKEN_ITEMS){
+                        $order->taken_items_at = Carbon::now()->toDateTimeString();
+                    }else if($status == ORDER_SHIPPING){
+                        $order->cancel_at = Carbon::now()->toDateTimeString();
+                    }else if($status == ORDER_SHIP_SUCCESS){
+                        $order->ship_success_at = Carbon::now()->toDateTimeString();
+                    }else if($status == ORDER_PAYED){
+                        $order->payed_at = Carbon::now()->toDateTimeString();
+                    }else if($status == ORDER_RETURN_ITEMS){
+                        $order->return_items_at = Carbon::now()->toDateTimeString();
                     }
-                    $order_shipper->status = $status;
-                    $order_shipper->description = $description;
-                    $order_shipper->save();
+                    $order->status  = $status;
+                    $order->description = $description;
                     $order->save();
                     return Response::json(
                         array(
                             'accept'   => 1,
+                            'order'    => $order->toArray(),
                             'messages' => array("status" => $status, "description" => $description),
                         ),
                         200

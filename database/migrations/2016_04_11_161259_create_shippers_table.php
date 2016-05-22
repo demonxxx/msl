@@ -21,7 +21,6 @@ class CreateShippersTable extends Migration
             $table->string('office_ward',255);
             $table->string('office_district',255);
             $table->string('office_city',255);
-            $table->integer('account_id')->nullable()->references('id')->on('accounts')->onDelete('cascade');
             $table->smallInteger('vehicle_type_id')->nullable()->references('id')->on('vehicle_types')->onDelete('cascade');
             $table->string('licence_plate');
             $table->smallInteger('shipper_type_id')->nullable()->references('id')->on('shipper_types')->onDelete('cascade');
