@@ -118,39 +118,6 @@ class OrderRest extends Controller
             return Response::json(
                 array(
                     'accept'   => 1,
-                    'messages' => "Order do not exist!",
-                ),
-                200
-            );
-        } else {
-            $user = User::find(Auth::guard('api')->id());
-            if ($user->id == $order->user_id) {
-                return Response::json(
-                    array(
-                        'accept'   => 1,
-                        'messages' => $order->toArray(),
-                    ),
-                    200
-                );
-            } else {
-                return Response::json(
-                    array(
-                        'accept'   => 0,
-                        'messages' => "You do not have permission",
-                    ),
-                    200
-                );
-            }
-        }
-    }
-
-    public function getOrderTaken($id)
-    {
-        $order = Order::find($id);
-        if (empty($order)) {
-            return Response::json(
-                array(
-                    'accept'   => 1,
                     'messages' => "Đơn hàng không tồn tại!",
                 ),
                 200
@@ -158,7 +125,7 @@ class OrderRest extends Controller
         } else {
             $user = User::find(Auth::guard('api')->id());
             if ($user->id == $order->user_id) {
-                if ($order->status == ORDER_PENDING || $order->status == ORDER_SUCCESS) {
+                if ($order->status == ORDER_PENDING) {
                     return Response::json(
                         array(
                             'accept' => 1,
@@ -167,11 +134,8 @@ class OrderRest extends Controller
                         200
                     );
                 } else {
-                    $order_shipper = Order_shipper::where('order_id', $order->id)
-                        ->where('status', '<>', CANCELLED_SHIP)->first();
-                    if (!empty($order_shipper)) {
-                        $shipper = User::where('id', $order_shipper->user_id)
-                            ->first(['id', 'email', 'name', 'phone_number']);
+                    $shipper = User::where('id', $order->shipper_id)->select('id', 'name', 'phone_number', 'email')->first();
+                    if (!empty($shipper)) {
                         return Response::json(
                             array(
                                 'accept'  => 1,
@@ -202,7 +166,61 @@ class OrderRest extends Controller
         }
     }
 
-    
+    public function getOrderTaken($id)
+    {
+        $order = Order::find($id);
+        if (empty($order)) {
+            return Response::json(
+                array(
+                    'accept'   => 1,
+                    'messages' => "Đơn hàng không tồn tại!",
+                ),
+                200
+            );
+        } else {
+            $user = User::find(Auth::guard('api')->id());
+            if ($user->id == $order->user_id) {
+                if ($order->status == ORDER_PENDING) {
+                    return Response::json(
+                        array(
+                            'accept' => 1,
+                            'order'  => $order->toArray(),
+                        ),
+                        200
+                    );
+                } else {
+                    $shipper = User::where('id', $order->shipper_id)->select('id', 'name', 'phone_number', 'email')->first();
+                    if (!empty($shipper)) {
+                        return Response::json(
+                            array(
+                                'accept'  => 1,
+                                'order'   => $order->toArray(),
+                                'shipper' => $shipper->toArray(),
+                            ),
+                            200
+                        );
+                    } else {
+                        return Response::json(
+                            array(
+                                'accept' => 1,
+                                'order'  => $order->toArray(),
+                            ),
+                            200
+                        );
+                    }
+                }
+            } else {
+                return Response::json(
+                    array(
+                        'accept'   => 0,
+                        'messages' => "Bạn không được xem đơn hàng này.",
+                    ),
+                    200
+                );
+            }
+        }
+    }
+
 
     /**
      * Show the form for editing the specified resource.
