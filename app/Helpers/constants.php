@@ -16,3 +16,6 @@ define("ORDER_RETURN_ITEMS", 8);
 
 // Mobile notification
 define("IOS_CERTIFICATE_FILE", "ios_certificate.pem");
+
+// Google API
+define("GOOGLE_API_KEY", 'google_api_key');
