@@ -2,11 +2,11 @@
 @section('content')
 <div class="page page-shop-products">
         <div class="pageheader">
-            <h2>Khách hàng</h2>
+            <h2>Đơn hàng</h2>
             <div class="page-bar">
                 <ul class="page-breadcrumb">
                     <li>
-                        <a href="index.html"><i class="fa fa-home"></i>LMS Việt Nam</a>
+                        <a href="index.html"><i class="fa fa-home"></i>MSL Việt Nam</a>
                     </li>
                     <li>
                         <a href="#">Đơn hàng</a>

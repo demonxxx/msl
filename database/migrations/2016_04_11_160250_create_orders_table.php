@@ -39,9 +39,17 @@ class CreateOrdersTable extends Migration
             $table->float('weight')->nullable();
             $table->float('order_values')->nullable();
             $table->float('main_freight')->nullable();
+            $table->integer('shipper_id')->references('id')->on('users')->onDelete('cascade');
+            $table->dateTime('taken_order_at')->nullable()->comment('when shipper take orders, this field is insert');
+            $table->dateTime('taken_items_at')->nullable()->comment('when shipper take orders, this field is insert');
+            $table->dateTime('ship_success_at')->nullable()->comment('when shipper ship successfully');
+            $table->dateTime('payed_at')->nullable()->comment('in case order type is COD, shipper have to pay for company');
+            $table->dateTime('shop_cancel_at')->nullable()->comment('when order is cancelled');
+            $table->dateTime('return_items_at')->nullable()->comment('when order is cancelled');
             $table->dateTime('start_time')->nullable();
             $table->dateTime('end_time')->nullable();
-            $table->smallInteger('status')->default(1)->comment('1: putted, 2: taken, 3: completed');
+            $table->smallInteger('status')->default(1)->comment('1: pending, 2: taken order, 3: taken items, 4, shipping, 5 ship success,
+            6: payed (COD order),7. cancel order (SHOP), 8 Return items.');
             $table->string('image_url')->nullable();
             $table->timestamps();
             $table->softDeletes();

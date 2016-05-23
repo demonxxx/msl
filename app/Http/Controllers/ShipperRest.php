@@ -81,7 +81,7 @@ class ShipperRest extends Controller
                 200
             );
         } else {
-            if($order->status == ORDER_TAKEN){
+            if($order->status != ORDER_PENDING){
                 return Response::json(
                     array(
                         'accept'   => 0,
@@ -101,28 +101,87 @@ class ShipperRest extends Controller
             if (empty($user)) {
                 return Response::json(
                     array(
-                        'accept'   => 1,
-                        'messages' => "User do not exist!",
+                        'accept'   => 0,
+                        'messages' => "Bạn không được nhận đơn hàng này.!",
                     ),
                     200
                 );
             } else {
-                $order_shipper = new Order_shipper;
-                $order_shipper->user_id = $user->id;
-                $order_shipper->order_id = $order->id;
-                $order_shipper->take_at = Carbon::now();
-                $order_shipper->save();
-                $order->status = ORDER_TAKEN;
+                $order->shipper_id = $user->id;
+                $order->taken_order_at = Carbon::now();
+                $order->status = ORDER_TAKEN_ORDER;
                 $order->save();
                 return Response::json(
                     array(
                         'accept'        => 1,
                         'order'         => $order->toArray(),
-                        'owner'         => $owner,
-                        'order_shipper' => $order_shipper->toArray(),
                     ),
                     200
                 );
+            }
+        }
+    }
+
+    public function updateOrderStatusShipper(Request $request, $id)
+    {
+        $order = Order::find($id);
+        if (empty($order)) {
+            return Response::json(
+                array(
+                    'accept'   => 1,
+                    'messages' => "Đơn hàng không tồn tại!",
+                ),
+                200
+            );
+        } else {
+            $shipper_id = Auth::guard('api')->id();
+            if ($shipper_id != $order->shipper_id) {
+                return Response::json(array(
+                    'accept'   => 0,
+                    'messages' => 'Bạn không có quyền cập nhật trạng thái.',
+                ),
+                    200
+                );
+            } else {
+                $validator = Validator::make($request->all(), [
+                    "status"   => "required|numeric",
+                ]);
+                if ($validator->fails()) {
+                    return Response::json(
+                        array(
+                            'accept'   => 0,
+                            'messages' => $validator->messages(),
+                        ),
+                        200
+                    );
+                } else {
+                    $status = $request->status;
+                    $description = empty($request->description) ? null : $request->description;
+                    if ($status == ORDER_TAKEN_ORDER){
+                        $order->taken_order_at = Carbon::now()->toDateTimeString();
+                    }else if($status == ORDER_TAKEN_ITEMS){
+                        $order->taken_items_at = Carbon::now()->toDateTimeString();
+                    }else if($status == ORDER_SHIPPING){
+                        $order->cancel_at = Carbon::now()->toDateTimeString();
+                    }else if($status == ORDER_SHIP_SUCCESS){
+                        $order->ship_success_at = Carbon::now()->toDateTimeString();
+                    }else if($status == ORDER_PAYED){
+                        $order->payed_at = Carbon::now()->toDateTimeString();
+                    }else if($status == ORDER_RETURN_ITEMS){
+                        $order->return_items_at = Carbon::now()->toDateTimeString();
+                    }
+                    $order->status  = $status;
+                    $order->description = $description;
+                    $order->save();
+                    return Response::json(
+                        array(
+                            'accept'   => 1,
+                            'order'    => $order->toArray(),
+                            'messages' => array("status" => $status, "description" => $description),
+                        ),
+                        200
+                    );
+                }
             }
         }
     }
