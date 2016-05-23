@@ -8,7 +8,7 @@ use App\Http\Requests;
 use Gate;
 use App\User;
 use App\Order;
-use App\Order_shipper;
+use App\Shipper;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Carbon\Carbon;
@@ -34,6 +34,101 @@ class ShipperRest extends Controller
     public function create()
     {
         //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+
+    public function updateLocation(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            "longitude" => "required",
+            "latitude"  => "required",
+        ]);
+        if ($validator->fails()) {
+            return Response::json(
+                array(
+                    'accept'   => 0,
+                    'messages' => $validator->messages(),
+                ),
+                200
+            );
+        } else {
+            $shipper_id = Auth::guard('api')->id();
+            $shipper = Shipper::where('user_id', $shipper_id)->first();
+            if (!empty($shipper)) {
+                $shipper->longitude = $request->longitude;
+                $shipper->latitude = $request->latitude;
+                $shipper->save();
+                return Response::json(
+                    array(
+                        'accept' => 1,
+                    ),
+                    200
+                );
+            } else {
+                return Response::json(
+                    array(
+                        'accept'  => 0,
+                        'message' => 'Không tồn tại shipper',
+                    ),
+                    200
+                );
+            }
+        }
     }
 
     public function findByLocation(Request $request)
@@ -81,7 +176,7 @@ class ShipperRest extends Controller
                 200
             );
         } else {
-            if($order->status != ORDER_PENDING){
+            if ($order->status != ORDER_PENDING) {
                 return Response::json(
                     array(
                         'accept'   => 0,
@@ -90,13 +185,7 @@ class ShipperRest extends Controller
                     200
                 );
             }
-            $owner_tmp = User::find($order->user_id);
-            if (!empty($owner_tmp)) {
-                $owner = array("email"        => $owner_tmp->email,
-                               "phone_number" => $owner_tmp->phone_number,
-                               "id"           => $owner_tmp->id,
-                );
-            }
+
             $user = User::find(Auth::guard('api')->id());
             if (empty($user)) {
                 return Response::json(
@@ -113,8 +202,8 @@ class ShipperRest extends Controller
                 $order->save();
                 return Response::json(
                     array(
-                        'accept'        => 1,
-                        'order'         => $order->toArray(),
+                        'accept' => 1,
+                        'order'  => $order->toArray(),
                     ),
                     200
                 );
@@ -144,7 +233,7 @@ class ShipperRest extends Controller
                 );
             } else {
                 $validator = Validator::make($request->all(), [
-                    "status"   => "required|numeric",
+                    "status" => "required|numeric",
                 ]);
                 if ($validator->fails()) {
                     return Response::json(
@@ -157,20 +246,36 @@ class ShipperRest extends Controller
                 } else {
                     $status = $request->status;
                     $description = empty($request->description) ? null : $request->description;
-                    if ($status == ORDER_TAKEN_ORDER){
+                    if ($status == ORDER_PENDING) {
+                        return Response::json(
+                            array(
+                                'accept'   => 0,
+                                'messages' => 'Không thể chuyển trạng thái bắt đầu',
+                            ),
+                            200
+                        );
+                    } else if ($status == ORDER_TAKEN_ORDER) {
                         $order->taken_order_at = Carbon::now()->toDateTimeString();
-                    }else if($status == ORDER_TAKEN_ITEMS){
+                    } else if ($status == ORDER_TAKEN_ITEMS) {
                         $order->taken_items_at = Carbon::now()->toDateTimeString();
-                    }else if($status == ORDER_SHIPPING){
+                    } else if ($status == ORDER_SHIPPING) {
                         $order->cancel_at = Carbon::now()->toDateTimeString();
-                    }else if($status == ORDER_SHIP_SUCCESS){
+                    } else if ($status == ORDER_SHIP_SUCCESS) {
                         $order->ship_success_at = Carbon::now()->toDateTimeString();
-                    }else if($status == ORDER_PAYED){
+                    } else if ($status == ORDER_PAYED) {
                         $order->payed_at = Carbon::now()->toDateTimeString();
-                    }else if($status == ORDER_RETURN_ITEMS){
+                    } else if ($status == ORDER_SHOP_CANCEL) {
+                        return Response::json(
+                            array(
+                                'accept'   => 0,
+                                'messages' => 'Không thể chuyển trạngshop cancel',
+                            ),
+                            200
+                        );
+                    } else if ($status == ORDER_RETURN_ITEMS) {
                         $order->return_items_at = Carbon::now()->toDateTimeString();
                     }
-                    $order->status  = $status;
+                    $order->status = $status;
                     $order->description = $description;
                     $order->save();
                     return Response::json(
@@ -186,59 +291,39 @@ class ShipperRest extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function getTakenOrders()
     {
-        //
+        $shipper_id = Auth::guard('api')->id();
+        $taken_order = Order::where('shipper_id', $shipper_id)->get();
+        return Response::json(
+            array(
+                'accept' => 1,
+                'orders' => $taken_order->toArray(),
+            ),
+            200
+        );
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function isShipper()
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $user_id = Auth::guard('api')->id();
+        $shipper = Shipper::where('user_id', $user_id)->first();
+        if (empty($shipper)) {
+            return Response::json(
+                array(
+                    'accept'    => 1,
+                    'isShipper' => 0,
+                ),
+                200
+            );
+        } else {
+            return Response::json(
+                array(
+                    'accept'    => 1,
+                    'isShipper' => 1,
+                ),
+                200
+            );
+        }
     }
 }
