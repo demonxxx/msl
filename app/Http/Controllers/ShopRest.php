@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Shipper;
+use Illuminate\Support\Facades\Response;
 
 class ShopRest extends Controller
 {
@@ -31,7 +33,7 @@ class ShopRest extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -42,7 +44,7 @@ class ShopRest extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -53,7 +55,7 @@ class ShopRest extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -64,8 +66,8 @@ class ShopRest extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -73,10 +75,33 @@ class ShopRest extends Controller
         //
     }
 
+    public function getShipperLocation($id)
+    {
+        $shipper = Shipper::where('user_id', $id)->select('longitude', 'latitude')->first();
+        if (empty($shipper)) {
+            return Response::json(
+                array(
+                    'accept'  => 0,
+                    'message' => 'Không tồn tại shipper',
+                ),
+                200
+            );
+        } else {
+            return Response::json(
+                array(
+                    'accept'    => 1,
+                    'longitude' => $shipper->longitude,
+                    'latitude'  => $shipper->latitude,
+                ),
+                200
+            );
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

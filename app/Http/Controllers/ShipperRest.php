@@ -8,7 +8,7 @@ use App\Http\Requests;
 use Gate;
 use App\User;
 use App\Order;
-use App\Order_shipper;
+use App\Shipper;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Carbon\Carbon;
@@ -34,6 +34,44 @@ class ShipperRest extends Controller
     public function create()
     {
         //
+    }
+
+    public function updateLocation(Request $request){
+        $validator = Validator::make($request->all(), [
+            "longitude" => "required",
+            "latitude"  => "required",
+        ]);
+        if ($validator->fails()) {
+            return Response::json(
+                array(
+                    'accept'   => 0,
+                    'messages' => $validator->messages(),
+                ),
+                200
+            );
+        } else {
+            $shipper_id = Auth::guard('api')->id();
+            $shipper = Shipper::where('user_id', $shipper_id)->first();
+            if(!empty($shipper)){
+                $shipper->longitude = $request->longitude;
+                $shipper->latitude = $request->latitude;
+                $shipper->save();
+                return Response::json(
+                    array(
+                        'accept'   => 1,
+                    ),
+                    200
+                );
+            }else {
+                return Response::json(
+                    array(
+                        'accept'   => 0,
+                        'message' => 'Không tồn tại shipper',
+                    ),
+                    200
+                );
+            }
+        }
     }
 
     public function findByLocation(Request $request)
@@ -157,7 +195,15 @@ class ShipperRest extends Controller
                 } else {
                     $status = $request->status;
                     $description = empty($request->description) ? null : $request->description;
-                    if ($status == ORDER_TAKEN_ORDER){
+                    if ($status == ORDER_PENDING){
+                        return Response::json(
+                            array(
+                                'accept'   => 0,
+                                'messages' => 'Không thể chuyển trạng thái bắt đầu',
+                            ),
+                            200
+                        );
+                    }else if ($status == ORDER_TAKEN_ORDER){
                         $order->taken_order_at = Carbon::now()->toDateTimeString();
                     }else if($status == ORDER_TAKEN_ITEMS){
                         $order->taken_items_at = Carbon::now()->toDateTimeString();
@@ -167,6 +213,14 @@ class ShipperRest extends Controller
                         $order->ship_success_at = Carbon::now()->toDateTimeString();
                     }else if($status == ORDER_PAYED){
                         $order->payed_at = Carbon::now()->toDateTimeString();
+                    }else if($status == ORDER_SHOP_CANCEL){
+                        return Response::json(
+                            array(
+                                'accept'   => 0,
+                                'messages' => 'Không thể chuyển trạngshop cancel',
+                            ),
+                            200
+                        );
                     }else if($status == ORDER_RETURN_ITEMS){
                         $order->return_items_at = Carbon::now()->toDateTimeString();
                     }
