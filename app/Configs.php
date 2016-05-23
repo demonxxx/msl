@@ -17,4 +17,8 @@ class Configs extends Model {
         return DB::table($this->table)->get();
     }
 
+    public function get_gcm_config() {
+        return DB::table($this->table)->where("name", "=", GOOGLE_API_KEY)->get();
+    }
+
 }
