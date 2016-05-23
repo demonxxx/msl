@@ -15,14 +15,14 @@ use Illuminate\Http\Request;
 
 Route::auth();
 //Route::resource('user', 'UserRest');
-Route::post('api/v1/login','UserRest@login');
-Route::get('api/v1/logout','UserRest@logout');
-Route::post('api/v1/register','Auth\AuthController@mobile_register');
+Route::post('api/v1/login', 'UserRest@login');
+Route::get('api/v1/logout', 'UserRest@logout');
+Route::post('api/v1/register', 'Auth\AuthController@mobile_register');
 
-Route::group(['middleware' => ['auth','permissions']], function () {
+Route::group(['middleware' => ['auth', 'permissions']], function () {
     Route::get('/', 'HomeController@index');
     Route::group(['roles' => ['shop', 'admin']], function () {
-        Route::get('/shop','ShopsController@index')->name("shops");
+        Route::get('/shop', 'ShopsController@index')->name("shops");
         Route::get('/shop/create', 'ShopsController@create')->name("createShop");
         Route::post('/shop/store', 'ShopsController@store');
         Route::post('/shop/load_list', 'ShopsController@load_list');
@@ -30,11 +30,10 @@ Route::group(['middleware' => ['auth','permissions']], function () {
         Route::post('/shop/{id}/update', 'ShopsController@update')->name("updateShop");
         Route::post('/shop/check_user_duplicate', 'ShopsController@check_user_duplicate');
 
-        Route::get('/order','OrdersController@index')->name("orders");
-        Route::get('/order/create','OrdersController@create')->name("createOrder");
-        Route::post('/order/store','OrdersController@store');
+        Route::get('/order', 'OrdersController@index')->name("orders");
+        Route::get('/order/create', 'OrdersController@create')->name("createOrder");
+        Route::post('/order/store', 'OrdersController@store');
         Route::post('/order/load_list', 'OrdersController@load_list');
-        
 
 
     });
@@ -42,29 +41,34 @@ Route::group(['middleware' => ['auth','permissions']], function () {
         Route::get('/shipper', 'ShippersController@index')->name("shippers");
         Route::get('/shipper/create', 'ShippersController@create');
         Route::post('/shipper/store', 'ShippersController@store');
-        Route::get('/shipper/{shipper_id}/edit','ShippersController@edit');
-        Route::post('/shipper/{id}/update','ShippersController@update');
-        Route::post('/shipper/load_list','ShippersController@load_list');
+        Route::get('/shipper/{shipper_id}/edit', 'ShippersController@edit');
+        Route::post('/shipper/{id}/update', 'ShippersController@update');
+        Route::post('/shipper/load_list', 'ShippersController@load_list');
         Route::post('/shipper/check_new_user_duplicate', 'ShippersController@check_new_user_duplicate');
         Route::post('/shipper/check_update_user_duplicate', 'ShippersController@check_update_user_duplicate');
     });
 });
 
 
+Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
 
-Route::group(['prefix' => 'api/v1','middleware' => 'auth:api'], function () {
+    Route::post('user/changeType', 'UserRest@changeUserType');
+
+    Route::get('check/isShipper', 'ShipperRest@isShipper');
 
     Route::post('find', 'ShipperRest@findByLocation');
 
-    Route::get('shipper/take/{id}','ShipperRest@takeOrder');
+    Route::get('shipper/take/{id}', 'ShipperRest@takeOrder');
     Route::post('shipper/update/status/{id}', 'ShipperRest@updateOrderStatusShipper');
     Route::post('shipper/update/location', 'ShipperRest@updateLocation');
+    Route::get('shipper/getTakenOrders/', 'ShipperRest@getTakenOrders');
 
     Route::post('order/{id}', 'OrderRest@update');
-    Route::get('order/taken/{id}','OrderRest@getOrderTaken');
+    Route::get('order/taken/{id}', 'OrderRest@getOrderTaken');
 
-    Route::get('shop/shipperLocation/{id}','ShopRest@getShipperLocation');
-    
+
+    Route::get('shop/shipperLocation/{id}', 'ShopRest@getShipperLocation');
+
     Route::resource('shop', 'ShopRest');
     Route::resource('shipper', 'ShipperRest');
     Route::resource('order', 'OrderRest');
