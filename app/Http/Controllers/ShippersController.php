@@ -37,20 +37,20 @@ class ShippersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        $validator = \Validator::make($request->all(),  [
-            'code'              => 'required|max:15|unique:users',
-            'name'              => 'required|max:255',
-            'username'          => 'required|max:255|unique:users',
-            'password'          => 'required|min:6|confirmed',
-            'phone_number'      => 'required|min10|max:11',
-            'email'             => 'email|max:255|unique:users',
-            'home_number'       => 'required|max:255',
-            'home_ward'         => 'required|max:255',
-            'home_district'     => 'required|max:255',
-            'home_city'         => 'required|max:255',
-            'identity_card'     => 'required|min9|max:12',
-            'vehicle_type_id'   => 'required',
-            'licence_plate'     => 'required|max:10',
+        $validator = \Validator::make($request->all(), [
+                    'code' => 'required|max:15|unique:users',
+                    'name' => 'required|max:255',
+                    'username' => 'required|max:255|unique:users',
+                    'password' => 'required|min:6|confirmed',
+                    'phone_number' => 'required|min10|max:11',
+                    'email' => 'email|max:255|unique:users',
+                    'home_number' => 'required|max:255',
+                    'home_ward' => 'required|max:255',
+                    'home_district' => 'required|max:255',
+                    'home_city' => 'required|max:255',
+                    'identity_card' => 'required|min9|max:12',
+                    'vehicle_type_id' => 'required',
+                    'licence_plate' => 'required|max:10',
         ]);
         if ($validator->fails()) {
             flash_message("Tạo tài xế mới không thành công!", "danger");
@@ -127,16 +127,16 @@ class ShippersController extends Controller {
     public function update(Request $request, $id) {
         //dd($request->all());
         $validator = \Validator::make($request->all(), [
-            'code'            => 'required|max:15|unique:users',
-            'name'            => 'required|max:255',
-            'phone_number'    => 'required|min10|max:11',
-            'email'           => 'email|max:255|unique:users',
-            'home_ward'       => 'required|max:255',
-            'home_district'   => 'required|max:255',
-            'home_city'       => 'required|max:255',
-            'identity_card'   => 'required|min9|max:12',
-            'vehicle_type_id' => 'required',
-            'licence_plate'   => 'required|max:10',
+                    'code' => 'required|max:15|unique:users',
+                    'name' => 'required|max:255',
+                    'phone_number' => 'required|min10|max:11',
+                    'email' => 'email|max:255|unique:users',
+                    'home_ward' => 'required|max:255',
+                    'home_district' => 'required|max:255',
+                    'home_city' => 'required|max:255',
+                    'identity_card' => 'required|min9|max:12',
+                    'vehicle_type_id' => 'required',
+                    'licence_plate' => 'required|max:10',
         ]);
         if ($validator->fails()) {
             flash_message("Sửa tài xế không thành công!", "danger");

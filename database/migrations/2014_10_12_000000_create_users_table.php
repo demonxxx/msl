@@ -3,15 +3,14 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration
-{
+class CreateUsersTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id')->unsigned();
             $table->string('code')->unique();
@@ -25,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->smallInteger('status')->nullable();
             $table->string('api_token', 60)->unique();
             $table->string('avatar')->nullable();
+            $table->text('gcm_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
@@ -36,8 +36,8 @@ class CreateUsersTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::drop('users');
     }
+
 }
