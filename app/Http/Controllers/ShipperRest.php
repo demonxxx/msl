@@ -159,7 +159,7 @@ class ShipperRest extends Controller
             return Response::json(
                 array(
                     'accept'   => 1,
-                    'shippers' => $orders,
+                    'orders' => $orders,
                 ),
                 200
             );
