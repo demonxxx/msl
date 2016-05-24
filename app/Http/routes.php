@@ -56,8 +56,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
 
     Route::get('check/isShipper', 'ShipperRest@isShipper');
 
-    Route::post('find', 'ShipperRest@findByLocation');
-
+    Route::post('shipper/find', 'ShipperRest@findByLocation');
     Route::get('shipper/take/{id}', 'ShipperRest@takeOrder');
     Route::post('shipper/update/status/{id}', 'ShipperRest@updateOrderStatusShipper');
     Route::post('shipper/update/location', 'ShipperRest@updateLocation');
@@ -66,7 +65,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
     Route::post('order/{id}', 'OrderRest@update');
     Route::get('order/taken/{id}', 'OrderRest@getOrderTaken');
 
-
+    Route::post('shop/getShipperLocations', 'ShopRest@getShipperIntoDistance');
     Route::get('shop/shipperLocation/{id}', 'ShopRest@getShipperLocation');
 
     Route::resource('shop', 'ShopRest');
