@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Shipper;
+use Validator;
+use DB;
 use Illuminate\Support\Facades\Response;
 
 class ShopRest extends Controller
@@ -92,6 +94,36 @@ class ShopRest extends Controller
                     'accept'    => 1,
                     'longitude' => $shipper->longitude,
                     'latitude'  => $shipper->latitude,
+                ),
+                200
+            );
+        }
+    }
+
+    public function getShipperIntoDistance(Request $request){
+        $validator = Validator::make($request->all(), [
+            "longitude" => "required",
+            "latitude"  => "required",
+            "distance" => "required",
+        ]);
+        if ($validator->fails()) {
+            return Response::json(
+                array(
+                    'accept'   => 0,
+                    'messages' => $validator->messages(),
+                ),
+                200
+            );
+        } else {
+            $shippers = DB::table('shippers')
+                ->select(DB::raw('user_id, latitude, longitude, ( 6371 * acos( cos( radians('.$request->latitude.') ) 
+                * cos( radians( latitude ) ) * cos( radians( longitude ) - radians('.$request->longitude.') ) + 
+                sin( radians('.$request->latitude.') ) * sin( radians( latitude ) ) ) ) AS distance'))
+                ->having('distance', '<', $request->distance)->get();
+            return Response::json(
+                array(
+                    'accept'   => 1,
+                    'shippers' => $shippers,
                 ),
                 200
             );

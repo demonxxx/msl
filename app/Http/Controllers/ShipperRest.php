@@ -11,6 +11,7 @@ use App\Order;
 use App\Shipper;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Response;
 
@@ -136,6 +137,7 @@ class ShipperRest extends Controller
         $validator = Validator::make($request->all(), [
             "longitude" => "required",
             "latitude"  => "required",
+            "distance"  => "required",
         ]);
         if ($validator->fails()) {
             return Response::json(
@@ -146,18 +148,18 @@ class ShipperRest extends Controller
                 200
             );
         } else {
-            $orders = Order::where('status', ORDER_PENDING)->get();
-            foreach ($orders as $order) {
-                $user = User::find($order->user_id);
-                $user_result = array("name"         => $user->name,
-                                     "email"        => $user->email,
-                                     "phone_number" => $user->phone_number);
-                $order->user = $user_result;
-            }
+            $orders = DB::table('orders')
+                ->join('users', 'users.id', '=', 'orders.user_id')
+                ->select(DB::raw('users.id as owner_id, users.name as owner_name, users.email as owner_email, users.phone_number as owner_phone, orders.* , 
+                ( 6371 * acos( cos( radians('.$request->latitude.')) 
+                * cos( radians( orders.latitude ) ) * cos( radians( orders.longitude ) - radians('.$request->longitude.') ) + 
+                sin( radians('.$request->latitude.') ) * sin( radians( orders.latitude ) ) ) ) AS distance'))
+                ->where('orders.status', ORDER_PENDING)
+                ->having('distance', '<', $request->distance)->orderBy('orders.created_at', 'asc')->get();
             return Response::json(
                 array(
                     'accept'   => 1,
-                    'messages' => $orders->toArray(),
+                    'shippers' => $orders,
                 ),
                 200
             );
