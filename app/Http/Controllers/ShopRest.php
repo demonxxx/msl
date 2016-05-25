@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Shipper;
+use App\User;
 use Validator;
 use DB;
 use Illuminate\Support\Facades\Response;
@@ -79,7 +80,7 @@ class ShopRest extends Controller
 
     public function getShipperLocation($id)
     {
-        $shipper = Shipper::where('user_id', $id)->select('longitude', 'latitude')->first();
+        $shipper = User::find($id);
         if (empty($shipper)) {
             return Response::json(
                 array(
@@ -115,10 +116,12 @@ class ShopRest extends Controller
                 200
             );
         } else {
-            $shippers = DB::table('shippers')
-                ->select(DB::raw('user_id, latitude, longitude, ( 6371 * acos( cos( radians('.$request->latitude.') ) 
+            $shippers = DB::table('users')
+                ->select(DB::raw('id, name, email, phone_number, latitude, longitude, ( 6371 * acos( cos( radians('.$request->latitude.') ) 
                 * cos( radians( latitude ) ) * cos( radians( longitude ) - radians('.$request->longitude.') ) + 
                 sin( radians('.$request->latitude.') ) * sin( radians( latitude ) ) ) ) AS distance'))
+                ->where('user_type', SHIPPER_TYPE)
+                ->where('isOnline', ONLINE)
                 ->having('distance', '<', $request->distance)->get();
             return Response::json(
                 array(

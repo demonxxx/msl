@@ -77,4 +77,5 @@ class Shipper extends Model {
         }
         return $builder;
     }
+
 }

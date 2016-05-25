@@ -6,6 +6,8 @@ define("RANDOM_CODE_END", 200);
 define("SHOP_TYPE", 1);
 define("SHIPPER_TYPE", 2);
 define("ADMIN_TYPE", 3);
+define('ONLINE', 1);
+define("OFFLINE", 0);
 
 define("ORDER_PENDING", 1);
 define("ORDER_TAKEN_ORDER", 2);
