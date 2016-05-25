@@ -10,6 +10,7 @@ use App\User;
 use App\Order;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use App\ShopOrderHistory;
 use Illuminate\Support\Facades\Response;
 
 class OrderRest extends Controller
@@ -90,7 +91,10 @@ class OrderRest extends Controller
             $order->latitude = $request->latitude;
             $order->description = $request->description;
             $user->orders()->save($order);
-
+            $shopOrderHistory = new ShopOrderHistory;
+            $shopOrderHistory->shop_id = $user->id;
+            $shopOrderHistory->order_id = $order->id;
+            $shopOrderHistory->save();
             // run push notification service
             $this->pushOrderNotification($order);
 
