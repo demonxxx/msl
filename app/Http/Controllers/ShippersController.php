@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;
 use App\Shipper;
+use App\Shop_shipper;
 use App\Helpers\helpers;
+use Auth;
 
 class ShippersController extends Controller {
 
@@ -42,13 +44,13 @@ class ShippersController extends Controller {
                     'name' => 'required|max:255',
                     'username' => 'required|max:255|unique:users',
                     'password' => 'required|min:6|confirmed',
-                    'phone_number' => 'required|min10|max:11',
+                    'phone_number' => 'required|min:10|max:11',
                     'email' => 'email|max:255|unique:users',
                     'home_number' => 'required|max:255',
                     'home_ward' => 'required|max:255',
                     'home_district' => 'required|max:255',
                     'home_city' => 'required|max:255',
-                    'identity_card' => 'required|min9|max:12',
+                    'identity_card' => 'required|min:9|max:12',
                     'vehicle_type_id' => 'required',
                     'licence_plate' => 'required|max:10',
         ]);
@@ -129,12 +131,12 @@ class ShippersController extends Controller {
         $validator = \Validator::make($request->all(), [
                     'code' => 'required|max:15|unique:users',
                     'name' => 'required|max:255',
-                    'phone_number' => 'required|min10|max:11',
+                    'phone_number' => 'required|min:10|max:11',
                     'email' => 'email|max:255|unique:users',
                     'home_ward' => 'required|max:255',
                     'home_district' => 'required|max:255',
                     'home_city' => 'required|max:255',
-                    'identity_card' => 'required|min9|max:12',
+                    'identity_card' => 'required|min:9|max:12',
                     'vehicle_type_id' => 'required',
                     'licence_plate' => 'required|max:10',
         ]);
@@ -213,6 +215,25 @@ class ShippersController extends Controller {
         } else {
             return "fail";
         }
+    }
+
+    public function notable_list() {
+        return view('app.shippers.notable_list');
+    }
+
+    public function load_notable_list(Request $request) {
+        $posts = get_post_datatable_new($request->all());
+        $shop_shipper = new Shop_shipper();
+        $data = $shop_shipper->load_notable_list(Auth::user()->id, $posts);
+        $length = $shop_shipper->count_all_notable_list($posts);
+        $result = build_json_datatable_new($data, $length, $posts);
+        return $result;
+    }
+
+    public function notable_shipper(Request $request) {
+        $shop_shipper = new Shop_shipper();
+        $shop_shipper->notable_shipper($request->shipper_id, $request->shop_id, $request->notable);
+        echo json_encode(['message' => 'success']);
     }
 
 }

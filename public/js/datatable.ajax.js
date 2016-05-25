@@ -94,7 +94,8 @@ function setAjaxDataTable(config) {
     var sortAble = true;
     sortAble = config['sortable'];
     var convert_colums = [];
-    for (var i = 0; i < colums.length; i++) {
+    var columns_length = (config['columns_length'] !== undefined) ? config['columns_length'] : colums.length;
+    for (var i = 0; i < columns_length; i++) {
         if (sortAble === false) {
             convert_colums.push({"bSortable": false, "mData": $colums[i]});
         } else {
@@ -196,7 +197,8 @@ function setAjaxDataTable(config) {
                     callback(oSettings);
                 }
             }
-        }, "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+        },
+        "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
             if (config['fnRowCallback'] !== undefined) {
                 var callback = config['fnRowCallback'];
                 if (callback) {
@@ -204,6 +206,14 @@ function setAjaxDataTable(config) {
                 }
             }
             return nRow;
+        },
+        "createdRow": function (row, data, index) {
+            if (config['createdRow'] !== undefined) {
+                var callback = config['createdRow'];
+                if (callback) {
+                    callback(row, data, index);
+                }
+            }
         },
         "aoColumns": convert_colums,
         "aoColumnDefs": colums_render,
