@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Shipper;
+use App\ShopOrderHistory;
 use App\User;
 use Validator;
 use DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 class ShopRest extends Controller
@@ -101,6 +103,8 @@ class ShopRest extends Controller
         }
     }
 
+//    public function
+
     public function getShipperIntoDistance(Request $request){
         $validator = Validator::make($request->all(), [
             "longitude" => "required",
@@ -130,6 +134,66 @@ class ShopRest extends Controller
                 ),
                 200
             );
+        }
+    }
+
+    public function getOrders(){
+        $shop_id = Auth::guard('api')->id();
+        $shop_orders = DB::table('shop_order_histories')
+            ->join('orders', 'orders.id', '=', 'shop_order_histories.order_id')
+            ->where('shop_order_histories.shop_id', $shop_id)
+            ->where('shop_order_histories.deleted_at')
+            ->select('orders.*', 'shop_order_histories.id as shop_order_id')
+            ->get();
+        return Response::json(
+            array(
+                'accept' => 1,
+                'orders' => $shop_orders,
+            ),
+            200
+        );
+    }
+
+    public function deleteShopOrderHistory($id){
+        $shopOrderHistory = ShopOrderHistory::find($id);
+        if (empty($shopOrderHistory)){
+            return Response::json(
+                array(
+                    'accept' => 0,
+                    'message' => 'Lịch sử đơn hàng không tồn tại',
+                ),
+                200
+            );
+        }else {
+            $shop_id = Auth::guard('api')->id();
+            if($shopOrderHistory->shop_id == $shop_id){
+                if ($shopOrderHistory->trashed()) {
+                    return Response::json(
+                        array(
+                            'accept' => 0,
+                            'message' => 'Lịch sử đơn hàng đã bị xóa trước đó!',
+                        ),
+                        200
+                    );
+                }else {
+                    $shopOrderHistory->delete();
+                    return Response::json(
+                        array(
+                            'accept' => 1,
+                            'message' => 'Xóa lịch sử đơn hàng thành công!',
+                        ),
+                        200
+                    );
+                }
+            }else{
+                return Response::json(
+                    array(
+                        'accept' => 0,
+                        'message' => 'Bạn không có quyền xóa lịch sử đơn hàng!',
+                    ),
+                    200
+                );
+            }
         }
     }
 
