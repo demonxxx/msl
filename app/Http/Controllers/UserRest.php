@@ -126,6 +126,32 @@ class UserRest extends Controller
         }
     }
 
+    public function updateOnlineStatus(Request $request){
+        $user_id = Auth::guard('api')->id();
+        $user = User::find($user_id);
+        $validator = Validator::make($request->all(), [
+            "status" => "required|integer|between:0,1",
+        ]);
+        if ($validator->fails()) {
+            return Response::json(
+                array(
+                    'accept'   => 0,
+                    'messages' => $validator->messages(),
+                ),
+                200
+            );
+        } else {
+            $user->isOnline = $request->status;
+            $user->save();
+            return Response::json(
+                array(
+                    'accept'   => 1,
+                ),
+                200
+            );
+        }
+    }
+
     public function index()
     {
         //
