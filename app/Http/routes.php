@@ -67,6 +67,8 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
     Route::post('order/{id}', 'OrderRest@update');
     Route::get('order/taken/{id}', 'OrderRest@getOrderTaken');
 
+    Route::get('shop/getOrders', 'ShopRest@getOrders');
+    Route::get('shop/deleteOrderHistory/{id}', 'ShopRest@deleteShopOrderHistory');
     Route::post('shop/getShipperLocations', 'ShopRest@getShipperIntoDistance');
     Route::get('shop/shipperLocation/{id}', 'ShopRest@getShipperLocation');
 
