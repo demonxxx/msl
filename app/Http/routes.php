@@ -1,15 +1,15 @@
 <?php
 
 /*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
+  |--------------------------------------------------------------------------
+  | Application Routes
+  |--------------------------------------------------------------------------
+  |
+  | Here is where you can register all of the routes for an application.
+  | It's a breeze. Simply tell Laravel the URIs it should respond to
+  | and give it the controller to call when that URI is requested.
+  |
+ */
 
 use Illuminate\Http\Request;
 
@@ -34,8 +34,9 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::get('/order/create', 'OrdersController@create')->name("createOrder");
         Route::post('/order/store', 'OrdersController@store');
         Route::post('/order/load_list', 'OrdersController@load_list');
-
-
+        Route::get('/shipper/notable_list', 'ShippersController@notable_list');
+        Route::post('/shipper/load_notable_list', 'ShippersController@load_notable_list');
+        Route::get('/shipper/{shipper_id}/{shop_id}/{notable}/notable_shipper', 'ShippersController@notable_shipper');
     });
     Route::group(['roles' => ['shipper', 'admin']], function () {
         Route::get('/shipper', 'ShippersController@index')->name("shippers");

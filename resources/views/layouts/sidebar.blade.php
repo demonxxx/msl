@@ -28,63 +28,69 @@
                                 </ul>
                             </li>
 
-                                @can('shop')
+                            @can('shop')
 
-                                        <li>
-                                            <a role="button" tabindex="0"><i class="fa fa-list"></i> <span>Khách hàng</span></a>
-                                            <ul>
-                                                <li><a href="{{url( '/shop/create' )}}"><i class="fa fa-caret-right"></i> Thêm khách hàng mới</a></li>
-                                                <li><a href="{{url('/shop')}}"><i class="fa fa-caret-right"></i> Danh sách khách hàng</a></li>
-                                                <li><a href="form-wizard.html"><i class="fa fa-caret-right"></i> Danh sách yêu cầu thuê theo tháng
-                                                <span class="badge badge-success">13</span></a></li>
-                                                <li><a href="form-upload.html"><i class="fa fa-caret-right"></i> Danh sách hợp đồng thuê theo tháng</a></li>
-                                                <li><a href="form-imgcrop.html"><i class="fa fa-caret-right"></i> Danh sách đơn hàng</a></li>
-                                            </ul>
-                                        </li>
+                            <li>
+                                <a role="button" tabindex="0"><i class="fa fa-list"></i> <span>Khách hàng</span></a>
+                                <ul>
+                                    <li><a href="{{url( '/shop/create' )}}"><i class="fa fa-caret-right"></i> Thêm khách hàng mới</a></li>
+                                    <li><a href="{{url('/shop')}}"><i class="fa fa-caret-right"></i> Danh sách khách hàng</a></li>
+                                    <li><a href="form-wizard.html"><i class="fa fa-caret-right"></i> Danh sách yêu cầu thuê theo tháng
+                                            <span class="badge badge-success">13</span></a></li>
+                                    <li><a href="form-upload.html"><i class="fa fa-caret-right"></i> Danh sách hợp đồng thuê theo tháng</a></li>
+                                    <li><a href="form-imgcrop.html"><i class="fa fa-caret-right"></i> Danh sách đơn hàng</a></li>
+                                </ul>
+                            </li>
 
-                                        <li>
-                                            <a role="button" tabindex="0"><i class="fa fa-list"></i> <span>Đơn hàng</span></a>
-                                            <ul>
-                                                <li><a href="{{url( '/order/create' )}}"><i class="fa fa-caret-right"></i> Thêm đơn hàng mới</a></li>
-                                                <li><a href="{{url('/order')}}"><i class="fa fa-caret-right"></i> Danh sách đơn hàng</a></li>
-                                            </ul>
-                                        </li>
+                            <li>
+                                <a role="button" tabindex="0"><i class="fa fa-list"></i> <span>Đơn hàng</span></a>
+                                <ul>
+                                    <li><a href="{{url( '/order/create' )}}"><i class="fa fa-caret-right"></i> Thêm đơn hàng mới</a></li>
+                                    <li><a href="{{url('/order')}}"><i class="fa fa-caret-right"></i> Danh sách đơn hàng</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a role="button" tabindex="0"><i class="fa fa-list"></i> <span>Tài xế</span></a>
+                                <ul>
+                                    <li><a href="{{url( '/shipper/notable_list' )}}"><i class="fa fa-caret-right"></i> Đánh giá tài xế</a></li>
+                                </ul>
+                            </li>
 
-                                @endcan
-                                @can('shipper')
+                            @endcan
+                            @can('shipper')
 
-                                        <li>
-                                            <a role="button" tabindex="0"><i class="fa fa-pencil"></i> <span>Tài xế</span></a>
-                                            <ul>
-                                                <li><a href="{{url( '/shipper/create' )}}"><i class="fa fa-caret-right"></i> Thêm tài xế</a></li>
-                                                <li><a href="{{url('/shipper')}}"><i class="fa fa-caret-right"></i> Danh sách tài xế</a></li>
-                                                <li><a href="ui-typography.html"><i class="fa fa-caret-right"></i> Danh sách tài xế yêu thích</a></li>
-                                                <li><a href="ui-navs.html"><i class="fa fa-caret-right"></i> Danh sách tài xế cấm nhận</a></li>
-                                                <li><a href="ui-modals.html"><i class="fa fa-caret-right"></i> Danh sách tài xế thuê theo tháng</a></li>
+                            <li>
+                                <a role="button" tabindex="0"><i class="fa fa-pencil"></i> <span>Tài xế</span></a>
+                                <ul>
+                                    <li><a href="{{url( '/shipper/create' )}}"><i class="fa fa-caret-right"></i> Thêm tài xế</a></li>
+                                    <li><a href="{{url('/shipper')}}"><i class="fa fa-caret-right"></i> Danh sách tài xế</a></li>
+                                    <li><a href="ui-typography.html"><i class="fa fa-caret-right"></i> Danh sách tài xế yêu thích</a></li>
+                                    <li><a href="ui-navs.html"><i class="fa fa-caret-right"></i> Danh sách tài xế cấm nhận</a></li>
+                                    <li><a href="ui-modals.html"><i class="fa fa-caret-right"></i> Danh sách tài xế thuê theo tháng</a></li>
 
-                                            </ul>
-                                        </li>
+                                </ul>
+                            </li>
 
-                                @endcan
+                            @endcan
 
                             @can('admin')
-                                 <li>
-                                    <a role="button" tabindex="0"><i class="fa fa-list"></i> <span>Cài đặt</span></a>
-                                    <ul>
-                                        <li><a href="ui-general.html"><i class="fa fa-caret-right"></i> Bảng giá</a></li>
-                                        <li><a href="ui-buttons-icons.html"><i class="fa fa-caret-right"></i> Loại xe</a></li>
-                                        <li><a href="ui-typography.html"><i class="fa fa-caret-right"></i> Dịch vụ</a></li>
-                                        <li><a href="ui-navs.html"><i class="fa fa-caret-right"></i> Nhóm người dùng</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a role="button" tabindex="0"><i class="fa fa-pencil"></i> <span>Quản lý người dùng</span></a>
-                                    <ul>
-                                        <li><a href="ui-general.html"><i class="fa fa-caret-right"></i> Thêm người dùng</a></li>
-                                        <li><a href="ui-buttons-icons.html"><i class="fa fa-caret-right"></i> Danh sách người dùng</a></li>
+                            <li>
+                                <a role="button" tabindex="0"><i class="fa fa-list"></i> <span>Cài đặt</span></a>
+                                <ul>
+                                    <li><a href="ui-general.html"><i class="fa fa-caret-right"></i> Bảng giá</a></li>
+                                    <li><a href="ui-buttons-icons.html"><i class="fa fa-caret-right"></i> Loại xe</a></li>
+                                    <li><a href="ui-typography.html"><i class="fa fa-caret-right"></i> Dịch vụ</a></li>
+                                    <li><a href="ui-navs.html"><i class="fa fa-caret-right"></i> Nhóm người dùng</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a role="button" tabindex="0"><i class="fa fa-pencil"></i> <span>Quản lý người dùng</span></a>
+                                <ul>
+                                    <li><a href="ui-general.html"><i class="fa fa-caret-right"></i> Thêm người dùng</a></li>
+                                    <li><a href="ui-buttons-icons.html"><i class="fa fa-caret-right"></i> Danh sách người dùng</a></li>
 
-                                    </ul>
-                                </li>
+                                </ul>
+                            </li>
                             @endcan
                         </ul>
                         <!--/ NAVIGATION Content -->
@@ -111,7 +117,7 @@
                                           sparkBarColor="#92424e"
                                           sparkBarWidth="6px"
                                           sparkHeight="36px">
-                                    Loading...</span>
+                                        Loading...</span>
                                 </a>
                                 <div class="media-body">
                                     This week sales
@@ -127,7 +133,7 @@
                                           sparkBarColor="#397193"
                                           sparkBarWidth="6px"
                                           sparkHeight="36px">
-                                    Loading...</span>
+                                        Loading...</span>
                                 </a>
                                 <div class="media-body">
                                     This week balance
@@ -151,33 +157,33 @@
                     <div class="panel-body">
                         <div class="form-group">
                             <div class="row">
-                              <label class="col-xs-8 control-label">Switch ON</label>
-                              <div class="col-xs-4 control-label">
-                                <div class="onoffswitch greensea">
-                                  <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch-on" checked="">
-                                  <label class="onoffswitch-label" for="switch-on">
-                                    <span class="onoffswitch-inner"></span>
-                                    <span class="onoffswitch-switch"></span>
-                                  </label>
+                                <label class="col-xs-8 control-label">Switch ON</label>
+                                <div class="col-xs-4 control-label">
+                                    <div class="onoffswitch greensea">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch-on" checked="">
+                                        <label class="onoffswitch-label" for="switch-on">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
                                 </div>
-                              </div>
                             </div>
-                          </div>
+                        </div>
 
-                          <div class="form-group">
+                        <div class="form-group">
                             <div class="row">
-                              <label class="col-xs-8 control-label">Switch OFF</label>
-                              <div class="col-xs-4 control-label">
-                                <div class="onoffswitch greensea">
-                                  <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch-off">
-                                  <label class="onoffswitch-label" for="switch-off">
-                                    <span class="onoffswitch-inner"></span>
-                                    <span class="onoffswitch-switch"></span>
-                                  </label>
+                                <label class="col-xs-8 control-label">Switch OFF</label>
+                                <div class="col-xs-4 control-label">
+                                    <div class="onoffswitch greensea">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch-off">
+                                        <label class="onoffswitch-label" for="switch-off">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
                                 </div>
-                              </div>
                             </div>
-                          </div>
+                        </div>
                     </div>
                 </div>
             </div>
