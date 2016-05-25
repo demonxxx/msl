@@ -290,14 +290,63 @@ class ShipperRest extends Controller
     public function getTakenOrders()
     {
         $shipper_id = Auth::guard('api')->id();
-        $taken_order = Order::where('shipper_id', $shipper_id)->get();
+        $taken_orders = DB::table('shipper_order_histories')
+            ->join('orders', 'orders.id', '=', 'shipper_order_histories.order_id')
+            ->where('shipper_order_histories.shipper_id', $shipper_id)
+            ->where('shipper_order_histories.deleted_at')
+            ->select('orders.*', 'shipper_order_histories.id as shipper_order_id')
+            ->get();
         return Response::json(
             array(
                 'accept' => 1,
-                'orders' => $taken_order->toArray(),
+                'orders' => $taken_orders,
             ),
             200
         );
+    }
+
+    public function deleteShipperOrderHistory($id){
+        $shipperOrderHistory = ShipperOrderHistory::find($id);
+        if(empty($shipperOrderHistory)){
+            return Response::json(
+                array(
+                    'accept' => 0,
+                    'message' => 'Lịch sử không tồn tại',
+                ),
+                200
+            );
+        }else {
+            $shipper_id = Auth::guard('api')->id();
+            if($shipperOrderHistory->shipper_id == $shipper_id){
+                if ($shipperOrderHistory->trashed()) {
+                    return Response::json(
+                        array(
+                            'accept' => 0,
+                            'message' => 'Lịch sử nhận đã bị xóa trước đó!',
+                        ),
+                        200
+                    );
+                }else {
+                    $shipperOrderHistory->delete();
+                    return Response::json(
+                        array(
+                            'accept' => 1,
+                            'message' => 'Xóa lịch sử nhận thành công!',
+                        ),
+                        200
+                    );
+                }
+            }else {
+                return Response::json(
+                    array(
+                        'accept' => 0,
+                        'message' => 'Bạn không có quyền xóa lịch sử nhận đơn hàng!',
+                    ),
+                    200
+                );
+            }
+
+        }
     }
 
     public function isShipper()
