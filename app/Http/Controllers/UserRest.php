@@ -24,6 +24,8 @@ class UserRest extends Controller
         if (Auth::check()) {
             $user = Auth::user();
             $info = $user->shop;
+            $user->isOnline = ONLINE;
+            $user->save();
             return Response::json(
                 array(
                     'accept' => 1,
@@ -36,6 +38,8 @@ class UserRest extends Controller
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
                 $user = Auth::user();
                 $info = $user->shop;
+                $user->isOnline = ONLINE;
+                $user->save();
                 return Response::json(
                     array(
                         'accept' => 1,
@@ -58,6 +62,9 @@ class UserRest extends Controller
     public function logout()
     {
         if (Auth::check()) {
+            $user = Auth::user();
+            $user->isOnline = OFFLINE;
+            $user->save();
             Auth::logout();
             return Response::json(
                 array(
