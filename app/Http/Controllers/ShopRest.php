@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -120,17 +121,18 @@ class ShopRest extends Controller
                 200
             );
         } else {
+            DB::enableQueryLog();
             $shippers = DB::table('users')
                 ->select(DB::raw('id, name, email, phone_number, latitude, longitude, ( 6371 * acos( cos( radians('.$request->latitude.') ) 
                 * cos( radians( latitude ) ) * cos( radians( longitude ) - radians('.$request->longitude.') ) + 
                 sin( radians('.$request->latitude.') ) * sin( radians( latitude ) ) ) ) AS distance'))
                 ->where('user_type', SHIPPER_TYPE)
-                ->where('isOnline', ONLINE)
+                ->where(DB::raw('TIMESTAMPDIFF(SECOND,lastUpdate,"'.Carbon::now().'")'), '<', TIME_CHECK_ONLINE)
                 ->having('distance', '<', $request->distance)->get();
             return Response::json(
                 array(
                     'accept'   => 1,
-                    'shippers' => $shippers,
+                    'shippers' =>  $shippers,
                 ),
                 200
             );

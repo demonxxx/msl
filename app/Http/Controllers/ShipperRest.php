@@ -15,7 +15,6 @@ use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Response;
 use App\ShipperOrderHistory;
-
 class ShipperRest extends Controller
 {
     /**
@@ -112,6 +111,7 @@ class ShipperRest extends Controller
             $shipper = User::find(Auth::guard('api')->id());
             $shipper->longitude = $request->longitude;
             $shipper->latitude = $request->latitude;
+            $shipper->lastUpdate = Carbon::now();
             $shipper->save();
             return Response::json(
                 array(
