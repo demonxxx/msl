@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration
             $table->smallInteger('isOnline')->default(0);
             $table->float('latitude')->nullable();
             $table->float('longitude')->nullable();
+            $table->dateTime('lastUpdate')->nullable();
             $table->string('avatar')->nullable();
             $table->rememberToken();
             $table->timestamps();

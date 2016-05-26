@@ -6,6 +6,7 @@ define("SHIPPER_TYPE", 2);
 define("ADMIN_TYPE", 3);
 define('ONLINE', 1);
 define("OFFLINE", 0);
+define("TIME_CHECK_ONLINE", 30);
 
 define("ORDER_PENDING", 1);
 define("ORDER_TAKEN_ORDER", 2);
