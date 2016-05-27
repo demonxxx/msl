@@ -1,6 +1,5 @@
 @extends('app.shops.shop')
 @section('shop')
-@include('partials.flash')
         <!-- tile -->
 <script src="{{ asset("theme/js/plugins/parsley/parsley.min.js") }}"></script>
 <section class="tile">
