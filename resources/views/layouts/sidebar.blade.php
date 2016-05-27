@@ -68,6 +68,5 @@
                 </li>
             @endcan
         </ul>
-
     </div>
 </nav>

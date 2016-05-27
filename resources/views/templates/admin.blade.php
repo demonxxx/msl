@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html>
 
 <head>
@@ -10,7 +11,6 @@
     <link href="{{ asset("theme/font-awesome/css/font-awesome.css") }}" rel="stylesheet">
     <link href="{{ asset("theme/css/animate.css") }}" rel="stylesheet">
     <link href="{{ asset("theme/css/style.css") }}" rel="stylesheet">
-
 
     <!-- Mainly scripts -->
     <script src="{{ asset("theme/js/jquery-2.1.1.js") }}"></script>
@@ -51,8 +51,5 @@
         @include('layouts.footer')
     </div>
 </div>
-
-
 </body>
-
 </html>

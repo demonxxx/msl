@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-trait NotificationService
-{
+use App\Configs;
+
+trait NotificationService {
+
     public function pushOrderNotification($order) {
         // just for test apple remote notification
-
         /////////////////////////////////////////////////////////////////
         // Put your device token here (without spaces):
         $deviceToken = '5b89726d88914849d2c7534a91bf6f1c1bbd4cc799abb3ed879b6c24f55ad495';
@@ -19,29 +20,75 @@ trait NotificationService
         stream_context_set_option($ctx, 'ssl', 'passphrase', $passphrase);
 
         $fp = stream_socket_client(
-          'ssl://gateway.sandbox.push.apple.com:2195', $err,
-          $errstr, 60, STREAM_CLIENT_CONNECT|STREAM_CLIENT_PERSISTENT, $ctx);
+                'ssl://gateway.sandbox.push.apple.com:2195', $err, $errstr, 60, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $ctx);
         if ($fp) {
-          // Create the payload body
-          $url = 'http://13.76.129.137';
-          $body['aps'] = array(
-            'alert' => $order->name,
-            'sound' => 'default',
-            'link_url' => $url,
-            'category' => "NEWS_CATEGORY",
+            // Create the payload body
+            $url = 'http://13.76.129.137';
+            $body['aps'] = array(
+                'alert' => $order->name,
+                'sound' => 'default',
+                'link_url' => $url,
+                'category' => "NEWS_CATEGORY",
             );
 
-          // Encode the payload as JSON
-          $payload = json_encode($body);
+            // Encode the payload as JSON
+            $payload = json_encode($body);
 
-          // Build the binary notification
-          $msg = chr(0) . pack('n', 32) . pack('H*', $deviceToken) . pack('n', strlen($payload)) . $payload;
+            // Build the binary notification
+            $msg = chr(0) . pack('n', 32) . pack('H*', $deviceToken) . pack('n', strlen($payload)) . $payload;
 
-          // Send it to the server
-          $result = fwrite($fp, $msg, strlen($msg));
+            // Send it to the server
+            $result = fwrite($fp, $msg, strlen($msg));
 
-          // Close the connection to the server
+            // Close the connection to the server
         }
         fclose($fp);
     }
+
+    /**
+     * Sending Push Notification
+     * $registatoin_ids an array id of user who get notification
+     * $message message push to user
+     */
+    public function send_gcm_notification($registatoin_ids, $message) {
+        // Set POST variables
+        $config = new Configs;
+        $gcm_config = $config->get_gcm_config();
+        $url = $gcm_config[0]->url;
+
+        $fields = array(
+            'registration_ids' => $registatoin_ids,
+            'data' => array("message" => $message)
+        );
+
+        $headers = array(
+            'Authorization: key=' . $gcm_config[0]->description,
+            'Content-Type: application/json'
+        );
+        // Open connection
+        $ch = curl_init();
+
+        // Set the url, number of POST vars, POST data
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        // Disabling SSL Certificate support temporarly
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+
+        // Execute post
+        $result = curl_exec($ch);
+        if ($result === FALSE) {
+            die('Curl failed: ' . curl_error($ch));
+        }
+
+        // Close connection
+        curl_close($ch);
+        echo $result;
+    }
+
 }
