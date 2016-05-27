@@ -1,12 +1,11 @@
 @extends('app.shippers.shipper')
 @section('shipper')
-<!-- tile -->
 <section class="tile">
     <!-- tile header -->
     <div class="tile-header dvd dvd-btm">
         <h1 class="custom-font"><strong>Danh sách tài xế</strong></h1>
         <ul class="controls">
-            <li><a href="{{url( '/shipper/create' )}}"><i class="fa fa-plus mr-5"></i> Thêm tài xế</a></li>
+            <!--<li><a href="{{url( '/shipper/create' )}}"><i class="fa fa-plus mr-5"></i> Thêm tài xế</a></li>-->
             <li class="dropdown">
                 <a role="button" tabindex="0" class="dropdown-toggle" data-toggle="dropdown">Công cụ <i class="fa fa-angle-down ml-5"></i></a>
                 <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
@@ -55,18 +54,14 @@
     <!-- /tile header -->
     <!-- tile body -->
     <div class="tile-body">
-
         <div class="table-responsive">
-            <table class="table table-striped table-hover table-custom" id="shippers-list" style="width: 100%;">
+            <table class="table table-striped table-hover table-custom" id="shippers-notable-list" style="width: 100%;">
                 <thead>
                     <tr>
-                        <th class="text-center" width="4%">Mã TX</th>
-                        <th class="text-center">Họ và tên</th>
-                        <th class="text-center">CMT</th>
-                        <th class="text-center">Phường/xã</th>
-                        <th class="text-center">Quận/huyện</th>
-                        <th class="text-center">Thành phố</th>
-                        <th class="text-center">SĐT</th>
+                        <th class="text-center">Mã tài xế</th>
+                        <th class="text-center">Tên</th>
+                        <th class="text-center">Số điện thoại</th>
+                        <th class="text-center">Số lượt chuyển hàng</th>
                         <th class="text-center">Chức năng</th>
                     </tr>
                     <tr class="table-header-search">
@@ -79,70 +74,73 @@
                         <th class="text-center">
                             <input class="text-center" name="identity_card" value="" placeholder="CMT" />
                         </th>
-                        <th class="text-center">
-                            <input class="text-center" name="home_ward" value="" placeholder="Phường/xã" />
-                        </th>
-                        <th class="text-center">
-                            <input class="text-center" name="home_district" value="" placeholder="Quận/huyện" />
-                        </th>
-                        <th class="text-center">
-                            <input class="text-center" name="home_city" value="" placeholder="Thành phố" />
-                        </th>
-                        <th class="text-center">
-                            <input class="text-center" name="phone_number" value="" placeholder="SĐT" />
-                        </th>
+                        <th></th>
                         <th class="text-center clear-filter"></th>
                     </tr>
                 </thead>
+                <tbody></tbody>
             </table>
         </div>
     </div>
-    <!-- /tile body -->
 </section>
-<!-- /tile -->
-
-<script >
+<script>
+    var notable_shipper_table;
+    function notable_shipper(shipper_id, shop_id, notable) {
+        var string = [shipper_id, shop_id, notable].join("/");
+        $.ajax({
+            url: base_url + "/shipper/" + string + "/notable_shipper",
+            type: 'get',
+            dataType: 'json',
+            success: function (response) {
+                notable_shipper_table.draw();
+            }
+        });
+    }
     $(document).ready(function () {
-        var common_render = {
-            "render": function (data, type, row) {
-                return render_common(data);
-            },
-            "targets": [0, 1, 2, 3, 4, 5, 6]
-        };
-
-        var function_render = {
-            "render": function (data, type, row) {
-                return render_function(data);
-            },
-            "targets": [7]
-        };
-
         function render_common(data) {
             return "<div class='text-center'>" + data + "</div>";
         }
 
-        function render_function(data) {
-            var edit_url = base_url + "/shipper/" + data + "/edit";
-            return "<div class='text-center'>" +
-                    "<a class='btn btn-primary' href='" + edit_url + "' style='width: 70px;'>Sửa</a>" +
-                    "<a class='btn btn-danger' style='width: 70px; margin-left: 10px;'>Xóa</a>" +
-                    "</div>";
-        }
+        var common_render = {
+            "render": function (data, type, row) {
+                return render_common(data);
+            },
+            "targets": [0, 1, 2, 3]
+        };
+
+        var function_render = {
+            "render": function (data, type, row) {
+                var html = "<div class='text-center'>";
+                html += "<button class='btn btn-primary btn-sm btn-function' onclick='notable_shipper(" + row.shipper_id + "," + row.shop_id + "," + NOTABLE_SHIPPER_LIKE + ")'>Thích</button>";
+                html += "<button class='btn btn-danger btn-sm btn-function' onclick='notable_shipper(" + row.shipper_id + "," + row.shop_id + "," + NOTABLE_SHIPPER_BLOCK + ")'>Khóa</button>"
+                "</div>";
+                return html;
+            },
+            "targets": [4]
+        };
 
         var config = [];
         var renders = [];
         renders.push(common_render);
         renders.push(function_render);
-        config['colums'] = ["code", "name", "identity_card", "home_ward", "home_district", "home_city", "phone_number", "id"];
-        config['url'] = "/shipper/load_list";
-        config['id'] = "shippers-list";
+        config['colums'] = ["code", "name", "phone_number", "ship_number", "shipper_id", "shop_id", "type"];
+        config['url'] = "/shipper/load_notable_list";
+        config['id'] = "shippers-notable-list";
         config['data_array'] = renders;
         config['clear_filter'] = true;
-        config['sort_off'] = [6];
+        config['sort_off'] = [4];
         config['hidden_global_seach'] = true;
-        setAjaxDataTable(config);
+        config['columns_length'] = 5;
+        config['createdRow'] = function (row, data, index) {
+            if (data.type != null) {
+                if (data.type == 1) {
+                    $(row).addClass("success");
+                } else {
+                    $(row).addClass("danger");
+                }
+            }
+        }
+        notable_shipper_table = setAjaxDataTable(config);
     });
 </script>
 @endsection
-
-

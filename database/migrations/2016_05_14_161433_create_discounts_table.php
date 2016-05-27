@@ -19,7 +19,9 @@ class CreateDiscountsTable extends Migration
             $table->string('code_number', 6)->comment('contain a string have 6 digit, user type at put orders to discount orders, ex: ABC123');
             $table->float('amount')->comment('Amount of discount code, ex: 2$');
             $table->smallInteger('type')->comment('type of discount, it can follow % of order cost or cash');
+            $table->smallInteger('status')->comment('status of discount, enable or disable');
             $table->integer('total')->nullable()->comment('total of discount times, can use');
+            $table->integer('total_one_user')->nullable()->comment('total of discount times, can use');
             $table->integer('use_count')->nullable()->comment('count number of times of user can use');
             $table->dateTime('start_time')->comment('apply from date');
             $table->dateTime('end_time')->comment('apply to date');
