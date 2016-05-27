@@ -11,9 +11,10 @@ use App\Order;
 use App\Shipper;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Response;
-
+use App\ShipperOrderHistory;
 class ShipperRest extends Controller
 {
     /**
@@ -107,27 +108,17 @@ class ShipperRest extends Controller
                 200
             );
         } else {
-            $shipper_id = Auth::guard('api')->id();
-            $shipper = Shipper::where('user_id', $shipper_id)->first();
-            if (!empty($shipper)) {
-                $shipper->longitude = $request->longitude;
-                $shipper->latitude = $request->latitude;
-                $shipper->save();
-                return Response::json(
-                    array(
-                        'accept' => 1,
-                    ),
-                    200
-                );
-            } else {
-                return Response::json(
-                    array(
-                        'accept'  => 0,
-                        'message' => 'Không tồn tại shipper',
-                    ),
-                    200
-                );
-            }
+            $shipper = User::find(Auth::guard('api')->id());
+            $shipper->longitude = $request->longitude;
+            $shipper->latitude = $request->latitude;
+            $shipper->lastUpdate = Carbon::now();
+            $shipper->save();
+            return Response::json(
+                array(
+                    'accept' => 1,
+                ),
+                200
+            );
         }
     }
 
@@ -136,6 +127,7 @@ class ShipperRest extends Controller
         $validator = Validator::make($request->all(), [
             "longitude" => "required",
             "latitude"  => "required",
+            "distance"  => "required",
         ]);
         if ($validator->fails()) {
             return Response::json(
@@ -146,18 +138,18 @@ class ShipperRest extends Controller
                 200
             );
         } else {
-            $orders = Order::where('status', ORDER_PENDING)->get();
-            foreach ($orders as $order) {
-                $user = User::find($order->user_id);
-                $user_result = array("name"         => $user->name,
-                                     "email"        => $user->email,
-                                     "phone_number" => $user->phone_number);
-                $order->user = $user_result;
-            }
+            $orders = DB::table('orders')
+                ->join('users', 'users.id', '=', 'orders.user_id')
+                ->select(DB::raw('users.id as owner_id, users.name as owner_name, users.email as owner_email, users.phone_number as owner_phone, orders.* , 
+                ( 6371 * acos( cos( radians(' . $request->latitude . ')) 
+                * cos( radians( orders.latitude ) ) * cos( radians( orders.longitude ) - radians(' . $request->longitude . ') ) + 
+                sin( radians(' . $request->latitude . ') ) * sin( radians( orders.latitude ) ) ) ) AS distance'))
+                ->where('orders.status', ORDER_PENDING)
+                ->having('distance', '<', $request->distance)->orderBy('orders.created_at', 'asc')->get();
             return Response::json(
                 array(
-                    'accept'   => 1,
-                    'messages' => $orders->toArray(),
+                    'accept' => 1,
+                    'orders' => $orders,
                 ),
                 200
             );
@@ -200,6 +192,10 @@ class ShipperRest extends Controller
                 $order->taken_order_at = Carbon::now();
                 $order->status = ORDER_TAKEN_ORDER;
                 $order->save();
+                $shipperOrderHistory = new ShipperOrderHistory;
+                $shipperOrderHistory->order_id = $order->id;
+                $shipperOrderHistory->shipper_id = $user->id;
+                $shipperOrderHistory->save();
                 return Response::json(
                     array(
                         'accept' => 1,
@@ -294,14 +290,63 @@ class ShipperRest extends Controller
     public function getTakenOrders()
     {
         $shipper_id = Auth::guard('api')->id();
-        $taken_order = Order::where('shipper_id', $shipper_id)->get();
+        $taken_orders = DB::table('shipper_order_histories')
+            ->join('orders', 'orders.id', '=', 'shipper_order_histories.order_id')
+            ->where('shipper_order_histories.shipper_id', $shipper_id)
+            ->where('shipper_order_histories.deleted_at')
+            ->select('orders.*', 'shipper_order_histories.id as shipper_order_id')
+            ->get();
         return Response::json(
             array(
                 'accept' => 1,
-                'orders' => $taken_order->toArray(),
+                'orders' => $taken_orders,
             ),
             200
         );
+    }
+
+    public function deleteShipperOrderHistory($id){
+        $shipperOrderHistory = ShipperOrderHistory::find($id);
+        if(empty($shipperOrderHistory)){
+            return Response::json(
+                array(
+                    'accept' => 0,
+                    'message' => 'Lịch sử không tồn tại',
+                ),
+                200
+            );
+        }else {
+            $shipper_id = Auth::guard('api')->id();
+            if($shipperOrderHistory->shipper_id == $shipper_id){
+                if ($shipperOrderHistory->trashed()) {
+                    return Response::json(
+                        array(
+                            'accept' => 0,
+                            'message' => 'Lịch sử nhận đã bị xóa trước đó!',
+                        ),
+                        200
+                    );
+                }else {
+                    $shipperOrderHistory->delete();
+                    return Response::json(
+                        array(
+                            'accept' => 1,
+                            'message' => 'Xóa lịch sử nhận thành công!',
+                        ),
+                        200
+                    );
+                }
+            }else {
+                return Response::json(
+                    array(
+                        'accept' => 0,
+                        'message' => 'Bạn không có quyền xóa lịch sử nhận đơn hàng!',
+                    ),
+                    200
+                );
+            }
+
+        }
     }
 
     public function isShipper()

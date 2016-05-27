@@ -23,6 +23,10 @@ class CreateUsersTable extends Migration {
             $table->smallInteger('user_type')->nullable();
             $table->smallInteger('status')->nullable();
             $table->string('api_token', 60)->unique();
+            $table->smallInteger('isOnline')->default(0);
+            $table->float('latitude')->nullable();
+            $table->float('longitude')->nullable();
+            $table->dateTime('lastUpdate')->nullable();
             $table->string('avatar')->nullable();
             $table->text('gcm_id')->nullable();
             $table->rememberToken();

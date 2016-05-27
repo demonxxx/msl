@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Shipper;
+use App\ShopOrderHistory;
+use App\User;
+use Validator;
+use DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 class ShopRest extends Controller
@@ -77,7 +83,7 @@ class ShopRest extends Controller
 
     public function getShipperLocation($id)
     {
-        $shipper = Shipper::where('user_id', $id)->select('longitude', 'latitude')->first();
+        $shipper = User::find($id);
         if (empty($shipper)) {
             return Response::json(
                 array(
@@ -95,6 +101,101 @@ class ShopRest extends Controller
                 ),
                 200
             );
+        }
+    }
+
+//    public function
+
+    public function getShipperIntoDistance(Request $request){
+        $validator = Validator::make($request->all(), [
+            "longitude" => "required",
+            "latitude"  => "required",
+            "distance" => "required",
+        ]);
+        if ($validator->fails()) {
+            return Response::json(
+                array(
+                    'accept'   => 0,
+                    'messages' => $validator->messages(),
+                ),
+                200
+            );
+        } else {
+            DB::enableQueryLog();
+            $shippers = DB::table('users')
+                ->select(DB::raw('id, name, email, phone_number, latitude, longitude, ( 6371 * acos( cos( radians('.$request->latitude.') ) 
+                * cos( radians( latitude ) ) * cos( radians( longitude ) - radians('.$request->longitude.') ) + 
+                sin( radians('.$request->latitude.') ) * sin( radians( latitude ) ) ) ) AS distance'))
+                ->where('user_type', SHIPPER_TYPE)
+                ->where(DB::raw('TIMESTAMPDIFF(SECOND,lastUpdate,"'.Carbon::now().'")'), '<', TIME_CHECK_ONLINE)
+                ->having('distance', '<', $request->distance)->get();
+            return Response::json(
+                array(
+                    'accept'   => 1,
+                    'shippers' =>  $shippers,
+                ),
+                200
+            );
+        }
+    }
+
+    public function getOrders(){
+        $shop_id = Auth::guard('api')->id();
+        $shop_orders = DB::table('shop_order_histories')
+            ->join('orders', 'orders.id', '=', 'shop_order_histories.order_id')
+            ->where('shop_order_histories.shop_id', $shop_id)
+            ->where('shop_order_histories.deleted_at')
+            ->select('orders.*', 'shop_order_histories.id as shop_order_id')
+            ->get();
+        return Response::json(
+            array(
+                'accept' => 1,
+                'orders' => $shop_orders,
+            ),
+            200
+        );
+    }
+
+    public function deleteShopOrderHistory($id){
+        $shopOrderHistory = ShopOrderHistory::find($id);
+        if (empty($shopOrderHistory)){
+            return Response::json(
+                array(
+                    'accept' => 0,
+                    'message' => 'Lịch sử đơn hàng không tồn tại',
+                ),
+                200
+            );
+        }else {
+            $shop_id = Auth::guard('api')->id();
+            if($shopOrderHistory->shop_id == $shop_id){
+                if ($shopOrderHistory->trashed()) {
+                    return Response::json(
+                        array(
+                            'accept' => 0,
+                            'message' => 'Lịch sử đơn hàng đã bị xóa trước đó!',
+                        ),
+                        200
+                    );
+                }else {
+                    $shopOrderHistory->delete();
+                    return Response::json(
+                        array(
+                            'accept' => 1,
+                            'message' => 'Xóa lịch sử đơn hàng thành công!',
+                        ),
+                        200
+                    );
+                }
+            }else{
+                return Response::json(
+                    array(
+                        'accept' => 0,
+                        'message' => 'Bạn không có quyền xóa lịch sử đơn hàng!',
+                    ),
+                    200
+                );
+            }
         }
     }
 

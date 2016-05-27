@@ -54,20 +54,22 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
 Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
 
     Route::post('user/changeType', 'UserRest@changeUserType');
-
+    Route::post('user/update/onlineStatus', 'UserRest@updateOnlineStatus');
     Route::get('check/isShipper', 'ShipperRest@isShipper');
 
-    Route::post('find', 'ShipperRest@findByLocation');
-
+    Route::post('shipper/find', 'ShipperRest@findByLocation');
     Route::get('shipper/take/{id}', 'ShipperRest@takeOrder');
     Route::post('shipper/update/status/{id}', 'ShipperRest@updateOrderStatusShipper');
     Route::post('shipper/update/location', 'ShipperRest@updateLocation');
     Route::get('shipper/getTakenOrders/', 'ShipperRest@getTakenOrders');
+    Route::get('shipper/deleteOrderHistory/{id}', 'ShipperRest@deleteShipperOrderHistory');
 
     Route::post('order/{id}', 'OrderRest@update');
     Route::get('order/taken/{id}', 'OrderRest@getOrderTaken');
 
-
+    Route::get('shop/getOrders', 'ShopRest@getOrders');
+    Route::get('shop/deleteOrderHistory/{id}', 'ShopRest@deleteShopOrderHistory');
+    Route::post('shop/getShipperLocations', 'ShopRest@getShipperIntoDistance');
     Route::get('shop/shipperLocation/{id}', 'ShopRest@getShipperLocation');
 
     Route::resource('shop', 'ShopRest');
