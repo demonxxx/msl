@@ -18,9 +18,12 @@ Route::auth();
 Route::post('api/v1/login', 'UserRest@login');
 Route::get('api/v1/logout', 'UserRest@logout');
 Route::post('api/v1/register', 'Auth\AuthController@mobile_register');
+Route::get('/', function () {
+    return view('welcome');
+});
 
 Route::group(['middleware' => ['auth', 'permissions']], function () {
-    Route::get('/', 'HomeController@index');
+    Route::get('/administration', 'HomeController@index');
     Route::group(['roles' => ['shop', 'admin']], function () {
         Route::get('/shop', 'ShopsController@index')->name("shops");
         Route::get('/shop/create', 'ShopsController@create')->name("createShop");
