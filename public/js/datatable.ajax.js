@@ -18,7 +18,25 @@ function setDatatable(data) {
     }
     var oTable = $('#' + tableId).DataTable(
             {
-                "dom": '<"row"<"col-md-8 col-sm-12"<"inline-controls"l>><"col-md-4 col-sm-12"<"pull-right"f>>>t<"row"<"col-md-4 col-sm-12"<"inline-controls"l>><"col-md-4 col-sm-12"<"inline-controls text-center"i>><"col-md-4 col-sm-12"p>>',
+
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    { extend: 'copy'},
+                    {extend: 'csv'},
+                    {extend: 'excel', title: 'ExampleFile'},
+                    {extend: 'pdf', title: 'ExampleFile'},
+
+                    {extend: 'print',
+                        customize: function (win){
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                ],
                 "language": {
                     "sLengthMenu": 'View _MENU_ records',
                     "sInfo": 'Found _TOTAL_ records',
@@ -61,7 +79,8 @@ function setDatatable(data) {
                     "loadingRecords": "Đang tải dữ liệu...",
                     "processing": "Đang xử lý dữ liệu...",
                     "search": "Tìm kiếm:",
-                }
+                },
+
             });
     return oTable;
 }

@@ -245,7 +245,7 @@
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group">
                                     <div class="col-sm-4 col-sm-offset-2">
-                                        <button class="btn btn-primary" type="submit">Submit</button>
+                                        <button class="btn btn-primary pull-left" type="submit">Submit</button>
                                     </div>
                                 </div>
                             </form>

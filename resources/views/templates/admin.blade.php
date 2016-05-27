@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +20,7 @@
     <script src="{{ asset("theme/js/inspinia.js") }}"></script>
     <script src="{{ asset("theme/js/plugins/pace/pace.min.js") }}"></script>
 </head>
-<body>
+<body class="pace-done mini-navbar" style="padding-bottom: 26px;">
 
 <script>
     base_url = "{{URL::to('/')}}";
@@ -37,11 +35,30 @@
     <div id="page-wrapper" class="gray-bg">
 
         @include('layouts.header')
-        <div class="wrapper wrapper-content animated fadeInRight">
+        @if(!empty($breadcrumbs))
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-10">
+                    <h2>{{$breadcrumbs['header']}}</h2>
+                    @if(!empty($breadcrumbs['childs']))
+                        <ol class="breadcrumb">
+                            @foreach($breadcrumbs['childs'] as $child)
+                                <li>
+                                    <a href="{{$child['url']}}">{{$child['name']}}</a>
+                                </li>
+                            @endforeach
+                            <li class="active">
+                                <strong>{{$breadcrumbs['tail']}}</strong>
+                            </li>
+                        </ol>
+                    @endif
+                </div>
+            </div>
+        @endif
 
+        <div class="wrapper wrapper-content animated fadeInRight">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="text-center m-t-lg">
+                    <div>
 
                         @yield('content')
                     </div>
