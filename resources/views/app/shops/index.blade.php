@@ -1,42 +1,13 @@
 @extends('app.shops.shop')
 @section('shop')
     <link href="{{ asset("theme/css/plugins/dataTables/datatables.min.css") }}" rel="stylesheet">
-{{--    <link rel="stylesheet" href="{{ asset("theme/js/plugins/datatables/css/jquery.dataTables.min.css") }}">--}}
     <script src="{{ asset("theme/js/plugins/datatables/dataTables.min.js") }}"></script>
-{{--    <link rel="stylesheet" href="{{ asset("theme/js/plugins/datatables/datatables.bootstrap.min.css") }}">--}}
     <script src="{{ asset("theme/js/plugins/datatables/js/jquery.dataTables.min.js") }}"></script>
     <script src="{{ asset("theme/js/plugins/datatables/extensions/dataTables.bootstrap.js") }}"></script>
     <script src="{{ asset("theme/js/plugins/datatables/extensions/Pagination/input.js") }}"></script>
 
     <script src="{{ asset("js/datatable.ajax.js") }}"></script>
     <script src="{{ asset("js/constants.js") }}"></script>
-
-    {{--<section class="tile">--}}
-    {{--<!-- tile header -->--}}
-
-    {{--<!-- /tile header -->--}}
-    {{--<!-- tile body -->--}}
-    {{--<div class="tile-body">--}}
-
-    {{--<div class="table-responsive">--}}
-    {{--<table class="table table-striped table-hover table-custom" id="shops-list">--}}
-    {{--<thead>--}}
-    {{--<tr>--}}
-    {{--<th class="text-center">Mã KH</th>--}}
-    {{--<th class="text-center">Họ và tên</th>--}}
-    {{--<th class="text-center">Email đăng nhập</th>--}}
-    {{--<th class="text-center">CMT</th>--}}
-    {{--<th class="text-center">Đ/c nhà</th>--}}
-    {{--<th class="text-center">Đ/c văn phòng</th>--}}
-    {{--<th class="text-center">Chức năng</th>--}}
-    {{--</tr>--}}
-    {{--</thead>--}}
-    {{--</table>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--<!-- /tile body -->--}}
-    {{--</section>--}}
-    <!-- /tile -->
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
