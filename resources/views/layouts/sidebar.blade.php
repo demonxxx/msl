@@ -21,7 +21,7 @@
             </li>
             @can('shop')
                 <li>
-                    <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">Khách hàng</span><span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Khách hàng</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="{{url( '/shop/create' )}}"> Thêm khách hàng mới</a></li>
                         <li><a href="{{url('/shop')}}">Danh sách khách hàng</a></li>
@@ -39,7 +39,7 @@
             @can('shipper')
 
                 <li>
-                    <a role="button" tabindex="0"><i class="fa fa-pencil"></i> <span>Tài xế</span><span class="fa arrow"></span></a>
+                    <a role="button" tabindex="0"><i class="fa fa-taxi"></i> <span>Tài xế</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="{{url( '/shipper/create' )}}"> Thêm tài xế</a></li>
                         <li><a href="{{url('/shipper')}}"> Danh sách tài xế</a></li>
@@ -50,7 +50,7 @@
 
             @can('admin')
                 <li>
-                    <a role="button" tabindex="0"><i class="fa fa-list"></i> <span>Cài đặt</span><span class="fa arrow"></span></a>
+                    <a role="button" tabindex="0"><i class="fa fa-cogs"></i> <span>Cài đặt</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="#"> Bảng giá</a></li>
                         <li><a href="#"> Loại xe</a></li>
@@ -59,7 +59,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a role="button" tabindex="0"><i class="fa fa-pencil"></i> <span>Quản lý người dùng</span><span class="fa arrow"></span></a>
+                    <a role="button" tabindex="0"><i class="fa fa-users"></i> <span>Quản lý người dùng</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="#"> Thêm người dùng</a></li>
                         <li><a href="#"> Danh sách người dùng</a></li>

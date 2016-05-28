@@ -51,6 +51,13 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::post('/shipper/check_new_user_duplicate', 'ShippersController@check_new_user_duplicate');
         Route::post('/shipper/check_update_user_duplicate', 'ShippersController@check_update_user_duplicate');
     });
+
+
+    Route::group(['prefix' => 'admin/settings','roles' => ['admin']], function () {
+        Route::get('/vehicleTypes', 'SettingsController@showVehicleTypes')->name("vehicle_types");
+        Route::post('/vehicleTypes/create', 'SettingsController@createVehicleType');
+        Route::post('vehicleTypes/{id}/edit', 'SettingsController@editVehicleType');
+    });
 });
 
 

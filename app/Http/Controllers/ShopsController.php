@@ -31,8 +31,7 @@ class ShopsController extends Controller
     public function index()
     {
 
-        $breadcrumbs = ["header" => "Danh sách khách hàng"];
-        return view('app.shops.index',['breadcrumbs' => $breadcrumbs]);
+        return view('app.shops.index');
     }
 
     /**
