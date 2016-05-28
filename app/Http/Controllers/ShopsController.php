@@ -17,11 +17,10 @@ class ShopsController extends Controller
         "store"  => "Lưu khách hàng",
         "show"   => "Xem chi tiết khách hàng",
     );
-    
+    public $breadcrumbs = [];
 
     public function __construct()
     {
-//        $this->middleware('auth');
     }
 
     /**
@@ -31,15 +30,9 @@ class ShopsController extends Controller
      */
     public function index()
     {
-//        $user =  User::find(1);
-//        $roles = $user->roles;
 
-//        $roles = $user->roles();
-//        dd($user->getUserRoles());
-//        foreach ($user->roles as $role){
-//            dd($role->pivot->user_id);
-//        }
-        return view('app.shops.index');
+        $breadcrumbs = ["header" => "Danh sách khách hàng"];
+        return view('app.shops.index',['breadcrumbs' => $breadcrumbs]);
     }
 
     /**
@@ -177,7 +170,7 @@ class ShopsController extends Controller
         ]);
         if ($validator->fails()) {
             flash_message("Sửa khách hàng không thành công!", "danger");
-            return back();
+            return back()->withErrors($validator)->withInput();
         } else {
             $user = new User;
             $user_obj = $user->find($id);

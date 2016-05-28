@@ -1,106 +1,84 @@
 @extends('app.shippers.shipper')
 @section('shipper')
-<!-- tile -->
-<section class="tile">
-    <!-- tile header -->
-    <div class="tile-header dvd dvd-btm">
-        <h1 class="custom-font"><strong>Danh sách tài xế</strong></h1>
-        <ul class="controls">
-            <li><a href="{{url( '/shipper/create' )}}"><i class="fa fa-plus mr-5"></i> Thêm tài xế</a></li>
-            <li class="dropdown">
-                <a role="button" tabindex="0" class="dropdown-toggle" data-toggle="dropdown">Công cụ <i class="fa fa-angle-down ml-5"></i></a>
-                <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
-                    <li>
-                        <a href>Xuất file XLS</a>
-                    </li>
-                    <li>
-                        <a href>Xuất file CSV</a>
-                    </li>
-                    <li>
-                        <a href>Xuất file XML</a>
-                    </li>
-                    <li role="presentation" class="divider"></li>
-                    <li>
-                        <a href>In hóa đơn</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a role="button" tabindex="0" class="dropdown-toggle settings" data-toggle="dropdown">
-                    <i class="fa fa-cog"></i>
-                    <i class="fa fa-spinner fa-spin"></i>
-                </a>
-                <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
-                    <li>
-                        <a role="button" tabindex="0" class="tile-toggle">
-                            <span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
-                            <span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a role="button" tabindex="0" class="tile-refresh">
-                            <i class="fa fa-refresh"></i> Refresh
-                        </a>
-                    </li>
-                    <li>
-                        <a role="button" tabindex="0" class="tile-fullscreen">
-                            <i class="fa fa-expand"></i> Fullscreen
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="remove"><a role="button" tabindex="0" class="tile-close"><i class="fa fa-times"></i></a></li>
-        </ul>
-    </div>
-    <!-- /tile header -->
-    <!-- tile body -->
-    <div class="tile-body">
+    <link href="{{ asset("theme/css/plugins/dataTables/datatables.min.css") }}" rel="stylesheet">
+    <script src="{{ asset("theme/js/plugins/datatables/dataTables.min.js") }}"></script>
+    <script src="{{ asset("theme/js/plugins/datatables/js/jquery.dataTables.min.js") }}"></script>
+    <script src="{{ asset("theme/js/plugins/datatables/extensions/dataTables.bootstrap.js") }}"></script>
+    <script src="{{ asset("theme/js/plugins/datatables/extensions/Pagination/input.js") }}"></script>
 
-        <div class="table-responsive">
-            <table class="table table-striped table-hover table-custom" id="shippers-list" style="width: 100%;">
-                <thead>
-                    <tr>
-                        <th class="text-center" width="4%">Mã TX</th>
-                        <th class="text-center">Họ và tên</th>
-                        <th class="text-center">CMT</th>
-                        <th class="text-center">Phường/xã</th>
-                        <th class="text-center">Quận/huyện</th>
-                        <th class="text-center">Thành phố</th>
-                        <th class="text-center">SĐT</th>
-                        <th class="text-center">Chức năng</th>
-                    </tr>
-                    <tr class="table-header-search">
-                        <th class="text-center" width="4%">
-                            <input class="text-center" name="code" value="" placeholder="Mã TX" />
-                        </th>
-                        <th class="text-center">
-                            <input class="text-center" name="name" value="" placeholder="Họ và tên" />
-                        </th>
-                        <th class="text-center">
-                            <input class="text-center" name="identity_card" value="" placeholder="CMT" />
-                        </th>
-                        <th class="text-center">
-                            <input class="text-center" name="home_ward" value="" placeholder="Phường/xã" />
-                        </th>
-                        <th class="text-center">
-                            <input class="text-center" name="home_district" value="" placeholder="Quận/huyện" />
-                        </th>
-                        <th class="text-center">
-                            <input class="text-center" name="home_city" value="" placeholder="Thành phố" />
-                        </th>
-                        <th class="text-center">
-                            <input class="text-center" name="phone_number" value="" placeholder="SĐT" />
-                        </th>
-                        <th class="text-center clear-filter"></th>
-                    </tr>
-                </thead>
-            </table>
+    <script src="{{ asset("js/datatable.ajax.js") }}"></script>
+    <script src="{{ asset("js/constants.js") }}"></script>
+<!-- tile -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Danh sách tài xế</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="#">Config option 1</a>
+                            </li>
+                            <li><a href="#">Config option 2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="shippers-list" style="width: 100%;">
+                            <thead>
+                            <tr>
+                                <th class="text-center" width="4%">Mã TX</th>
+                                <th class="text-center">Họ và tên</th>
+                                <th class="text-center">CMT</th>
+                                <th class="text-center">Phường/xã</th>
+                                <th class="text-center">Quận/huyện</th>
+                                <th class="text-center">Thành phố</th>
+                                <th class="text-center">SĐT</th>
+                                <th class="text-center">Chức năng</th>
+                            </tr>
+                            <tr class="table-header-search">
+                                <th class="text-center" width="4%">
+                                    <input class="text-center" name="code" value="" placeholder="Mã TX" />
+                                </th>
+                                <th class="text-center">
+                                    <input class="text-center" name="name" value="" placeholder="Họ và tên" />
+                                </th>
+                                <th class="text-center">
+                                    <input class="text-center" name="identity_card" value="" placeholder="CMT" />
+                                </th>
+                                <th class="text-center">
+                                    <input class="text-center" name="home_ward" value="" placeholder="Phường/xã" />
+                                </th>
+                                <th class="text-center">
+                                    <input class="text-center" name="home_district" value="" placeholder="Quận/huyện" />
+                                </th>
+                                <th class="text-center">
+                                    <input class="text-center" name="home_city" value="" placeholder="Thành phố" />
+                                </th>
+                                <th class="text-center">
+                                    <input class="text-center" name="phone_number" value="" placeholder="SĐT" />
+                                </th>
+                                <th class="text-center clear-filter"></th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
-    <!-- /tile body -->
-</section>
-<!-- /tile -->
-
 <script >
     $(document).ready(function () {
         var common_render = {

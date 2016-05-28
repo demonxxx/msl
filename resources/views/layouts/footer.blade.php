@@ -1,8 +1,8 @@
-<footer class="main-footer">
-    <!-- To the right -->
-    <div class="pull-right hidden-xs">
-        Anything you want
+<div class="footer">
+    <div class="pull-right">
+
     </div>
-    <!-- Default to the left -->
-    <strong>Copyright © 2015 <a href="#">Company</a>.</strong> All rights reserved.
-</footer>
+    <div>
+        <strong>Copyright</strong> Msl Việt Nam &copy; 2016
+    </div>
+</div>
