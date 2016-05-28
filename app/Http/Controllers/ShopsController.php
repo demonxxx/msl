@@ -100,6 +100,7 @@ class ShopsController extends Controller
             $user->email = $request->email;
             $user->identity_card = $request->identity_card;
             $user->phone_number = $request->phone_number;
+            $user->api_token = str_random(60);
             $user->save();
             $shop = new Shop;
             $shop->home_number = $request->home_number;
@@ -154,10 +155,10 @@ class ShopsController extends Controller
     {
 //        dd($request->all());
         $validator = \Validator::make($request->all(), [
-            'code'            => 'required|max:15|unique:users',
+            'code'            => 'required|max:15',
             'name'            => 'required|max:255',
             'phone_number'    => 'required|max:15',
-            'email'           => 'email|max:255|unique:users',
+            'email'           => 'email|max:255',
             'home_number'     => 'required|max:255',
             'home_ward'       => 'required|max:255',
             'home_district'   => 'required|max:255',
@@ -187,7 +188,7 @@ class ShopsController extends Controller
             $shop_obj->office_ward = $request->office_ward;
             $shop_obj->office_district = $request->office_district;
             $shop_obj->office_city = $request->office_city;
-            $shop_obj->shop_type = $request->shop_type;
+            $shop_obj->shop_type_id = $request->shop_type_id;
             $shop_obj->profile_status = $request->profile_status;
             $shop_obj->save();
             flash_message("Sửa khách hàng thành công!");

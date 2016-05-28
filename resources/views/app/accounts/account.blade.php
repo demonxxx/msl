@@ -9,7 +9,7 @@
                 <!-- col -->
                 <div class="col-md-12">
 
-                        @yield('order')
+                        @yield('account')
                     
                 </div>
                 <!-- /col -->

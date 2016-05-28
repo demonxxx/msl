@@ -62,7 +62,7 @@
                     <a role="button" tabindex="0"><i class="fa fa-pencil"></i> <span>Quản lý người dùng</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="#"> Thêm người dùng</a></li>
-                        <li><a href="#"> Danh sách người dùng</a></li>
+                        <li><a href="{{url('/account')}}"> Danh sách tài khoản</a></li>
 
                     </ul>
                 </li>

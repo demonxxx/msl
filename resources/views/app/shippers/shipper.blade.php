@@ -1,6 +1,8 @@
 @extends('templates.admin')
 @section('content')
 <div class="page page-shop-products">
+    
+    @include('partials.flash')
     <!-- page content -->
     <div class="pagecontent">
         <!-- row -->
