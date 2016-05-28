@@ -84,12 +84,11 @@
                             <tbody>
                                 @foreach($vehicle_types as $vehicle_type)
                                     <tr>
-                                        <td class="text-center">{{$vehicle_type->code}}</td>
-                                        <td class="text-center">{{$vehicle_type->name}}</td>
-                                        <td><div class='text-center'>
+                                        <td class="text-center" style="vertical-align: middle">{{$vehicle_type->code}}</td>
+                                        <td class="text-center" style="vertical-align: middle">{{$vehicle_type->name}}</td>
+                                        <td class="text-center" style="vertical-align: middle">
                                                 <button class='btn btn-primary' data-toggle="modal" data-target="#modal_{{$vehicle_type->id}}" style='width: 70px;'>Sửa</button>
                                                 <a class='btn btn-danger' style='width: 70px; margin-left: 10px;'>Xóa</a>
-                                                </div>
                                         </td>
                                     </tr>
                                     <div class="modal inmodal fade" id="modal_{{$vehicle_type->id}}" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -102,8 +101,12 @@
                                                 <div class="modal-body">
                                                     <form id="vehicle_form_{{$vehicle_type->id}}" method="POST" action="{{url('admin/settings/vehicleTypes/'.$vehicle_type->id.'/edit')}}" data-parsley-validate>
                                                         {!! csrf_field() !!}
-                                                        <div class="form-group"><label>Mã phương tiện</label> <input name="code" id="vehicle_code" value="{{$vehicle_type->code}}" type="text" placeholder="Mã phương tiện" class="form-control" required></div>
-                                                        <div class="form-group"><label>Tên phương tiện</label> <input name="name" type="text" value="{{$vehicle_type->name}}" placeholder="Tên phương tiện" class="form-control" required></div>
+                                                        <div class="form-group"><label>Mã phương tiện</label>
+                                                            <input name="code" id="vehicle_code" value="{{$vehicle_type->code}}" type="text" placeholder="Mã phương tiện" class="form-control" required>
+                                                        </div>
+                                                        <div class="form-group"><label>Tên phương tiện</label>
+                                                            <input name="name" type="text" value="{{$vehicle_type->name}}" placeholder="Tên phương tiện" class="form-control" required>
+                                                        </div>
                                                     </form>
                                                 </div>
                                                 <div class="modal-footer">

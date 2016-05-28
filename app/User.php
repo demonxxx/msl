@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use DB;
 
 class User extends Authenticatable
 {
@@ -83,5 +84,38 @@ class User extends Authenticatable
     private function checkIfUserHasRole($need_role)
     {
         return in_array($need_role, $this->getUserRoles());
+    }
+    
+    public function get_all_accounts($post) {
+        $builder = DB::table("users");
+        $builder->select("users.id", "users.code", "users.name", "accounts.main", "accounts.second")
+                ->leftJoin("accounts", "accounts.user_id", "=", "users.id");
+        $search_params = $post['searchParams'];
+        $this->table_condition($builder, $search_params);
+        $builder->skip($post["iDisplayStart"])->take($post["iDisplayLength"])
+                ->orderBy($post["orderBy"], $post["orderSort"]);
+        $data = $builder->get();
+        return $data;
+    }
+    
+    public function count_all($post) {
+        $builder = DB::table("users");
+        $builder->select("users.id")
+                ->leftJoin("accounts", "accounts.user_id", "=", "users.id");
+        $search_params = $post['searchParams'];
+        $this->table_condition($builder, $search_params);
+        $count = $builder->count();
+        return $count;
+    }
+    public function table_condition($builder, $search_params) {
+        if (!empty($search_params)) {
+            if (array_key_exists('code', $search_params)) {
+                $builder->where('users.code', 'like', '%' . $search_params['code'] . '%');
+            }
+            if (array_key_exists('name', $search_params)) {
+                $builder->where('users.name', 'like', '%' . $search_params['name'] . '%');
+            }
+        }
+        return $builder;
     }
 }

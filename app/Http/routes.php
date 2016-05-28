@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::get('/shipper/notable_list', 'ShippersController@notable_list');
         Route::post('/shipper/load_notable_list', 'ShippersController@load_notable_list');
         Route::get('/shipper/{shipper_id}/{shop_id}/{notable}/notable_shipper', 'ShippersController@notable_shipper');
+        Route::post('/shipper/register_shipper', 'ShippersController@register_shipper');
     });
     Route::group(['roles' => ['shipper', 'admin']], function () {
         Route::get('/shipper', 'ShippersController@index')->name("shippers");
@@ -50,6 +51,17 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::post('/shipper/load_list', 'ShippersController@load_list');
         Route::post('/shipper/check_new_user_duplicate', 'ShippersController@check_new_user_duplicate');
         Route::post('/shipper/check_update_user_duplicate', 'ShippersController@check_update_user_duplicate');
+        Route::get('/distance_freights', 'DistanceFreightsController@index');
+        Route::get('/distance_freights/create', 'DistanceFreightsController@create');
+        Route::post('/distance_freights/store', 'DistanceFreightsController@store');
+        Route::get('/distance_freights/{dist_freight_id}/edit', 'DistanceFreightsController@edit');
+        Route::post('/distance_freights/{dist_freight_id}/update', 'DistanceFreightsController@update');
+        Route::get('/distance_freights/{dist_freight_id}/destroy', 'DistanceFreightsController@destroy');
+    });
+    Route::group(['roles' => ['admin']], function () {
+        Route::get('/account', 'AccountsController@index')->name("accounts");
+        Route::post('/account/load_list', 'AccountsController@load_list');
+        Route::post('/account/update_money', 'AccountsController@update_money');
     });
 
 
