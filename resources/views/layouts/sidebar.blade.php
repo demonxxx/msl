@@ -27,6 +27,7 @@
                     <li><a href="{{url('/shop')}}">Danh sách khách hàng</a></li>
                 </ul>
             </li>
+            @endcan
             @can('admin')
             <li>
                 <a role="button" tabindex="0"><i class="fa fa-list"></i> <span>Cài đặt</span></a>
@@ -74,5 +75,7 @@
                     </li>
                     @endcan
                 </ul>
-                </div>
-                </nav>
+            </li>
+        </ul>
+    </div>
+</nav>
