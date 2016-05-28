@@ -70,7 +70,6 @@
                         <ul class="nav nav-second-level collapse">
                             <li><a href="#"> Thêm người dùng</a></li>
                             <li><a href="#"> Danh sách người dùng</a></li>
-
                         </ul>
                     </li>
                     @endcan

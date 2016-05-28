@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;
 use App\Shipper;
+use App\Shop;
 use App\Shop_shipper;
 use App\Helpers\helpers;
 use Auth;
@@ -129,10 +130,10 @@ class ShippersController extends Controller {
     public function update(Request $request, $id) {
         //dd($request->all());
         $validator = \Validator::make($request->all(), [
-                    'code' => 'required|max:15|unique:users',
+                    'code' => 'required|max:15',
                     'name' => 'required|max:255',
                     'phone_number' => 'required|min:10|max:11',
-                    'email' => 'email|max:255|unique:users',
+                    'email' => 'email|max:255',
                     'home_ward' => 'required|max:255',
                     'home_district' => 'required|max:255',
                     'home_city' => 'required|max:255',
@@ -234,6 +235,28 @@ class ShippersController extends Controller {
         $shop_shipper = new Shop_shipper();
         $shop_shipper->notable_shipper($request->shipper_id, $request->shop_id, $request->notable);
         echo json_encode(['message' => 'success']);
+    }
+    
+    public function register_shipper(Request $request) {
+        $shipper = Shipper::where('user_id', '=', $request->user_id)->first();
+        if (!empty($shipper)) {
+            flash_message("Tài khoản đã là tài xế!", "danger");
+            
+        } else {
+            $shop = Shop::where('user_id', '=', $request->user_id)->first();
+            $shipper = new Shipper;
+            $shipper->user_id = $shop->user_id;
+            $shipper->home_number = $shop->home_number;
+            $shipper->home_ward = $shop->home_ward;
+            $shipper->home_district = $shop->home_district;
+            $shipper->home_city = $shop->home_city;
+            $shipper->office_number = $shop->office_number;
+            $shipper->office_ward = $shop->office_ward;
+            $shipper->office_district = $shop->office_district;
+            $shipper->office_city = $shop->office_city;
+            $shipper->save();
+            flash_message("Đăng kí tài xế thành công!");
+        }
     }
 
 }
