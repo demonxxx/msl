@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::get('/shipper/notable_list', 'ShippersController@notable_list');
         Route::post('/shipper/load_notable_list', 'ShippersController@load_notable_list');
         Route::get('/shipper/{shipper_id}/{shop_id}/{notable}/notable_shipper', 'ShippersController@notable_shipper');
+        Route::post('/shipper/register_shipper', 'ShippersController@register_shipper');
     });
     Route::group(['roles' => ['shipper', 'admin']], function () {
         Route::get('/shipper', 'ShippersController@index')->name("shippers");
@@ -50,6 +51,11 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::post('/shipper/load_list', 'ShippersController@load_list');
         Route::post('/shipper/check_new_user_duplicate', 'ShippersController@check_new_user_duplicate');
         Route::post('/shipper/check_update_user_duplicate', 'ShippersController@check_update_user_duplicate');
+    });
+    Route::group(['roles' => ['admin']], function () {
+        Route::get('/account', 'AccountsController@index')->name("accounts");
+        Route::post('/account/load_list', 'AccountsController@load_list');
+        Route::post('/account/update_money', 'AccountsController@update_money');
     });
 });
 
