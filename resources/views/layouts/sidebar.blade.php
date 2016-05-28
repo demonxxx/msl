@@ -27,10 +27,11 @@
                     <li><a href="{{url('/shop')}}">Danh sách khách hàng</a></li>
                 </ul>
             </li>
+            @endcan
             @can('admin')
             <li>
                 <a role="button" tabindex="0"><i class="fa fa-list"></i> <span>Cài đặt</span></a>
-                <ul>
+                <ul class="nav nav-second-level collapse">
                     <li><a href="{{url( '/distance_freights' )}}"><i class="fa fa-caret-right"></i> Bảng giá</a></li>
                     <li><a href="ui-buttons-icons.html"><i class="fa fa-caret-right"></i> Loại xe</a></li>
                     <li><a href="ui-typography.html"><i class="fa fa-caret-right"></i> Dịch vụ</a></li>
@@ -39,40 +40,21 @@
             </li>
             <li>
                 <a role="button" tabindex="0"><i class="fa fa-pencil"></i> <span>Quản lý người dùng</span></a>
-                <ul>
+                <ul class="nav nav-second-level collapse">
                     <li><a href="ui-general.html"><i class="fa fa-caret-right"></i> Thêm người dùng</a></li>
-                    <li><a href="ui-buttons-icons.html"><i class="fa fa-caret-right"></i> Danh sách người dùng</a></li>
-                    @endcan
-                    @can('shipper')
-
-                    <li>
-                        <a role="button" tabindex="0"><i class="fa fa-pencil"></i> <span>Tài xế</span><span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level collapse">
-                            <li><a href="{{url( '/shipper/create' )}}"> Thêm tài xế</a></li>
-                            <li><a href="{{url('/shipper')}}"> Danh sách tài xế</a></li>
-                        </ul>
-                    </li>
-
-                    @endcan
-
-                    @can('admin')
-                    <li>
-                        <a role="button" tabindex="0"><i class="fa fa-list"></i> <span>Cài đặt</span><span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level collapse">
-                            <li><a href="#"> Bảng giá</a></li>
-                            <li><a href="#"> Loại xe</a></li>
-                            <li><a href="#"> Dịch vụ</a></li>
-                            <li><a href="#"> Nhóm người dùng</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a role="button" tabindex="0"><i class="fa fa-pencil"></i> <span>Quản lý người dùng</span><span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level collapse">
-                            <li><a href="#"> Thêm người dùng</a></li>
-                            <li><a href="{{url('/account')}}"> Danh sách tài khoản</a></li>
-                        </ul>
-                    </li>
-                    @endcan
+                    <li><a href="{{url('/account')}}"> Danh sách tài khoản</a></li>
                 </ul>
-                </div>
-                </nav>
+            </li>
+            @endcan
+            @can('shipper')
+            <li>
+                <a role="button" tabindex="0"><i class="fa fa-pencil"></i> <span>Tài xế</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="{{url( '/shipper/create' )}}"> Thêm tài xế</a></li>
+                    <li><a href="{{url('/shipper')}}"> Danh sách tài xế</a></li>
+                </ul>
+            </li>
+            @endcan
+        </ul>
+    </div>
+</nav>
