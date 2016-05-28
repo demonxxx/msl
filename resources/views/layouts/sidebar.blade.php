@@ -77,7 +77,7 @@
                             <li>
                                 <a role="button" tabindex="0"><i class="fa fa-list"></i> <span>Cài đặt</span></a>
                                 <ul>
-                                    <li><a href="ui-general.html"><i class="fa fa-caret-right"></i> Bảng giá</a></li>
+                                    <li><a href="{{url( '/distance_freights' )}}"><i class="fa fa-caret-right"></i> Bảng giá</a></li>
                                     <li><a href="ui-buttons-icons.html"><i class="fa fa-caret-right"></i> Loại xe</a></li>
                                     <li><a href="ui-typography.html"><i class="fa fa-caret-right"></i> Dịch vụ</a></li>
                                     <li><a href="ui-navs.html"><i class="fa fa-caret-right"></i> Nhóm người dùng</a></li>
