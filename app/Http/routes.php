@@ -69,6 +69,9 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::get('/vehicleTypes', 'SettingsController@showVehicleTypes')->name("vehicle_types");
         Route::post('/vehicleTypes/create', 'SettingsController@createVehicleType');
         Route::post('vehicleTypes/{id}/edit', 'SettingsController@editVehicleType');
+        Route::get('/addedServices', 'SettingsController@showAddedServices')->name("addedServices");
+        Route::post('/addedServices/create', 'SettingsController@createAddedService');
+        Route::post('/addedServices/{id}/edit', 'SettingsController@editAddedService');
     });
 });
 

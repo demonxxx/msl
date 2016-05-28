@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use DB;
 use App\Http\Requests;
 use App\VehicleType;
+use App\AddedService;
 use Illuminate\Support\Facades\Redirect;
 
 class SettingsController extends Controller
@@ -20,9 +21,10 @@ class SettingsController extends Controller
         //
     }
 
-    public function showVehicleTypes(){
+    public function showVehicleTypes()
+    {
         $vehicle_types = VehicleType::all();
-        return view('app.settings.vehicle_types',['vehicle_types' => $vehicle_types]);
+        return view('app.settings.vehicle_types', ['vehicle_types' => $vehicle_types]);
     }
 
     /**
@@ -35,10 +37,11 @@ class SettingsController extends Controller
         //
     }
 
-    public function createVehicleType(Request $request){
+    public function createVehicleType(Request $request)
+    {
         $validator = \Validator::make($request->all(), [
-            'code'            => 'required|unique:vehicle_types',
-            'name'            => 'required|',
+            'code' => 'required|unique:vehicle_types',
+            'name' => 'required|',
         ]);
         if ($validator->fails()) {
             flash_message("Thêm phương tiện không thành công!", "danger");
@@ -53,28 +56,97 @@ class SettingsController extends Controller
         }
     }
 
-    public function editVehicleType(Request $request, $id){
+
+    public function editVehicleType(Request $request, $id)
+    {
         $validator = \Validator::make($request->all(), [
-            'code'            => 'required',
-            'name'            => 'required',
+            'code' => 'required',
+            'name' => 'required',
         ]);
         if ($validator->fails()) {
             flash_message("Thêm phương tiện không thành công!", "danger");
             return back()->withErrors($validator)->withInput();
         } else {
             $vehicleType = VehicleType::find($id);
-            if(empty($vehicleType)){
+            if (empty($vehicleType)) {
                 return back()->withErrors(["Không tồn tại phương tiện"])->withInput();
-            }else {
-                $vehicle_tmp = VehicleType::where("id","<>", $id)->where("code", $request->code)->first();
-                if (empty($vehicle_tmp)){
+            } else {
+                $vehicle_tmp = VehicleType::where("id", "<>", $id)->where("code", $request->code)->first();
+                if (empty($vehicle_tmp)) {
                     $vehicleType->code = $request->code;
                     $vehicleType->name = $request->name;
                     $vehicleType->save();
                     flash_message("Sửa phương tiện thành công!", "success");
                     return redirect()->route('vehicle_types');
-                }else {
+                } else {
                     return back()->withErrors(["Mã phương tiện đã tồn tại"])->withInput();
+                }
+            }
+        }
+    }
+
+    public function showAddedServices()
+    {
+        $added_services = DB::table('added_services')
+            ->join('vehicle_types', 'added_services.vehicle_type_id', '=', 'vehicle_types.id')
+            ->where('added_services.deleted_at')
+            ->where('vehicle_types.deleted_at')
+            ->select('added_services.*', 'vehicle_types.name as vehicle_name')->get();
+
+        $vehicle_types = VehicleType::all();
+        return view('app.settings.added_service', ['added_services' => $added_services, 'vehicle_types' => $vehicle_types]);
+    }
+
+    public function createAddedService(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'code'            => 'required|unique:added_services',
+            'name'            => 'required',
+            'vehicle_type_id' => 'required|integer',
+            'freight'         => 'required'
+        ]);
+        if ($validator->fails()) {
+            flash_message("Thêm dịch vụ không thành công!", "danger");
+            return back()->withErrors($validator)->withInput();
+        } else {
+            $added_service = new AddedService;
+            $added_service->code = $request->code;
+            $added_service->name = $request->name;
+            $added_service->vehicle_type_id = $request->vehicle_type_id;
+            $added_service->freight = $request->freight;
+            $added_service->save();
+            flash_message("Thêm dịch vụ thành công!", "success");
+            return redirect()->route('addedServices');
+        }
+    }
+
+    public function editAddedService(Request $request, $id)
+    {
+        $validator = \Validator::make($request->all(), [
+            'code'            => 'required',
+            'name'            => 'required',
+            'vehicle_type_id' => 'required|integer',
+            'freight'         => 'required'
+        ]);
+        if ($validator->fails()) {
+            flash_message("Thêm dịch vụ không thành công!", "danger");
+            return back()->withErrors($validator)->withInput();
+        } else {
+            $added_service = AddedService::find($id);
+            if (empty($added_service)) {
+                return back()->withErrors(["Không tồn tại dịch vụ"])->withInput();
+            } else {
+                $added_service_tmp = AddedService::where("id", "<>", $id)->where("code", $request->code)->first();
+                if (empty($added_service_tmp)) {
+                    $added_service->code = $request->code;
+                    $added_service->name = $request->name;
+                    $added_service->vehicle_type_id = $request->vehicle_type_id;
+                    $added_service->freight = $request->freight;
+                    $added_service->save();
+                    flash_message("Sửa dịch vụ thành công!", "success");
+                    return redirect()->route('addedServices');
+                } else {
+                    return back()->withErrors(["Mã dịch vụ đã tồn tại"])->withInput();
                 }
             }
         }
@@ -83,7 +155,7 @@ class SettingsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -94,7 +166,7 @@ class SettingsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -105,7 +177,7 @@ class SettingsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -116,8 +188,8 @@ class SettingsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -128,7 +200,7 @@ class SettingsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

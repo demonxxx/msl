@@ -55,7 +55,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                    <h4 class="modal-title">Modal title</h4>
+                                    <h4 class="modal-title">Phương tiện</h4>
                                 </div>
                                     <div class="modal-body">
                                             <form id="vehicle_form" method="POST" action="{{url('admin/settings/vehicleTypes/create')}}" data-parsley-validate>
@@ -96,7 +96,7 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                                    <h4 class="modal-title">Modal title</h4>
+                                                    <h4 class="modal-title">Phương tiện</h4>
                                                 </div>
                                                 <div class="modal-body">
                                                     <form id="vehicle_form_{{$vehicle_type->id}}" method="POST" action="{{url('admin/settings/vehicleTypes/'.$vehicle_type->id.'/edit')}}" data-parsley-validate>

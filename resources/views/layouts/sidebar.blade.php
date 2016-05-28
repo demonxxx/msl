@@ -22,7 +22,6 @@
                 </div>
             </li>
             @can('shop')
-<<<<<<< HEAD
                 <li>
                     <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Khách hàng</span><span
                                 class="fa arrow"></span></a>
@@ -49,6 +48,7 @@
                     <ul class="nav nav-second-level collapse">
                         <li><a href="{{url( '/shipper/create' )}}"> Thêm tài xế</a></li>
                         <li><a href="{{url('/shipper')}}"> Danh sách tài xế</a></li>
+                        <li><a href="{{url( '/shipper/notable_list' )}}"> Đánh giá tài xế</a></li>
                     </ul>
                 </li>
             @endcan
@@ -60,7 +60,7 @@
                         <li><a href="{{url( '/distance_freights' )}}"> Bảng giá</a>
                         </li>
                         <li><a href="{{url( 'admin/settings/vehicleTypes' )}}"> Loại xe</a></li>
-                        <li><a href="ui-typography.html"> Dịch vụ</a></li>
+                        <li><a href="{{url( 'admin/settings/addedServices' )}}"> Dịch vụ</a></li>
                         <li><a href="ui-navs.html"> Nhóm người dùng</a></li>
                     </ul>
                 </li>
