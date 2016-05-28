@@ -51,6 +51,12 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::post('/shipper/load_list', 'ShippersController@load_list');
         Route::post('/shipper/check_new_user_duplicate', 'ShippersController@check_new_user_duplicate');
         Route::post('/shipper/check_update_user_duplicate', 'ShippersController@check_update_user_duplicate');
+        Route::get('/distance_freights', 'DistanceFreightsController@index');
+        Route::get('/distance_freights/create', 'DistanceFreightsController@create');
+        Route::post('/distance_freights/store', 'DistanceFreightsController@store');
+        Route::get('/distance_freights/{dist_freight_id}/edit', 'DistanceFreightsController@edit');
+        Route::post('/distance_freights/{dist_freight_id}/update', 'DistanceFreightsController@update');
+        Route::get('/distance_freights/{dist_freight_id}/destroy', 'DistanceFreightsController@destroy');
     });
     Route::group(['roles' => ['admin']], function () {
         Route::get('/account', 'AccountsController@index')->name("accounts");

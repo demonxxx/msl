@@ -12,6 +12,7 @@ class Configs extends Model {
 
     protected $dates = ['deleted_at'];
     protected $table = 'configs';
+    public $timestamps = true;
 
     public function get_all_configs() {
         return DB::table($this->table)->get();
