@@ -22,6 +22,7 @@
                 </div>
             </li>
             @can('shop')
+<<<<<<< HEAD
                 <li>
                     <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Khách hàng</span><span
                                 class="fa arrow"></span></a>

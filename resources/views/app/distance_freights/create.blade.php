@@ -1,78 +1,45 @@
 @extends('templates.admin')
 @section('content')
-<div class="page page-shop-products">
-    <div class="pageheader">
-        <h2>Shipper</h2>
-        <div class="page-bar">
-            <ul class="page-breadcrumb">
-                <li>
-                    <a href="index.html"><i class="fa fa-home"></i>MSL Việt Nam</a>
-                </li>
-                <li>
-                    <a href="{{url('/distance_freights')}}">Bảng giá</a>
-                </li>
-                <li>
-                    <a href="{{url('/distance_freights/create')}}">Thêm mới</a>
-                </li>
+<script src="{{ asset("theme/js/plugins/parsley/parsley.min.js") }}"></script>
+<section class="tile">
+    <div class="tile-body">
+
+        @if (count($errors) > 0)
+        {{--{{dd($errors)}}--}}
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
             </ul>
         </div>
-    </div>
-    <!-- page content -->
-    <div class="pagecontent">
-        <!-- row -->
+        @endif
+
         <div class="row">
-            <!-- col -->
-            <div class="col-md-12">
-                <!-- tile -->
-                <section class="tile">
-
-                    <!-- tile header -->
-                    <div class="tile-header dvd dvd-btm">
-                        <h1 class="custom-font">Thêm đơn giá</h1>
-                        <ul class="controls">
-                            <li class="dropdown">
-                                <a role="button" tabindex="0" class="dropdown-toggle settings" data-toggle="dropdown">
-                                    <i class="fa fa-cog"></i>
-                                    <i class="fa fa-spinner fa-spin"></i>
-                                </a>
-                                <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
-                                    <li>
-                                        <a role="button" tabindex="0" class="tile-toggle">
-                                            <span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
-                                            <span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a role="button" tabindex="0" class="tile-refresh">
-                                            <i class="fa fa-refresh"></i> Làm mới
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a role="button" tabindex="0" class="tile-fullscreen">
-                                            <i class="fa fa-expand"></i> Toàn màn hình
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="remove"><a role="button" tabindex="0" class="tile-close"><i class="fa fa-times"></i></a></li>
-                        </ul>
-                    </div>
-                    <!-- /tile header -->
-                    <!-- tile body -->
-                    <div class="tile-body">
-
-                        @if (count($errors) > 0)
-                        {{--{{dd($errors)}}--}}
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Thêm đơn giá
+                        </h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="#">Config option 1</a>
+                                </li>
+                                <li><a href="#">Config option 2</a>
+                                </li>
                             </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
                         </div>
-                        @endif
-                        {{--<label>{{count($errs)}}</label>--}}
-
+                    </div>
+                    <div class="ibox-content">
                         <form class="form-horizontal" method="POST" action="{{url('distance_freights/store')}}" name="create-shipper-form" role="form" id="create-shipper-form" data-parsley-validate>
                             {!! csrf_field() !!}
                             <div class="form-group">
@@ -102,7 +69,7 @@
                             <div class="form-group">
                                 <label class="col-md-2 control-label">Khoảng cách từ<span style="color:red;">*</span></label>
                                 <div class="col-md-10">
-                                    <input type="text" name="from" id="from" class="form-control" placeholder="Khoảng cách từ" value="{{old('from')}}" required>
+                                    <input type="number" name="from" id="from" class="form-control" placeholder="Khoảng cách từ" value="{{old('from')}}" required>
                                     @if ($errors->has('from'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('from') }}</strong>
@@ -114,7 +81,7 @@
                             <div class="form-group">
                                 <label class="col-md-2 control-label">Khoăng cách đến<span style="color:red;">*</span></label>
                                 <div class="col-md-10">
-                                    <input type="text" name="to" id="to" class="form-control" placeholder="Khoăng cách đến" value="{{old('to')}}" required>
+                                    <input type="number" name="to" id="to" class="form-control" placeholder="Khoăng cách đến" value="{{old('to')}}" required>
                                     @if ($errors->has('to'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('to') }}</strong>
@@ -126,7 +93,7 @@
                             <div class="form-group">
                                 <label class="col-md-2 control-label">Giá cước<span style="color:red;">*</span></label>
                                 <div class="col-md-10">
-                                    <input type="text" name="freight" id="freight" class="form-control" placeholder="Giá cước" value="{{old('freight')}}" required>
+                                    <input type="number" name="freight" id="freight" class="form-control" placeholder="Giá cước" value="{{old('freight')}}" required>
                                     @if ($errors->has('freight'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('freight') }}</strong>
@@ -152,19 +119,14 @@
                             </div>
                             <div class = "tile-footer text-right bg-tr-black lter dvd dvd-top">
                                 <!--SUBMIT BUTTON -->
-                                <button type = "submit" class = "btn btn-default" id = "form4Submit">Submit</button>
+                                <button type="submit" class="btn btn-default" id="form4Submit">Lưu</button>
                             </div>
                         </form>
-
                     </div>
-
-                    <!--/tile footer -->
-                </section>
+                </div>
             </div>
-            <!--/col -->
         </div>
-        <!--/row -->
+        {{--<label>{{count($errs)}}</label>--}}
     </div>
-    <!--/page content -->
-</div>
+</section>
 @endsection
