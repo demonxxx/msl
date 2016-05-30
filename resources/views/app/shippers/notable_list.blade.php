@@ -1,14 +1,5 @@
 @extends('app.shippers.shipper')
 @section('shipper')
-<link href="{{ asset("theme/css/plugins/dataTables/datatables.min.css") }}" rel="stylesheet">
-<script src="{{ asset("theme/js/plugins/datatables/dataTables.min.js") }}"></script>
-<script src="{{ asset("theme/js/plugins/datatables/js/jquery.dataTables.min.js") }}"></script>
-<script src="{{ asset("theme/js/plugins/datatables/extensions/dataTables.bootstrap.js") }}"></script>
-<script src="{{ asset("theme/js/plugins/datatables/extensions/Pagination/input.js") }}"></script>
-
-<script src="{{ asset("js/datatable.ajax.js") }}"></script>
-<script src="{{ asset("js/constants.js") }}"></script>
-<!-- tile header -->
 <div class="row">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
@@ -65,63 +56,63 @@
     </div>
 </div>
 <script>
-var notable_shipper_table;
-function notable_shipper(shipper_id, shop_id, notable) {
-    var string = [shipper_id, shop_id, notable].join("/");
-    $.ajax({
-        url: base_url + "/shipper/" + string + "/notable_shipper",
-        type: 'get',
-        dataType: 'json',
-        success: function (response) {
-            notable_shipper_table.draw();
-        }
-    });
-}
-$(document).ready(function () {
-    function render_common(data) {
-        return "<div class='text-center'>" + data + "</div>";
+    var notable_shipper_table;
+    function notable_shipper(shipper_id, shop_id, notable) {
+        var string = [shipper_id, shop_id, notable].join("/");
+        $.ajax({
+            url: base_url + "/shipper/" + string + "/notable_shipper",
+            type: 'get',
+            dataType: 'json',
+            success: function (response) {
+                notable_shipper_table.draw();
+            }
+        });
     }
+    $(document).ready(function () {
+        function render_common(data) {
+            return "<div class='text-center'>" + data + "</div>";
+        }
 
-    var common_render = {
-        "render": function (data, type, row) {
-            return render_common(data);
-        },
-        "targets": [0, 1, 2, 3]
-    };
+        var common_render = {
+            "render": function (data, type, row) {
+                return render_common(data);
+            },
+            "targets": [0, 1, 2, 3]
+        };
 
-    var function_render = {
-        "render": function (data, type, row) {
-            var html = "<div class='text-center'>";
-            html += "<button style='margin-right:5px;' class='btn btn-primary btn-sm btn-function' onclick='notable_shipper(" + row.shipper_id + "," + row.shop_id + "," + NOTABLE_SHIPPER_LIKE + ")'>Thích</button>";
-            html += "<button class='btn btn-danger btn-sm btn-function' onclick='notable_shipper(" + row.shipper_id + "," + row.shop_id + "," + NOTABLE_SHIPPER_BLOCK + ")'>Khóa</button>"
-            "</div>";
-            return html;
-        },
-        "targets": [4]
-    };
+        var function_render = {
+            "render": function (data, type, row) {
+                var html = "<div class='text-center'>";
+                html += "<button style='margin-right:5px;' class='btn btn-primary btn-sm btn-function' onclick='notable_shipper(" + row.shipper_id + "," + row.shop_id + "," + NOTABLE_SHIPPER_LIKE + ")'>Thích</button>";
+                html += "<button class='btn btn-danger btn-sm btn-function' onclick='notable_shipper(" + row.shipper_id + "," + row.shop_id + "," + NOTABLE_SHIPPER_BLOCK + ")'>Khóa</button>"
+                "</div>";
+                return html;
+            },
+            "targets": [4]
+        };
 
-    var config = [];
-    var renders = [];
-    renders.push(common_render);
-    renders.push(function_render);
-    config['colums'] = ["code", "name", "phone_number", "ship_number", "shipper_id", "shop_id", "type"];
-    config['url'] = "/shipper/load_notable_list";
-    config['id'] = "shippers-notable-list";
-    config['data_array'] = renders;
-    config['clear_filter'] = true;
-    config['sort_off'] = [4];
-    config['hidden_global_seach'] = true;
-    config['columns_length'] = 5;
-    config['createdRow'] = function (row, data, index) {
-        if (data.type != null) {
-            if (data.type == 1) {
-                $(row).addClass("success");
-            } else {
-                $(row).addClass("danger");
+        var config = [];
+        var renders = [];
+        renders.push(common_render);
+        renders.push(function_render);
+        config['colums'] = ["code", "name", "phone_number", "ship_number", "shipper_id", "shop_id", "type"];
+        config['url'] = "/shipper/load_notable_list";
+        config['id'] = "shippers-notable-list";
+        config['data_array'] = renders;
+        config['clear_filter'] = true;
+        config['sort_off'] = [4];
+        config['hidden_global_seach'] = true;
+        config['columns_length'] = 5;
+        config['createdRow'] = function (row, data, index) {
+            if (data.type != null) {
+                if (data.type == 1) {
+                    $(row).addClass("success");
+                } else {
+                    $(row).addClass("danger");
+                }
             }
         }
-    }
-    notable_shipper_table = setAjaxDataTable(config);
-});
+        notable_shipper_table = setAjaxDataTable(config);
+    });
 </script>
 @endsection
