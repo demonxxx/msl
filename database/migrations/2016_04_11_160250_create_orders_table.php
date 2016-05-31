@@ -21,6 +21,8 @@ class CreateOrdersTable extends Migration
             $table->string('name')->nullable()->comment('name of order');
             $table->text('description')->nullable();
             $table->string('full_address_from')->nullable();
+            $table->string('street_from')->nullable();
+            $table->string('street_to')->nullable();
             $table->string('address_from')->nullable();
             $table->string('ward_from')->nullable();
             $table->string('district_from')->nullable();
@@ -39,6 +41,7 @@ class CreateOrdersTable extends Migration
             $table->float('weight')->nullable();
             $table->float('order_values')->nullable();
             $table->float('main_freight')->nullable();
+            $table->float('rate_score')->nullable();
             $table->integer('shipper_id')->references('id')->on('users')->onDelete('cascade');
             $table->dateTime('taken_order_at')->nullable()->comment('when shipper take orders, this field is insert');
             $table->dateTime('taken_items_at')->nullable()->comment('when shipper take orders, this field is insert');

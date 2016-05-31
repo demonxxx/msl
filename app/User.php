@@ -85,6 +85,10 @@ class User extends Authenticatable
     {
         return in_array($need_role, $this->getUserRoles());
     }
+
+    public function isAdmin(){
+        return $this->isAdmin == 1 ? true : false;
+    }
     
     public function get_all_accounts($post) {
         $builder = DB::table("users");

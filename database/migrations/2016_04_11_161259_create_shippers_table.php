@@ -13,6 +13,7 @@ class CreateShippersTable extends Migration
         Schema::create('shippers', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('code')->unique()->nullable();
             $table->string('home_number');
             $table->string('home_ward');
             $table->string('home_district');

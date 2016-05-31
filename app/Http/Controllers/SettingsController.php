@@ -7,6 +7,7 @@ use DB;
 use App\Http\Requests;
 use App\VehicleType;
 use App\AddedService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 class SettingsController extends Controller
@@ -149,6 +150,36 @@ class SettingsController extends Controller
                     return back()->withErrors(["Mã dịch vụ đã tồn tại"])->withInput();
                 }
             }
+        }
+    }
+
+    public function deleteAddedService($id){
+        $user = Auth::user();
+        if($user->isAdmin()){
+            $added_service = AddedService::find($id);
+            if(empty($added_service)){
+                return 0;
+            }else {
+                $added_service->delete();
+                return 1;
+            }
+        }else {
+            return 0;
+        }
+    }
+
+    public function deleteVehicleType($id){
+        $user = Auth::user();
+        if($user->isAdmin()){
+            $vehicleType = VehicleType::find($id);
+            if(empty($vehicleType)){
+                return 0;
+            }else {
+                $vehicleType->delete();
+                return 1;
+            }
+        }else {
+            return 0;
         }
     }
 

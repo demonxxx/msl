@@ -63,7 +63,7 @@ class AuthController extends Controller
     protected function create(array $data)
     {
         $max_id = User::max('id');
-        $user_code = 'KH' . ($max_id + 1);
+        $user_code = 'U' . ($max_id + 1);
         $user_create = User::create([
             'name'         => $data['name'],
             'email'        => $data['email'],
@@ -74,6 +74,8 @@ class AuthController extends Controller
             'code'         => $user_code,
         ]);
         $shop = new Shop;
+        $max_shop_id = Shop::max('id');
+        $shop->code = 'KH'.($max_shop_id + 1);
         $user_create->shop()->save($shop);
         $user_create->roles()->sync([SHOP_TYPE]);
         return $user_create;
