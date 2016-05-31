@@ -14,7 +14,6 @@ class CreateShopTypesTable extends Migration
     {
         Schema::create('shop_types', function (Blueprint $table) {
             $table->increments('id')->unsigned();
-            $table->string('code')->unique();
             $table->string('name');
             $table->timestamps();
             $table->softDeletes();
