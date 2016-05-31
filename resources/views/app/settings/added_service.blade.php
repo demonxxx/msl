@@ -101,7 +101,7 @@
 
                                     <td class="text-center" style="vertical-align: middle">
                                         <button class='btn btn-primary' data-toggle="modal" data-target="#modal_{{$added_service->id}}" style='width: 70px;'>Sửa</button>
-                                        <a class='btn btn-danger' style='width: 70px; margin-left: 10px;'>Xóa</a>
+                                        <button class='btn btn-danger' onclick="deleteAddedServiceConfirm({{$added_service->id}})" style='width: 70px; margin-left: 10px;'>Xóa</button>
                                     </td>
                                 </tr>
                                 <div class="modal inmodal fade" id="modal_{{$added_service->id}}" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -179,6 +179,40 @@
 
         function editAddedService(id){
             $("#added_service_form_"+id).submit();
+        }
+
+        function deleteAddedServiceConfirm(id) {
+            swal({
+                title: "Bạn chắc chắn chứ?",
+                text: "Bạn sẽ không thể phục hồi dữ liệu!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Chắc chắn!",
+                closeOnConfirm: false
+            }, function () {
+                $.ajax({
+                    url: base_url + "/admin/settings/addedServices/" + id + "/delete",
+                    type: 'GET',
+                    success: function (result) {
+                        if(parseInt(result) == 1){
+                            swal({
+                                title: "Đã xóa!",
+                                text: "Dịch vụ cộng thêm đã được xóa.",
+                                type: "success",
+                            }, function () {
+                                window.location.reload();
+                            });
+                        }else {
+                            swal("Lỗi", "Xóa không thành công! :)", "error");
+                        }
+
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        swal("Lỗi", "Xóa không thành công! :)", "error");
+                    }
+                });
+            });
         }
     </script>
 @endsection
