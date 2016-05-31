@@ -36,7 +36,6 @@
 
     <script src="{{ asset("js/datatable.ajax.js") }}"></script>
     <script src="{{ asset("js/constants.js") }}"></script>
-
 </head>
 <body class="pace-done mini-navbar" style="padding-bottom: 26px;">
 
