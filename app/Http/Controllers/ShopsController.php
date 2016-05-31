@@ -41,9 +41,7 @@ class ShopsController extends Controller
      */
     public function create()
     {
-        $max_id = User::max('id');
-        $shop_code = $max_id + 1;
-        return view('app.shops.create', ['shop_code' => $shop_code]);
+        return view('app.shops.create');
     }
 
     /**
@@ -55,44 +53,29 @@ class ShopsController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'code'            => 'required|max:15|unique:users',
             'name'            => 'required|max:255',
             'password'        => 'required|min:6|confirmed',
-            'phone_number'    => 'required|max:15',
-            'email'           => 'email|max:255|unique:users',
+            'phone_number'    => 'required|min:10|max:11|unique:users',
+            'email'           => 'required|email|max:255|unique:users',
             'username'        => 'required|max:255|unique:users',
-            'home_number'     => 'required|max:255',
-            'home_ward'       => 'required|max:255',
-            'home_district'   => 'required|max:255',
-            'home_city'       => 'required|max:255',
+            'shop_name'       => 'max:255',
+            'home_number'     => 'max:255',
+            'home_ward'       => 'max:255',
+            'home_district'   => 'max:255',
+            'home_city'       => 'max:255',
             'office_number'   => 'required|max:255',
             'office_ward'     => 'required|max:255',
             'office_district' => 'required|max:255',
             'office_city'     => 'required|max:255',
-            'identity_card'   => 'required|max:12',
+            'identity_card'   => 'required|min:9|max:12',
         ]);
         if ($validator->fails()) {
             flash_message("Tạo khách hàng mới không thành công!", "danger");
             return redirect('shop/create')->withErrors($validator)->withInput();
         } else {
             $user = new User;
-            $check_code = $user->where('code', $request->code)->first();
-            if (!empty($check_code)) {
-                return redirect('shop/create')->withErrors(['Mã khách hàng đã tồn tại!'])->withInput();
-            }
-            $check_username = $user->where('username', $request->username)->first();
-            if (!empty($check_username)) {
-                return redirect('shop/create')->withErrors(['Tài khoản đăng nhập đã tồn tại!'])->withInput();
-            }
-            $check_email = User::where('email', $request->email)->first();
-            if (!empty($check_email)) {
-                return redirect('shop/create')->withErrors(['Tài khoản email đã tồn tại!'])->withInput();
-            }
-            $check_phone = User::where('phone_number', $request->phone_number)->first();
-            if (!empty($check_phone)) {
-                return redirect('shop/create')->withErrors(['Số điện thoại đã tồn tại!'])->withInput();
-            }
-            $user->code = $request->code;   
+            $max_id = User::max('id')+1;
+            $user->code = "U".$max_id;
             $user->name = $request->name;
             $user->username = $request->username;
             $user->password = bcrypt($request->password);
@@ -102,6 +85,9 @@ class ShopsController extends Controller
             $user->api_token = str_random(60);
             $user->save();
             $shop = new Shop;
+            $max_id = Shop::max('id')+1;
+            $shop->code = "KH".$max_id;
+            $shop->shop_name = $request->shop_name;
             $shop->home_number = $request->home_number;
             $shop->home_ward = $request->home_ward;
             $shop->home_district = $request->home_district;
@@ -111,7 +97,6 @@ class ShopsController extends Controller
             $shop->office_district = $request->office_district;
             $shop->office_city = $request->office_city;
             $user->shop()->save($shop);
-            $shop->office_district = $request->office_district;
             flash_message("Tạo khách hàng mới thành công!");
             return back();
         }
@@ -152,21 +137,20 @@ class ShopsController extends Controller
      */
     public function update(Request $request, $id)
     {
-//        dd($request->all());
         $validator = \Validator::make($request->all(), [
-            'code'            => 'required|max:15',
             'name'            => 'required|max:255',
-            'phone_number'    => 'required|max:15',
-            'email'           => 'email|max:255',
-            'home_number'     => 'required|max:255',
-            'home_ward'       => 'required|max:255',
-            'home_district'   => 'required|max:255',
-            'home_city'       => 'required|max:255',
+            'phone_number'    => 'required|min:10|max:11',
+            'email'           => 'required|email|max:255',
+            'shop_name'       => 'max:255',
+            'home_number'     => 'max:255',
+            'home_ward'       => 'max:255',
+            'home_district'   => 'max:255',
+            'home_city'       => 'max:255',
             'office_number'   => 'required|max:255',
             'office_ward'     => 'required|max:255',
             'office_district' => 'required|max:255',
             'office_city'     => 'required|max:255',
-            'identity_card'   => 'required|max:12',
+            'identity_card'   => 'required|min:9|max:12',
         ]);
         if ($validator->fails()) {
             flash_message("Sửa khách hàng không thành công!", "danger");
@@ -174,13 +158,13 @@ class ShopsController extends Controller
         } else {
             $user = new User;
             $user_obj = $user->find($id);
-            $user_obj->code = $request->code;
             $user_obj->name = $request->name;
             $user_obj->phone_number = $request->phone_number;
             $user_obj->email = $request->email;
             $user_obj->identity_card = $request->identity_card;
             $user_obj->save();
             $shop_obj = $user_obj->shop;
+            $shop_obj->shop_name = $request->shop_name;
             $shop_obj->home_ward = $request->home_ward;
             $shop_obj->home_district = $request->home_district;
             $shop_obj->home_city = $request->home_city;

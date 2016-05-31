@@ -70,11 +70,9 @@
                     <ul class="nav nav-second-level collapse">
                         <li><a href="ui-general.html"> Thêm người dùng</a></li>
                         <li><a href="{{url('/account')}}"> Danh sách tài khoản</a></li>
-                        @endcan
-
-
                     </ul>
                 </li>
+            @endcan
         </ul>
     </div>
 </nav>

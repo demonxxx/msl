@@ -24,10 +24,13 @@ class Shop extends Model
 
     public function get_all_shops($post){
         $data = DB::table("shops")
-                    ->select("users.id","users.code","users.name", "users.email","users.identity_card",
-                        "shops.home_number","shops.home_ward", "shops.home_district","shops.home_city",
-                        "shops.office_number","shops.office_ward", "shops.office_district","shops.office_city")
+                    ->select(array("users.id","users.name", "users.email","users.identity_card","users.phone_number",
+                        DB::raw('COUNT(orders.id) as count_order'), DB::raw('COUNT(agencys.id) as count_agency'),
+                        "shops.code as shop_code","shops.shop_name","shops.home_number","shops.home_ward", "shops.home_district","shops.home_city",
+                        "shops.office_number","shops.office_ward", "shops.office_district","shops.office_city" ))
                     ->join("users","shops.user_id","=","users.id")
+                    ->leftjoin("orders","orders.user_id","=","users.id")
+                    ->leftjoin("agencys","agencys.user_id","=","users.id")
                     ->skip($post["start"])->take($post["length"])
                     ->get();
         return $data;
