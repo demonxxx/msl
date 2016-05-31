@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Shipper;
 use Illuminate\Http\Request;
 use DB;
 use App\Http\Requests;
@@ -9,6 +10,10 @@ use App\VehicleType;
 use App\AddedService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use App\OrderType;
+use App\ShipperType;
+use App\ShopScope;
+use App\ShopType;
 
 class SettingsController extends Controller
 {
@@ -65,7 +70,7 @@ class SettingsController extends Controller
             'name' => 'required',
         ]);
         if ($validator->fails()) {
-            flash_message("Thêm phương tiện không thành công!", "danger");
+            flash_message("Sửa phương tiện không thành công!", "danger");
             return back()->withErrors($validator)->withInput();
         } else {
             $vehicleType = VehicleType::find($id);
@@ -176,6 +181,238 @@ class SettingsController extends Controller
                 return 0;
             }else {
                 $vehicleType->delete();
+                return 1;
+            }
+        }else {
+            return 0;
+        }
+    }
+
+    public function showShopTypes(){
+        $shopTypes = ShopType::all();
+        return view('app.settings.shop_types', ['shop_types' => $shopTypes]);
+    }
+
+    public function createShopType(Request $request){
+        $validator = \Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if ($validator->fails()) {
+            flash_message("Thêm loại khách hàng không thành công!", "danger");
+            return back()->withErrors($validator)->withInput();
+        } else {
+            $shopType = new ShopType;
+            $shopType->name = $request->name;
+            $shopType->save();
+            flash_message("Thêm loại khách hàng thành công!", "success");
+            return redirect()->route('shopTypes');
+        }
+    }
+
+    public function editShopType(Request $request, $id){
+        $validator = \Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if ($validator->fails()) {
+            flash_message("Sửa loại khách hàng không thành công!", "danger");
+            return back()->withErrors($validator)->withInput();
+        } else {
+            $shopType = ShopType::find($id);
+            if (empty($shopType)) {
+                return back()->withErrors(["Không tồn loại khách hàng"])->withInput();
+            } else {
+
+                $shopType->name = $request->name;
+                $shopType->save();
+                flash_message("Sửa mã khách hàng thành công!", "success");
+                return redirect()->route('shopTypes');
+            }
+        }
+    }
+
+    public function deleteShopType($id){
+        $user = Auth::user();
+        if($user->isAdmin()){
+            $shopType = ShopType::find($id);
+            if(empty($shopType)){
+                return 0;
+            }else {
+                $shopType->delete();
+                return 1;
+            }
+        }else {
+            return 0;
+        }
+    }
+
+    public function showShopScopes(){
+        $shopScopes = ShopScope::all();
+        return view('app.settings.shop_scopes', ['shop_scopes' => $shopScopes]);
+    }
+
+    public function createShopScope(Request $request){
+        $validator = \Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if ($validator->fails()) {
+            flash_message("Thêm phạm vi shop không thành công!", "danger");
+            return back()->withErrors($validator)->withInput();
+        } else {
+            $shopScope = new ShopScope;
+            $shopScope->name = $request->name;
+            $shopScope->save();
+            flash_message("Thêm phạm vi shop thành công!", "success");
+            return redirect()->route('shopScopes');
+        }
+    }
+
+    public function editShopScope(Request $request, $id){
+        $validator = \Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if ($validator->fails()) {
+            flash_message("Sửa phạm vi shop không thành công!", "danger");
+            return back()->withErrors($validator)->withInput();
+        } else {
+            $shopScope = ShopScope::find($id);
+            if (empty($shopScope)) {
+                return back()->withErrors(["Không tồn phạm vi shop"])->withInput();
+            } else {
+                $shopScope->name = $request->name;
+                $shopScope->save();
+                flash_message("Sửa phạm vi shop thành công!", "success");
+                return redirect()->route('shopScopes');
+            }
+        }
+    }
+
+    public function deleteShopScope($id){
+        $user = Auth::user();
+        if($user->isAdmin()){
+            $shopScope = ShopScope::find($id);
+            if(empty($shopScope)){
+                return 0;
+            }else {
+                $shopScope->delete();
+                return 1;
+            }
+        }else {
+            return 0;
+        }
+    }
+
+    public function showShipperTypes(){
+        $shipperTypes = ShipperType::all();
+        return view('app.settings.shipper_types', ['shipper_types' => $shipperTypes]);
+    }
+
+    public function createShipperType(Request $request){
+        $validator = \Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if ($validator->fails()) {
+            flash_message("Thêm loại tài xế không thành công!", "danger");
+            return back()->withErrors($validator)->withInput();
+        } else {
+            $shipperType = new ShipperType;
+            $shipperType->name = $request->name;
+            $shipperType->save();
+            flash_message("Thêm loại tài xế thành công!", "success");
+            return redirect()->route('shipperTypes');
+        }
+    }
+
+    public function editShipperType(Request $request, $id){
+        $validator = \Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if ($validator->fails()) {
+            flash_message("Sửa loại tài xế không thành công!", "danger");
+            return back()->withErrors($validator)->withInput();
+        } else {
+            $shipperType = ShipperType::find($id);
+            if (empty($shipperType)) {
+                return back()->withErrors(["Không tồn loại tài xế"])->withInput();
+            } else {
+
+                $shipperType->name = $request->name;
+                $shipperType->save();
+                flash_message("Sửa loại tài xế thành công!", "success");
+                return redirect()->route('shipperTypes');
+            }
+        }
+    }
+
+    public function deleteShipperType($id){
+        $user = Auth::user();
+        if($user->isAdmin()){
+            $shipperType = ShipperType::find($id);
+            if(empty($shipperType)){
+                return 0;
+            }else {
+                $shipperType->delete();
+                return 1;
+            }
+        }else {
+            return 0;
+        }
+    }
+
+    public function showOrderTypes(){
+        $orderTypes = OrderType::all();
+        return view('app.settings.order_types', ['order_types' => $orderTypes]);
+    }
+
+    public function createOrderType(Request $request){
+//        dd("create order type");
+        $validator = \Validator::make($request->all(), [
+            'name' => 'required',
+            'freight' => 'required|integer'
+        ]);
+        if ($validator->fails()) {
+            flash_message("Thêm loại đơn hàng không thành công!", "danger");
+            return back()->withErrors($validator)->withInput();
+        } else {
+            $orderType = new OrderType;
+            $orderType->name = $request->name;
+            $orderType->freight = $request->freight;
+            $orderType->save();
+            flash_message("Thêm loại đơn hàng thành công!", "success");
+            return redirect()->route('orderTypes');
+        }
+    }
+
+    public function editOrderType(Request $request, $id){
+        $validator = \Validator::make($request->all(), [
+            'name' => 'required',
+            'freight' => 'required|integer'
+        ]);
+        if ($validator->fails()) {
+            flash_message("Sửa loại đơn hàng không thành công!", "danger");
+            return back()->withErrors($validator)->withInput();
+        } else {
+            $orderType = OrderType::find($id);
+            if (empty($orderType)) {
+                return back()->withErrors(["Không tồn loại đơn hàng"])->withInput();
+            } else {
+
+                $orderType->name = $request->name;
+                $orderType->freight = $request->freight;
+                $orderType->save();
+                flash_message("Sửa loại đơn hàng thành công!", "success");
+                return redirect()->route('orderTypes');
+            }
+        }
+    }
+
+    public function deleteOrderType($id){
+        $user = Auth::user();
+        if($user->isAdmin()){
+            $orderType = OrderType::find($id);
+            if(empty($orderType)){
+                return 0;
+            }else {
+                $orderType->delete();
                 return 1;
             }
         }else {
