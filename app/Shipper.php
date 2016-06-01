@@ -24,8 +24,10 @@ class Shipper extends Model {
 
     public function get_all_shippers($post) {
         $builder = DB::table("shippers");
-        $builder->select("users.id", "users.code", "users.name", "users.email", "users.identity_card", "shippers.home_number", "shippers.home_ward", "shippers.home_district", "shippers.home_city", "users.phone_number")
-                ->join("users", "shippers.user_id", "=", "users.id");
+        $builder->select(array("users.id", "users.code", "users.name", "users.email", "users.identity_card", "shippers.average_score", 
+            "shippers.profile_status", "shippers.home_district", "users.phone_number",DB::raw('COUNT(shipper_order_histories.id) as count_order'),))
+                ->join("users", "shippers.user_id", "=", "users.id")
+                ->leftjoin("shipper_order_histories", "shipper_order_histories.shipper_id", "=", "users.id");
         $search_params = $post['searchParams'];
         $this->table_condition($builder, $search_params);
         $builder->skip($post["iDisplayStart"])->take($post["iDisplayLength"])
