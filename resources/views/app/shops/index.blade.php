@@ -1,13 +1,5 @@
 @extends('app.shops.shop')
 @section('shop')
-    <link href="{{ asset("theme/css/plugins/dataTables/datatables.min.css") }}" rel="stylesheet">
-    <script src="{{ asset("theme/js/plugins/datatables/dataTables.min.js") }}"></script>
-    <script src="{{ asset("theme/js/plugins/datatables/js/jquery.dataTables.min.js") }}"></script>
-    <script src="{{ asset("theme/js/plugins/datatables/extensions/dataTables.bootstrap.js") }}"></script>
-    <script src="{{ asset("theme/js/plugins/datatables/extensions/Pagination/input.js") }}"></script>
-
-    <script src="{{ asset("js/datatable.ajax.js") }}"></script>
-    <script src="{{ asset("js/constants.js") }}"></script>
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
