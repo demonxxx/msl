@@ -24,3 +24,8 @@ define("IOS_CERTIFICATE_FILE", "ios_certificate.pem");
 
 // Google API
 define("GOOGLE_API_KEY", 'google_api_key');
+
+// Administrative units
+define("CITY_UNIT", 0);
+define("DISTRICT_UNIT", 1);
+define("WARD_UNIT", 2);
