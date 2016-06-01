@@ -62,39 +62,40 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::get('/account', 'AccountsController@index')->name("accounts");
         Route::post('/account/load_list', 'AccountsController@load_list');
         Route::post('/account/update_money', 'AccountsController@update_money');
+        Route::get('/administrative_units', 'SettingsController@show_administrative_units');
     });
 
 
-    Route::group(['prefix' => 'admin/settings','roles' => ['admin']], function () {
+    Route::group(['prefix' => 'admin/settings', 'roles' => ['admin']], function () {
         Route::get('/vehicleTypes', 'SettingsController@showVehicleTypes')->name("vehicle_types");
         Route::post('/vehicleTypes/create', 'SettingsController@createVehicleType');
         Route::post('vehicleTypes/{id}/edit', 'SettingsController@editVehicleType');
-        Route::get('/vehicleTypes/{id}/delete','SettingsController@deleteVehicleType');
+        Route::get('/vehicleTypes/{id}/delete', 'SettingsController@deleteVehicleType');
 
         Route::get('/addedServices', 'SettingsController@showAddedServices')->name("addedServices");
         Route::post('/addedServices/create', 'SettingsController@createAddedService');
         Route::post('/addedServices/{id}/edit', 'SettingsController@editAddedService');
-        Route::get('/addedServices/{id}/delete','SettingsController@deleteAddedService');
+        Route::get('/addedServices/{id}/delete', 'SettingsController@deleteAddedService');
 
         Route::get('/shopTypes', 'SettingsController@showShopTypes')->name("shopTypes");
         Route::post('/shopTypes/create', 'SettingsController@createShopType');
         Route::post('/shopTypes/{id}/edit', 'SettingsController@editShopType');
-        Route::get('/shopTypes/{id}/delete','SettingsController@deleteShopType');
+        Route::get('/shopTypes/{id}/delete', 'SettingsController@deleteShopType');
 
         Route::get('/shopScopes', 'SettingsController@showShopScopes')->name("shopScopes");
         Route::post('/shopScopes/create', 'SettingsController@createShopScope');
         Route::post('/shopScopes/{id}/edit', 'SettingsController@editShopScope');
-        Route::get('/shopScopes/{id}/delete','SettingsController@deleteShopScope');
+        Route::get('/shopScopes/{id}/delete', 'SettingsController@deleteShopScope');
 
         Route::get('/shipperTypes', 'SettingsController@showShipperTypes')->name("shipperTypes");
         Route::post('/shipperTypes/create', 'SettingsController@createShipperType');
         Route::post('/shipperTypes/{id}/edit', 'SettingsController@editShipperType');
-        Route::get('/shipperTypes/{id}/delete','SettingsController@deleteShipperType');
+        Route::get('/shipperTypes/{id}/delete', 'SettingsController@deleteShipperType');
 
         Route::get('/orderTypes', 'SettingsController@showOrderTypes')->name("orderTypes");
         Route::post('/orderTypes/create', 'SettingsController@createOrderType');
         Route::post('/orderTypes/{id}/edit', 'SettingsController@editOrderType');
-        Route::get('/orderTypes/{id}/delete','SettingsController@deleteOrderType');
+        Route::get('/orderTypes/{id}/delete', 'SettingsController@deleteOrderType');
     });
 });
 
