@@ -15,6 +15,8 @@ class CreateShopsTable extends Migration
         Schema::create('shops', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('code')->unique()->nullable();
+            $table->string('shop_name',255)->nullable();
             $table->string('home_number',255)->nullable();
             $table->string('home_ward',255)->nullable();
             $table->string('home_district',255)->nullable();

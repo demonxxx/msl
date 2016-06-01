@@ -1,15 +1,7 @@
 @extends('templates.admin')
 @section('content')
 @include('partials.flash')
-    <link href="{{ asset("theme/css/plugins/dataTables/datatables.min.css") }}" rel="stylesheet">
-    <script src="{{ asset("theme/js/plugins/datatables/dataTables.min.js") }}"></script>
-    <script src="{{ asset("theme/js/plugins/datatables/js/jquery.dataTables.min.js") }}"></script>
-    <script src="{{ asset("theme/js/plugins/datatables/extensions/dataTables.bootstrap.js") }}"></script>
-    <script src="{{ asset("theme/js/plugins/datatables/extensions/Pagination/input.js") }}"></script>
-    <script src="{{ asset("theme/js/plugins/parsley/parsley.min.js") }}"></script>
 
-    <script src="{{ asset("js/datatable.ajax.js") }}"></script>
-    <script src="{{ asset("js/constants.js") }}"></script>
     <script src="{{ asset("theme/js/plugins/ladda/spin.min.js") }}" ></script>
     <script src="{{ asset("theme/js/plugins/ladda/ladda.min.js") }}" ></script>
     <script src="{{ asset("theme/js/plugins/ladda/ladda.jquery.min.js") }}" ></script>
@@ -88,7 +80,7 @@
                                         <td class="text-center" style="vertical-align: middle">{{$vehicle_type->name}}</td>
                                         <td class="text-center" style="vertical-align: middle">
                                                 <button class='btn btn-primary' data-toggle="modal" data-target="#modal_{{$vehicle_type->id}}" style='width: 70px;'>Sửa</button>
-                                                <a class='btn btn-danger' style='width: 70px; margin-left: 10px;'>Xóa</a>
+                                                <button onclick="deleteVehicleConfirm({{$vehicle_type->id}})" class='btn btn-danger' style='width: 70px; margin-left: 10px;'>Xóa</button>
                                         </td>
                                     </tr>
                                     <div class="modal inmodal fade" id="modal_{{$vehicle_type->id}}" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -129,22 +121,6 @@
             $("#vehicle_form").parsley();
             // Bind normal buttons
             $( '.ladda-button' ).ladda( 'bind', { timeout: 2000 } );
-
-            // Bind progress buttons and simulate loading progress
-            Ladda.bind( '.progress-demo .ladda-button',{
-                callback: function( instance ){
-                    var progress = 0;
-                    var interval = setInterval( function(){
-                        progress = Math.min( progress + Math.random() * 0.1, 1 );
-                        instance.setProgress( progress );
-
-                        if( progress === 1 ){
-                            instance.stop();
-                            clearInterval( interval );
-                        }
-                    }, 200 );
-                }
-            });
             $('.dataTables-example').DataTable({
                 dom: '<"html5buttons"B>lTfgitp',
                 buttons: [
@@ -152,20 +128,15 @@
                     {extend: 'csv'},
                     {extend: 'excel', title: 'ExampleFile'},
                     {extend: 'pdf', title: 'ExampleFile'},
-
-                    {
-                        extend: 'print',
+                    {extend: 'print',
                         customize: function (win) {
                             $(win.document.body).addClass('white-bg');
                             $(win.document.body).css('font-size', '10px');
-
-                            $(win.document.body).find('table')
-                                    .addClass('compact')
-                                    .css('font-size', 'inherit');
+                            $(win.document.body).find('table').addClass('compact')
+                                .css('font-size', 'inherit');
                         }
                     }
                 ]
-
             });
         });
 
@@ -175,6 +146,40 @@
 
         function editVehicle(id){
             $("#vehicle_form_"+id).submit();
+        }
+
+        function deleteVehicleConfirm(id) {
+            swal({
+                title: "Bạn chắc chắn chứ?",
+                text: "Bạn sẽ không thể phục hồi dữ liệu!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Chắc chắn!",
+                closeOnConfirm: false
+            }, function () {
+                $.ajax({
+                    url: base_url + "/admin/settings/vehicleTypes/" + id + "/delete",
+                    type: 'GET',
+                    success: function (result) {
+                        if(parseInt(result) == 1){
+                            swal({
+                                title: "Đã xóa!",
+                                text: "phương tiện đã được xóa.",
+                                type: "success",
+                            }, function () {
+                                window.location.reload();
+                            });
+                        }else {
+                            swal("Lỗi", "Xóa không thành công! :)", "error");
+                        }
+
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        swal("Lỗi", "Xóa không thành công! :)", "error");
+                    }
+                });
+            });
         }
     </script>
 @endsection

@@ -39,10 +39,13 @@
                             <tr>
                                 <th class="text-center">Mã KH</th>
                                 <th class="text-center">Họ và tên</th>
-                                <th class="text-center">Email đăng nhập</th>
+                                <th class="text-center">Tên cửa hàng</th>
+                                <th class="text-center">Số điện thoại</th>
+                                <th class="text-center">Email</th>
                                 <th class="text-center">CMT</th>
-                                <th class="text-center">Đ/c nhà</th>
-                                <th class="text-center">Đ/c văn phòng</th>
+                                <th class="text-center">Tổng số đơn hàng</th>
+                                <th class="text-center">Tổng số cửa hàng</th>
+                                <th class="text-center">Đ/c cửa hàng</th>
                                 <th class="text-center">Chức năng</th>
                             </tr>
                             </thead>
@@ -64,39 +67,30 @@
                 "render": function (data, type, row) {
                     return render_common(data);
                 },
-                "targets": [0, 1, 2, 3]
+                "targets": [0, 1, 2, 3, 4, 5, 6, 7]
             };
-
-            var home_address_render = {
-                "render": function (data, type, row) {
-                    return "<div class='text-center'>" + row.home_number + ", " + row.home_ward + ", " + row.home_district + ", " + row.home_city + "</div>";
-
-                },
-                "targets": [4]
-            };
-
+            
             var office_address_render = {
                 "render": function (data, type, row) {
                     return "<div class='text-center'>" + row.office_number + ", " + row.office_ward + ", " + row.office_district + ", " + row.office_city + "</div>";
 
                 },
-                "targets": [5]
+                "targets": [8]
             };
 
             var function_render = {
                 "render": function (data, type, row) {
                     return render_function(data);
                 },
-                "targets": [6]
+                "targets": [9]
             };
 
             var data = {};
             var renders = [];
             renders.push(common_render);
-            renders.push(home_address_render);
             renders.push(function_render);
             renders.push(office_address_render);
-            data.colums = ["code", "name", "email", "identity_card", "home_city", "office_city", "id"];
+            data.colums = ["shop_code", "name", "shop_name", "phone_number",  "email", "identity_card", "count_order", "count_agency", "office_city", "id"];
             data.url = "/shop/load_list";
             data.id = "shops-list";
             data.renders = renders;
@@ -112,7 +106,7 @@
             var delete_url = base_url + "/shop/" + data + "/delete";
             return "<div class='text-center'>" +
                     "<a class='btn btn-primary' href='" + edit_url + "' style='width: 70px;'>Sửa</a>" +
-                    "<a class='btn btn-danger' href='" + delete_url + "' style='width: 70px; margin-left: 10px;'>Xóa</a>" +
+                    "<a class='btn btn-danger' disabled href='" + delete_url + "' style='width: 70px; margin-left: 10px;'>Xóa</a>" +
                     "</div>";
         }
     </script>

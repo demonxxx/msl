@@ -61,6 +61,10 @@
                         </li>
                         <li><a href="{{url( 'admin/settings/vehicleTypes' )}}"> Loại xe</a></li>
                         <li><a href="{{url( 'admin/settings/addedServices' )}}"> Dịch vụ</a></li>
+                        <li><a href="{{url( 'admin/settings/shopTypes' )}}"> Loại khách hàng</a></li>
+                        <li><a href="{{url( 'admin/settings/shopScopes' )}}"> Phạm vi shop</a></li>
+                        <li><a href="{{url( 'admin/settings/shipperTypes' )}}"> Loại tài xế</a></li>
+                        <li><a href="{{url( 'admin/settings/orderTypes' )}}"> Loại đơn hàng</a></li>
                         <li><a href="ui-navs.html"> Nhóm người dùng</a></li>
                     </ul>
                 </li>
@@ -70,11 +74,9 @@
                     <ul class="nav nav-second-level collapse">
                         <li><a href="ui-general.html"> Thêm người dùng</a></li>
                         <li><a href="{{url('/account')}}"> Danh sách tài khoản</a></li>
-                        @endcan
-
-
                     </ul>
                 </li>
+            @endcan
         </ul>
     </div>
 </nav>

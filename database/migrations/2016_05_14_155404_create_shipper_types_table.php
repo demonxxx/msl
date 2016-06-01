@@ -14,7 +14,6 @@ class CreateShipperTypesTable extends Migration
     {
         Schema::create('shipper_types', function (Blueprint $table) {
             $table->increments('id')->unsigned();
-            $table->string('code')->unique()->                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      comment('code of shipper type, ex: SHT123');
             $table->string('name')->comment('name of shipper type, ex: Good Shipper');
             $table->timestamps();
             $table->softDeletes();
