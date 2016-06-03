@@ -184,14 +184,35 @@
                                     </div>
                                 </div>
                                 <hr class="line-dashed line-full"/>
-                                <div class="form-group">
+                                <div class="form-group{{ $errors->has('shipper_type_id') ? ' has-error' : '' }}">
+                                    <label class="col-sm-2 control-label">Loại tài xế</label>
+                                    <div class="col-sm-10">
+                                        <select id="shipper_type_id" name="shipper_type_id" class="form-control" required>
+                                            @foreach ($shippertypes as $key => $value)
+                                                <option value="{{$value->id}}">{{$value->name}}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('shipper_type_id'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('shipper_type_id') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <hr class="line-dashed line-full"/>
+                                <div class="form-group{{ $errors->has('vehicle_type_id') ? ' has-error' : '' }}">
                                     <label class="col-sm-2 control-label">Loại xe</label>
                                     <div class="col-sm-10">
-                                        <select name="vehicle_type_id" class="form-control" placeholder="Loại xe"
-                                                value="{{ old('vehicle_type_id') }}" required>
-                                            <option value="0">Xe máy</option>
-                                            <option value="1">Ô tô</option>
+                                        <select id="vehicle_type_id" name="vehicle_type_id" class="form-control" required>
+                                            @foreach ($vehicletypes as $key => $value)
+                                                <option value="{{$value->id}}">{{$value->name}}</option>
+                                            @endforeach
                                         </select>
+                                        @if ($errors->has('vehicle_type_id'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('vehicle_type_id') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                                 <hr class="line-dashed line-full"/>
