@@ -239,6 +239,17 @@
                                         @endif
                                     </div>
                                 </div>
+                                <hr class="line-dashed line-full" />
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Loại khách hàng</label>
+                                    <div class="col-sm-10">
+                                        <select id="shop_type_id" name="shop_type_id" class="form-control">
+                                            @foreach ($shoptypes as $key => $value)
+                                                <option value="{{$value->id}}">{{$value->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group">
                                     <div class="col-sm-4 col-sm-offset-2">

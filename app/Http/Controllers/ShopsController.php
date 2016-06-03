@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;
 use App\Shop;
+use App\ShopType;
 use Validator;
 
 class ShopsController extends Controller
@@ -41,7 +42,9 @@ class ShopsController extends Controller
      */
     public function create()
     {
-        return view('app.shops.create');
+        $shoptype = new ShopType;
+        $shoptypes = $shoptype->all();
+        return view('app.shops.create',["shoptypes" => $shoptypes]);
     }
 
     /**
@@ -96,6 +99,8 @@ class ShopsController extends Controller
             $shop->office_ward = $request->office_ward;
             $shop->office_district = $request->office_district;
             $shop->office_city = $request->office_city;
+            $shop->shop_type_id = $request->shop_type_id;
+            $shop->profile_status = 0; // Default value
             $user->shop()->save($shop);
             flash_message("Tạo khách hàng mới thành công!");
             return back();
@@ -124,7 +129,9 @@ class ShopsController extends Controller
         $user = new User;
         $user_obj = $user->find($user_id);
         $shop_obj = $user_obj->shop;
-        return view("app/shops/edit", ["user" => $user_obj, "shop" => $shop_obj, "user_id" => $user_id]);
+        $shoptype = new ShopType;
+        $shoptypes = $shoptype->all();
+        return view("app/shops/edit", ["user" => $user_obj, "shop" => $shop_obj, "user_id" => $user_id, "shoptypes" => $shoptypes]);
 
     }
 

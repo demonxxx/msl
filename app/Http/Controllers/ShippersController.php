@@ -8,6 +8,8 @@ use App\User;
 use App\Shipper;
 use App\Shop;
 use App\Shop_shipper;
+use App\ShipperType;
+use App\VehicleType;
 use App\Helpers\helpers;
 use Auth;
 
@@ -28,9 +30,11 @@ class ShippersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $max_id = User::max('id');
-        $shipper_code = $max_id + 1;
-        return view('app.shippers.create', ['shipper_code' => $shipper_code]);
+        $shippertype = new ShipperType;
+        $shippertypes = $shippertype->all();
+        $vehicletype = new VehicleType;
+        $vehicletypes = $vehicletype->all();
+        return view('app.shippers.create', ['shippertypes' => $shippertypes, 'vehicletypes' => $vehicletypes]);
     }
 
     /**
@@ -52,6 +56,7 @@ class ShippersController extends Controller {
                     'home_city'     => 'required|max:255',
                     'identity_card' => 'required|min:9|max:12',
                     'vehicle_type_id' => 'required',
+                    'shipper_type_id' => 'required',
                     'licence_plate' => 'required|max:12',
                     'licence_driver_number' => 'required|max:12',
         ]);
@@ -70,15 +75,17 @@ class ShippersController extends Controller {
             $user->api_token = str_random(60);
             $user->save();
             $shipper = new Shipper;
-            $max_id = Shop::max('id')+1;
+            $max_id = Shipper::max('id')+1;
             $shipper->code = "TX".$max_id;
             $shipper->home_number = $request->home_number;
             $shipper->home_ward = $request->home_ward;
             $shipper->home_district = $request->home_district;
             $shipper->home_city = $request->home_city;
             $shipper->vehicle_type_id = $request->vehicle_type_id;
+            $shipper->shipper_type_id = $request->shipper_type_id;
             $shipper->licence_plate = $request->licence_plate;
             $shipper->licence_driver_number = $request->licence_driver_number;
+            $shipper->profile_status = "Chưa xác thực";
             $user->shipper()->save($shipper);
             flash_message("Tạo tài xế mới thành công!");
             return back();
@@ -105,7 +112,12 @@ class ShippersController extends Controller {
         $user = new User;
         $user_obj = $user->find($user_id);
         $shipper_obj = $user_obj->shipper;
-        return view("app/shippers/edit", [ "shipper" => $shipper_obj, "user" => $user_obj, "user_id" => $user_id]);
+        $shippertype = new ShipperType;
+        $shippertypes = $shippertype->all();
+        $vehicletype = new VehicleType;
+        $vehicletypes = $vehicletype->all();
+        return view("app/shippers/edit", [ "shipper" => $shipper_obj, "user" => $user_obj, "user_id" => $user_id,
+            'shippertypes' => $shippertypes, 'vehicletypes' => $vehicletypes]);
     }
 
     /**
@@ -228,15 +240,13 @@ class ShippersController extends Controller {
         } else {
             $shop = Shop::where('user_id', '=', $request->user_id)->first();
             $shipper = new Shipper;
+            $max_id = Shipper::max('id')+1;
+            $shipper->code = "TX".$max_id;
             $shipper->user_id = $shop->user_id;
             $shipper->home_number = $shop->home_number;
             $shipper->home_ward = $shop->home_ward;
             $shipper->home_district = $shop->home_district;
             $shipper->home_city = $shop->home_city;
-            $shipper->office_number = $shop->office_number;
-            $shipper->office_ward = $shop->office_ward;
-            $shipper->office_district = $shop->office_district;
-            $shipper->office_city = $shop->office_city;
             $shipper->save();
             flash_message("Đăng kí tài xế thành công!");
         }

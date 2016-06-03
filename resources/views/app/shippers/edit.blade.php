@@ -148,14 +148,37 @@
                                     </div>
                                 </div>
                                 <hr class="line-dashed line-full"/>
+                                <div class="form-group{{ $errors->has('shipper_type_id') ? ' has-error' : '' }}">
+                                    <label class="col-sm-2 control-label">Loại tài xế</label>
+                                    <div class="col-sm-10">
+                                        <select id="shipper_type_id" name="shipper_type_id" class="form-control" required>
+                                            @foreach ($shippertypes as $key => $value)
+                                                @if ($value->id == $shipper->shipper_type_id)
+                                                    <option selected="selected" value="{{$value->id}}">{{$value->name}}</option>
+                                                @else
+                                                    <option value="{{$value->id}}">{{$value->name}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('shipper_type_id'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('shipper_type_id') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <hr class="line-dashed line-full"/>
                                 <div class="form-group{{ $errors->has('vehicle_type_id') ? ' has-error' : '' }}">
                                     <label class="col-sm-2 control-label">Loại xe</label>
                                     <div class="col-sm-10">
-                                        <select id="vehicle_type_id" name="vehicle_type_id" class="form-control"
-                                                pre_value="{{$shipper->vehicle_type_id}}"
-                                                data-parsley-trigger="change" required>
-                                            <option value="0">Xe máy</option>
-                                            <option value="1">Ô tô</option>
+                                        <select id="vehicle_type_id" name="vehicle_type_id" class="form-control">
+                                            @foreach ($vehicletypes as $key => $value)
+                                                @if ($value->id == $shipper->vehicle_type_id)
+                                                    <option selected="selected" value="{{$value->id}}">{{$value->name}}</option>
+                                                @else
+                                                    <option value="{{$value->id}}">{{$value->name}}</option>
+                                                @endif
+                                            @endforeach
                                         </select>
                                         @if ($errors->has('vehicle_type_id'))
                                             <span class="help-block">
@@ -191,19 +214,6 @@
                                                 <strong>{{ $errors->first('licence_driver_number') }}</strong>
                                             </span>
                                         @endif
-                                    </div>
-                                </div>
-                                <hr class="line-dashed line-full"/>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Loại tài xế</label>
-                                    <div class="col-sm-10">
-                                        <select id="shipper_type_id" name="shipper_type_id" class="form-control"
-                                                pre_value="{{$shipper->shipper_type_id}}"
-                                                data-parsley-trigger="change">
-                                            <option value="0">Team</option>
-                                            <option value="1">Doanh nghiệp</option>
-                                            <option value="2">Tự do</option>
-                                        </select>
                                     </div>
                                 </div>
                                 <hr class="line-dashed line-full"/>
@@ -251,8 +261,6 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#vehicle_type_id').val($('#vehicle_type_id').attr("pre_value"));
-            $('#shipper_type_id').val($('#shipper_type_id').attr("pre_value"));
             $('#average_score').val($('#average_score').attr("pre_value"));
             $('#profile_status').val($('#profile_status').attr("pre_value"));
         });
