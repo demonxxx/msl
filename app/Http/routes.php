@@ -63,6 +63,9 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::post('/account/load_list', 'AccountsController@load_list');
         Route::post('/account/update_money', 'AccountsController@update_money');
         Route::get('/administrative_units', 'SettingsController@show_administrative_units');
+        Route::get('/admin/settings/administrative_units/{unit_id}/delete', 'SettingsController@delete_administrative_units');
+        Route::post('/admin/settings/administrative_units/edit', 'SettingsController@edit_administrative_units');
+        Route::post('/admin/settings/administrative_units/add', 'SettingsController@add_administrative_units');
     });
 
 
