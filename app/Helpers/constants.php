@@ -29,3 +29,7 @@ define("GOOGLE_API_KEY", 'google_api_key');
 define("CITY_UNIT", 0);
 define("DISTRICT_UNIT", 1);
 define("WARD_UNIT", 2);
+
+// ajax result
+define("AJAX_SUCCESS", 1);
+define("AJAX_FAILED", 0);
