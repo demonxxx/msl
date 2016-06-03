@@ -45,115 +45,110 @@
                                   action="{{URL::to('/')."/shipper/".$user_id."/update"}}" name="edit-shipper-form"
                                   role="form" id="edit-shipper-form" data-parsley-validate>
                                 {!! csrf_field() !!}
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Mã tài xế</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="code" id="code"
-                                               onfocusout="check_update_user_duplicate(this, 'code',{{$user_id}})"
-                                               class="form-control" placeholder="Mã tài xế"
-                                               data-parsley-trigger="change" value="{{$user->code}}" readonly required>
-                                    </div>
-                                </div>
                                 <hr class="line-dashed line-full"/>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Tài khoản đăng nhập</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="username" id="username"
-                                               onfocusout="check_update_user_duplicate(this, 'username')"
-                                               value="{{$user->username}}"
-                                               class="form-control" placeholder="Tài khoản đăng nhập"
-                                               data-parsley-trigger="change" readonly required>
-                                    </div>
-                                </div>
-                                <hr class="line-dashed line-full"/>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Họ và tên tài xế</label>
+                                <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                                    <label class="col-sm-2 control-label">Họ và tên tài xế (*)</label>
                                     <div class="col-sm-10">
                                         <input type="text" name="name" id="name" class="form-control"
                                                placeholder="Họ và tên shipper"
                                                data-parsley-trigger="change" value="{{$user->name}}" required>
+                                        @if ($errors->has('name'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('name') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                                 <hr class="line-dashed line-full"/>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Số điện thoại.</label>
+                                <div class="form-group{{ $errors->has('phone_number') ? ' has-error' : '' }}">
+                                    <label class="col-sm-2 control-label">Số điện thoại (*)</label>
                                     <div class="col-sm-10">
                                         <input type="text" name="phone_number"
                                                onfocusout="check_update_user_duplicate(this, 'phone_number',{{$user_id}})"
                                                class="form-control" placeholder="(XXX) XXXX XXX"
                                                data-parsley-trigger="change"
                                                pattern="^[\d\+\-\.\(\)\/\s]*$" value="{{$user->phone_number}}" required>
+                                        @if ($errors->has('phone_number'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('phone_number') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                                 <hr class="line-dashed line-full"/>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Thư điện tử</label>
+                                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                    <label class="col-sm-2 control-label">Thư điện tử (*)</label>
                                     <div class="col-sm-10">
                                         <input type="email" name="email" id="email"
                                                onfocusout="check_update_user_duplicate(this, 'email',{{$user_id}})"
                                                class="form-control" placeholder="Email"
                                                data-parsley-trigger="change" value="{{$user->email}}">
+                                        @if ($errors->has('email'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('email') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                                 <hr class="line-dashed line-full"/>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Địa chỉ nhà </label>
-                                    <div class="col-sm-2">
+                                    <label class="col-sm-2 control-label">Địa chỉ nhà (*)</label>
+                                    <div class="col-sm-2{{ $errors->has('home_number') ? ' has-error' : '' }}">
                                         <input type="text" name="home_number" class="form-control"
                                                placeholder="Xóm/Số nhà"
                                                data-parsley-trigger="change" value="{{$shipper->home_number}}" required>
+                                        @if ($errors->has('home_number'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('home_number') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-2{{ $errors->has('home_ward') ? ' has-error' : '' }}">
                                         <input type="text" name="home_ward" class="form-control" placeholder="Xã/Phường"
                                                data-parsley-trigger="change" value="{{$shipper->home_ward}}" required>
+                                        @if ($errors->has('home_ward'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('home_ward') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-2{{ $errors->has('home_district') ? ' has-error' : '' }}">
                                         <input type="text" name="home_district" class="form-control"
                                                placeholder="Quận/huyện"
-                                               data-parsley-trigger="change" value="{{$shipper->home_district}}"
-                                               required>
+                                               data-parsley-trigger="change" value="{{$shipper->home_district}}" required>
+                                        @if ($errors->has('home_district'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('home_district') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-2{{ $errors->has('home_city') ? ' has-error' : '' }}">
                                         <input type="text" name="home_city" class="form-control"
                                                placeholder="Tỉnh/Thành phố"
                                                data-parsley-trigger="change" value="{{$shipper->home_city}}" required>
+                                        @if ($errors->has('home_city'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('home_city') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                                 <hr class="line-dashed line-full"/>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Địa chỉ văn phòng </label>
-                                    <div class="col-sm-2">
-                                        <input type="text" name="office_number" class="form-control"
-                                               placeholder="Xóm/Số nhà"
-                                               data-parsley-trigger="change" value="{{$shipper->office_number}}">
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="text" name="office_ward" class="form-control"
-                                               placeholder="Xã/Phường"
-                                               data-parsley-trigger="change" value="{{$shipper->office_ward}}">
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="text" name="office_district" class="form-control"
-                                               placeholder="Quận/huyện"
-                                               data-parsley-trigger="change" value="{{$shipper->office_district}}">
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="text" name="office_city" class="form-control"
-                                               placeholder="Tỉnh/Thành phố"
-                                               data-parsley-trigger="change" value="{{$shipper->office_city}}">
-                                    </div>
-                                </div>
-                                <hr class="line-dashed line-full"/>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Chứng minh nhân dân</label>
+                                <div class="form-group{{ $errors->has('identity_card') ? ' has-error' : '' }}">
+                                    <label class="col-sm-2 control-label">Chứng minh nhân dân (*)</label>
                                     <div class="col-sm-10">
                                         <input type="number" name="identity_card" class="form-control"
                                                placeholder="Chứng minh nhân dân"
                                                data-parsley-trigger="change" value="{{$user->identity_card}}" required>
+                                        @if ($errors->has('identity_card'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('identity_card') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                                 <hr class="line-dashed line-full"/>
-                                <div class="form-group">
+                                <div class="form-group{{ $errors->has('vehicle_type_id') ? ' has-error' : '' }}">
                                     <label class="col-sm-2 control-label">Loại xe</label>
                                     <div class="col-sm-10">
                                         <select id="vehicle_type_id" name="vehicle_type_id" class="form-control"
@@ -162,16 +157,40 @@
                                             <option value="0">Xe máy</option>
                                             <option value="1">Ô tô</option>
                                         </select>
+                                        @if ($errors->has('vehicle_type_id'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('vehicle_type_id') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                                 <hr class="line-dashed line-full"/>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Biển số xe</label>
+                                <div class="form-group{{ $errors->has('licence_plate') ? ' has-error' : '' }}">
+                                    <label class="col-sm-2 control-label">Biển số xe (*)</label>
                                     <div class="col-sm-10">
                                         <input type="text" name="licence_plate" class="form-control"
                                                placeholder="Biển số xe"
                                                data-parsley-trigger="change" value="{{$shipper->licence_plate}}"
                                                required>
+                                        @if ($errors->has('licence_plate'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('licence_plate') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <hr class="line-dashed line-full"/>
+                                <div class="form-group{{ $errors->has('licence_driver_number') ? ' has-error' : '' }}">
+                                    <label class="col-sm-2 control-label">Giấy phép lái xe số</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="licence_driver_number" class="form-control"
+                                               placeholder="Giấy phép lái xe số" value="{{ $shipper->licence_driver_number }}" 
+                                               pattern="^[\d\+\-\.\(\)\/\s]*$" required>
+                                        @if ($errors->has('licence_driver_number'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('licence_driver_number') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                                 <hr class="line-dashed line-full"/>
@@ -192,11 +211,10 @@
                                     <label class="col-sm-2 control-label">Đánh giá trung bình</label>
                                     <div class="col-sm-10">
                                         <input type="double" name="average_score" class="form-control" readonly=""
-                                               value="5.0"
-                                               data-parsley-trigger="change" value="{{$shipper->average_score}}"
-                                               required>
+                                               data-parsley-trigger="change" value="{{$shipper->average_score}}">
                                     </div>
                                 </div>
+                                @can('admin')
                                 <hr class="line-dashed line-full"/>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Tình trạng hồ sơ</label>
@@ -204,14 +222,13 @@
                                         <select id="profile_status" name="profile_status" class="form-control"
                                                 pre_value="{{$shipper->profile_status}}"
                                                 data-parsley-trigger="change">
-                                            <option value="0">20%</option>
-                                            <option value="1">40%</option>
-                                            <option value="2">60%</option>
-                                            <option value="3">80%</option>
-                                            <option value="4">100%</option>
+                                                    <option value="Chưa xác thực">Chưa xác thực</option>
+                                                    <option value="Đang xác thực">Đang xác thực</option>
+                                                    <option value="Đã xác thực">Đã xác thực</option>
                                         </select>
                                     </div>
                                 </div>
+                                @endcan
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group">
                                     <div class="col-sm-4 col-sm-offset-2">
