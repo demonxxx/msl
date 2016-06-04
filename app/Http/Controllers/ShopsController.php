@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\User;
 use App\Shop;
 use App\ShopType;
+use App\Adminnistrative_units;
 use Validator;
 
 class ShopsController extends Controller
@@ -44,7 +45,8 @@ class ShopsController extends Controller
     {
         $shoptype = new ShopType;
         $shoptypes = $shoptype->all();
-        return view('app.shops.create',["shoptypes" => $shoptypes]);
+        $cities = Adminnistrative_units::where("level", CITY_UNIT)->get();
+        return view('app.shops.create',["shoptypes" => $shoptypes, "cities" => $cities]);
     }
 
     /**
@@ -56,21 +58,18 @@ class ShopsController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'            => 'required|max:255',
-            'password'        => 'required|min:6|confirmed',
-            'phone_number'    => 'required|min:10|max:11|unique:users',
-            'email'           => 'required|email|max:255|unique:users',
-            'username'        => 'required|max:255|unique:users',
-            'shop_name'       => 'max:255',
-            'home_number'     => 'max:255',
-            'home_ward'       => 'max:255',
-            'home_district'   => 'max:255',
-            'home_city'       => 'max:255',
-            'office_number'   => 'required|max:255',
-            'office_ward'     => 'required|max:255',
-            'office_district' => 'required|max:255',
-            'office_city'     => 'required|max:255',
-            'identity_card'   => 'required|min:9|max:12',
+            'name'                  => 'required|max:255',
+            'password'              => 'required|min:6|confirmed',
+            'phone_number'          => 'required|min:10|max:11|unique:users',
+            'email'                 => 'required|email|max:255|unique:users',
+            'username'              => 'required|max:255|unique:users',
+            'shop_name'             => 'max:255',
+            'home_number'           => 'max:255',
+            'office_number'         => 'required|max:255',
+            'office_ward_id'        => 'required',
+            'office_district_id'    => 'required',
+            'office_city_id'        => 'required',
+            'identity_card'         => 'required|min:9|max:12',
         ]);
         if ($validator->fails()) {
             flash_message("Tạo khách hàng mới không thành công!", "danger");
@@ -131,7 +130,14 @@ class ShopsController extends Controller
         $shop_obj = $user_obj->shop;
         $shoptype = new ShopType;
         $shoptypes = $shoptype->all();
-        return view("app/shops/edit", ["user" => $user_obj, "shop" => $shop_obj, "user_id" => $user_id, "shoptypes" => $shoptypes]);
+        $cities = Adminnistrative_units::where("level", CITY_UNIT)->get();
+        $districts_home = Adminnistrative_units::where("level", DISTRICT_UNIT)->where("parent_id", $shop_obj->home_city_id)->get();
+        $wards_home = Adminnistrative_units::where("level",WARD_UNIT)->where("parent_id", $shop_obj->home_district_id)->get();
+        $districts_office = Adminnistrative_units::where("level", DISTRICT_UNIT)->where("parent_id", $shop_obj->office_city_id)->get();
+        $wards_office = Adminnistrative_units::where("level",WARD_UNIT)->where("parent_id", $shop_obj->office_district_id)->get();
+        return view("app/shops/edit", ["user" => $user_obj, "shop" => $shop_obj, "user_id" => $user_id, "shoptypes" => $shoptypes,
+            'cities' => $cities, 'districts_home' => $districts_home, 'wards_home' => $wards_home, 
+            'districts_office' => $districts_office, 'wards_office' => $wards_office]);
 
     }
 
@@ -145,19 +151,16 @@ class ShopsController extends Controller
     public function update(Request $request, $id)
     {
         $validator = \Validator::make($request->all(), [
-            'name'            => 'required|max:255',
-            'phone_number'    => 'required|min:10|max:11',
-            'email'           => 'required|email|max:255',
-            'shop_name'       => 'max:255',
-            'home_number'     => 'max:255',
-            'home_ward'       => 'max:255',
-            'home_district'   => 'max:255',
-            'home_city'       => 'max:255',
-            'office_number'   => 'required|max:255',
-            'office_ward'     => 'required|max:255',
-            'office_district' => 'required|max:255',
-            'office_city'     => 'required|max:255',
-            'identity_card'   => 'required|min:9|max:12',
+            'name'                      => 'required|max:255',
+            'phone_number'              => 'required|min:10|max:11',
+            'email'                     => 'required|email|max:255',
+            'shop_name'                 => 'max:255',
+            'home_number'               => 'max:255',
+            'office_number'             => 'required|max:255',
+            'office_ward_id'            => 'required',
+            'office_district_id'        => 'required',
+            'office_city_id'            => 'required',
+            'identity_card'             => 'required|min:9|max:12',
         ]);
         if ($validator->fails()) {
             flash_message("Sửa khách hàng không thành công!", "danger");
@@ -172,12 +175,14 @@ class ShopsController extends Controller
             $user_obj->save();
             $shop_obj = $user_obj->shop;
             $shop_obj->shop_name = $request->shop_name;
-            $shop_obj->home_ward = $request->home_ward;
-            $shop_obj->home_district = $request->home_district;
-            $shop_obj->home_city = $request->home_city;
-            $shop_obj->office_ward = $request->office_ward;
-            $shop_obj->office_district = $request->office_district;
-            $shop_obj->office_city = $request->office_city;
+            $shop_obj->home_number = $request->home_number;
+            $shop_obj->home_ward_id = $request->home_ward_id;
+            $shop_obj->home_district_id = $request->home_district_id;
+            $shop_obj->home_city_id = $request->home_city_id;
+            $shop_obj->office_number = $request->office_number;
+            $shop_obj->office_ward_id = $request->office_ward_id;
+            $shop_obj->office_district_id = $request->office_district_id;
+            $shop_obj->office_city_id = $request->office_city_id;
             $shop_obj->shop_type_id = $request->shop_type_id;
             $shop_obj->profile_status = $request->profile_status;
             $shop_obj->save();

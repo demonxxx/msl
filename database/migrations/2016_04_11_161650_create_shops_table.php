@@ -25,6 +25,12 @@ class CreateShopsTable extends Migration
             $table->string('office_ward',255)->nullable();
             $table->string('office_district',255)->nullable();
             $table->string('office_city',255)->nullable();
+            $table->smallInteger('home_ward_id')->nullable()->references('id')->on('administrative_units')->onDelete('cascade');
+            $table->smallInteger('home_district_id')->nullable()->references('id')->on('administrative_units')->onDelete('cascade');
+            $table->smallInteger('home_city_id')->nullable()->references('id')->on('administrative_units')->onDelete('cascade');
+            $table->smallInteger('office_ward_id')->nullable()->references('id')->on('administrative_units')->onDelete('cascade');
+            $table->smallInteger('office_district_id')->nullable()->references('id')->on('administrative_units')->onDelete('cascade');
+            $table->smallInteger('office_city_id')->nullable()->references('id')->on('administrative_units')->onDelete('cascade');
             $table->smallInteger('shop_scope_id')->nullable()->references('id')->on('shop_scopes')->onDelete('cascade')->comment('scope of shop ex');
             $table->smallInteger('shop_type_id')->nullable()->references('id')->on('shop_types')->onDelete('cascade');
             $table->smallInteger('isActive')->default(1)->comment('0: not active, 1:activated ');
