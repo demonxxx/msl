@@ -1,15 +1,6 @@
 @extends('templates.admin')
 @section('content')
     @include('partials.flash')
-    <link href="{{ asset("theme/css/plugins/dataTables/datatables.min.css") }}" rel="stylesheet">
-    <script src="{{ asset("theme/js/plugins/datatables/dataTables.min.js") }}"></script>
-    <script src="{{ asset("theme/js/plugins/datatables/js/jquery.dataTables.min.js") }}"></script>
-    <script src="{{ asset("theme/js/plugins/datatables/extensions/dataTables.bootstrap.js") }}"></script>
-    <script src="{{ asset("theme/js/plugins/datatables/extensions/Pagination/input.js") }}"></script>
-    <script src="{{ asset("theme/js/plugins/parsley/parsley.min.js") }}"></script>
-
-    <script src="{{ asset("js/datatable.ajax.js") }}"></script>
-    <script src="{{ asset("js/constants.js") }}"></script>
     <script src="{{ asset("theme/js/plugins/ladda/spin.min.js") }}" ></script>
     <script src="{{ asset("theme/js/plugins/ladda/ladda.min.js") }}" ></script>
     <script src="{{ asset("theme/js/plugins/ladda/ladda.jquery.min.js") }}" ></script>

@@ -18,6 +18,11 @@ define("ORDER_SHIP_SUCCESS", 5);
 define("ORDER_PAYED", 6);
 define("ORDER_SHOP_CANCEL", 7);
 define("ORDER_RETURN_ITEMS", 8);
+define("ORDER_RETURNING", 9);
+
+define("MSG_ORDER_NOT_EXIST", "Đơn hàng không tồn tại!");
+define("MSG_NOT_HAVE_PERMISSION", "Bạn không có quyền này!");
+define("MSG_DISTANCE_FREIGHT_NOT_EXIST", "Không tồn tại giá cước này!");
 
 // Mobile notification
 define("IOS_CERTIFICATE_FILE", "ios_certificate.pem");

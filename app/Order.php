@@ -40,8 +40,15 @@ class Order extends Model
     
     public function get_all_orders($post, $user_id) {
         $builder = DB::table("orders");
-        $builder->select("orders.id", "orders.code", "orders.name", "orders.recipient_name", "orders.recipient_phone", "orders.ward_from", "orders.ward_to",
-                "orders.district_from", "orders.district_to")
+        $builder->select("orders.id","shops.code as shop_code","shippers.code as shipper_code", "orders.code", "street_from.name as street_from_name",
+                        "district_from.name as district_from_name", "street_to.name as street_to_name", "district_to.name as district_to_name")
+                ->leftJoin("shops", "orders.user_id", "=", "shops.user_id")
+                ->leftJoin("shippers", "orders.shipper_id", "=", "shippers.user_id")
+                ->leftJoin("administrative_units as street_from", "orders.street_from", "=", "street_from.id")
+                ->leftJoin("administrative_units as district_from", "orders.district_from", "=", "district_from.id")
+                ->leftJoin("administrative_units as street_to", "orders.street_to", "=", "street_to.id")
+                ->leftJoin("administrative_units as district_to", "orders.district_to", "=", "district_to.id")
+                ->where('orders.deleted_at')
                 ->where("orders.user_id", $user_id);
         $search_params = $post['searchParams'];
         $this->table_condition($builder, $search_params);
@@ -54,6 +61,12 @@ class Order extends Model
     public function count_all($post, $user_id) {
         $builder = DB::table("orders");
         $builder->select("orders.id")
+                ->leftJoin("shops", "orders.user_id", "=", "shops.user_id")
+                ->leftJoin("shippers", "orders.shipper_id", "=", "shippers.user_id")
+                ->leftJoin("administrative_units as street_from", "orders.street_from", "=", "street_from.id")
+                ->leftJoin("administrative_units as district_from", "orders.district_from", "=", "district_from.id")
+                ->leftJoin("administrative_units as street_to", "orders.street_to", "=", "street_to.id")
+                ->leftJoin("administrative_units as district_to", "orders.district_to", "=", "district_to.id")
                 ->where("orders.user_id", $user_id);
         $search_params = $post['searchParams'];
         $this->table_condition($builder, $search_params);
@@ -66,20 +79,17 @@ class Order extends Model
             if (array_key_exists('code', $search_params)) {
                 $builder->where('orders.code', 'like', '%' . $search_params['code'] . '%');
             }
-            if (array_key_exists('name', $search_params)) {
-                $builder->where('orders.name', 'like', '%' . $search_params['name'] . '%');
+            if (array_key_exists('shop_code', $search_params)) {
+                $builder->where('shops.code', 'like', '%' . $search_params['shop_code'] . '%');
             }
-            if (array_key_exists('recipient_name', $search_params)) {
-                $builder->where('orders.recipient_name', 'like', '%' . $search_params['recipient_name'] . '%');
+            if (array_key_exists('shipper_code', $search_params)) {
+                $builder->where('shippers.code', 'like', '%' . $search_params['shipper_code'] . '%');
             }
-            if (array_key_exists('recipient_phone', $search_params)) {
-                $builder->where('orders.recipient_phone', 'like', '%' . $search_params['recipient_phone'] . '%');
+            if (array_key_exists('street_from', $search_params)) {
+                $builder->where('orders.street_from', 'like', '%' . $search_params['street_from'] . '%');
             }
-            if (array_key_exists('ward_from', $search_params)) {
-                $builder->where('orders.ward_from', 'like', '%' . $search_params['ward_from'] . '%');
-            }
-            if (array_key_exists('ward_to', $search_params)) {
-                $builder->where('orders.ward_to', 'like', '%' . $search_params['ward_to'] . '%');
+            if (array_key_exists('street_to', $search_params)) {
+                $builder->where('orders.street_to', 'like', '%' . $search_params['street_to'] . '%');
             }
             if (array_key_exists('district_from', $search_params)) {
                 $builder->where('orders.district_from', 'like', '%' . $search_params['district_from'] . '%');

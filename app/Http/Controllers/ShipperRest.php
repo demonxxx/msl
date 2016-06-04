@@ -15,6 +15,7 @@ use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Response;
 use App\ShipperOrderHistory;
+
 class ShipperRest extends Controller
 {
     /**
@@ -172,7 +173,7 @@ class ShipperRest extends Controller
                 return Response::json(
                     array(
                         'accept'   => 0,
-                        'messages' => "Đơn hàng đã được nhận!",
+                        'messages' => "Đơn hàng đã được nhận hoặc bị hủy!",
                     ),
                     200
                 );
@@ -260,15 +261,18 @@ class ShipperRest extends Controller
                         $order->ship_success_at = Carbon::now()->toDateTimeString();
                     } else if ($status == ORDER_PAYED) {
                         $order->payed_at = Carbon::now()->toDateTimeString();
+                    } else if ($status == ORDER_RETURNING) {
+                        $order->returning_at = Carbon::now()->toDateTimeString();
                     } else if ($status == ORDER_SHOP_CANCEL) {
                         return Response::json(
                             array(
                                 'accept'   => 0,
-                                'messages' => 'Không thể chuyển trạngshop cancel',
+                                'messages' => 'Không thể chuyển trạng thái hủy đơn hàng',
                             ),
                             200
                         );
                     } else if ($status == ORDER_RETURN_ITEMS) {
+
                         $order->return_items_at = Carbon::now()->toDateTimeString();
                     }
                     $order->status = $status;
@@ -305,41 +309,42 @@ class ShipperRest extends Controller
         );
     }
 
-    public function deleteShipperOrderHistory($id){
+    public function deleteShipperOrderHistory($id)
+    {
         $shipperOrderHistory = ShipperOrderHistory::find($id);
-        if(empty($shipperOrderHistory)){
+        if (empty($shipperOrderHistory)) {
             return Response::json(
                 array(
-                    'accept' => 0,
+                    'accept'  => 0,
                     'message' => 'Lịch sử không tồn tại',
                 ),
                 200
             );
-        }else {
+        } else {
             $shipper_id = Auth::guard('api')->id();
-            if($shipperOrderHistory->shipper_id == $shipper_id){
+            if ($shipperOrderHistory->shipper_id == $shipper_id) {
                 if ($shipperOrderHistory->trashed()) {
                     return Response::json(
                         array(
-                            'accept' => 0,
+                            'accept'  => 0,
                             'message' => 'Lịch sử nhận đã bị xóa trước đó!',
                         ),
                         200
                     );
-                }else {
+                } else {
                     $shipperOrderHistory->delete();
                     return Response::json(
                         array(
-                            'accept' => 1,
+                            'accept'  => 1,
                             'message' => 'Xóa lịch sử nhận thành công!',
                         ),
                         200
                     );
                 }
-            }else {
+            } else {
                 return Response::json(
                     array(
-                        'accept' => 0,
+                        'accept'  => 0,
                         'message' => 'Bạn không có quyền xóa lịch sử nhận đơn hàng!',
                     ),
                     200
