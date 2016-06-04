@@ -51,8 +51,9 @@ class CreateOrdersTable extends Migration
             $table->dateTime('return_items_at')->nullable()->comment('when order is cancelled');
             $table->dateTime('start_time')->nullable();
             $table->dateTime('end_time')->nullable();
+            $table->longText('ship_path')->nullable();
             $table->smallInteger('status')->default(1)->comment('1: pending, 2: taken order, 3: taken items, 4, shipping, 5 ship success,
-            6: payed (COD order),7. cancel order (SHOP), 8 Return items.');
+            6: payed (COD order),7. cancel order (SHOP), 8 Return items. 9, Returning items.');
             $table->string('image_url')->nullable();
             $table->timestamps();
             $table->softDeletes();
