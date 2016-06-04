@@ -30,7 +30,7 @@
         {{--Datatables--}}
         <link href="{{ asset("theme/css/plugins/dataTables/datatables.min.css") }}" rel="stylesheet">
         <script src="{{ asset("theme/js/plugins/datatables/dataTables.min.js") }}"></script>
-        <script src="{{ asset("theme/js/plugins/datatables/js/jquery.dataTables.min.js") }}"></script>
+        <script src="{{ asset("theme/js/plugins/datatables/js/jquery.datatables.min.js") }}"></script>
         <script src="{{ asset("theme/js/plugins/datatables/extensions/dataTables.bootstrap.js") }}"></script>
         <script src="{{ asset("theme/js/plugins/datatables/extensions/Pagination/input.js") }}"></script>
         <script src="{{ asset("theme/js/plugins/parsley/parsley.min.js") }}"></script>
