@@ -11,12 +11,6 @@
         <link href="{{ asset("theme/css/animate.css") }}" rel="stylesheet">
         <link href="{{ asset("theme/css/style.css") }}" rel="stylesheet">
 
-        <!-- Sweet Alert -->
-        <link href="{{ asset("theme/css/plugins/sweetalert/sweetalert.css") }}" rel="stylesheet">
-
-        <!-- Sweet alert -->
-        <script src="{{ asset("theme/js/plugins/sweetalert/sweetalert.min.js") }}"></script>
-
         <!-- Mainly scripts -->
         <script src="{{ asset("theme/js/jquery-2.1.1.js") }}"></script>
         <script src="{{ asset("theme/js/bootstrap.min.js") }}"></script>
@@ -26,8 +20,14 @@
         <!-- Custom and plugin javascript -->
         <script src="{{ asset("theme/js/inspinia.js") }}"></script>
         <script src="{{ asset("theme/js/plugins/pace/pace.min.js") }}"></script>
+        <!-- Sweet Alert -->
+        <link href="{{ asset("theme/css/plugins/sweetalert/sweetalert.css") }}" rel="stylesheet">
 
-        {{--Datatables--}}
+        <!-- Sweet alert -->
+        <script src="{{ asset("theme/js/plugins/sweetalert/sweetalert.min.js") }}"></script>
+
+
+        <!--Datatables-->
         <link href="{{ asset("theme/css/plugins/dataTables/datatables.min.css") }}" rel="stylesheet">
         <script src="{{ asset("theme/js/plugins/datatables/dataTables.min.js") }}"></script>
         <script src="{{ asset("theme/js/plugins/datatables/js/jquery.dataTables.min.js") }}"></script>
@@ -41,6 +41,13 @@
         <script src="{{ asset("theme/js/plugins/bootbox/bootbox.js")}}"></script>
         <!--notify-->
         <script src="{{ asset("js/notify.js")}}"></script>
+        <!--select 2-->
+        <script src="{{ asset("js/select2.js")}}"></script>
+        <link href="{{ asset("css/select2.css") }}" rel="stylesheet">
+        <link href="{{ asset("css/select2-bootstrap.css") }}" rel="stylesheet">
+
+        <!--custom js always in end of header-->
+        <script src="{{ asset("js/custom.js") }}"></script>
     </head>
     <body class="pace-done mini-navbar" style="padding-bottom: 26px;">
 
