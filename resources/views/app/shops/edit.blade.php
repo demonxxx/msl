@@ -198,11 +198,14 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Loại khách hàng</label>
                                 <div class="col-sm-10">
-                                    <select id="shop_type_id" name="shop_type_id" class="form-control" pre_value="{{$shop->shop_type_id}}"
-                                            data-parsley-trigger="change">
-                                        <option value="0">Khách hàng lớn</option>
-                                        <option value="1">Khách hàng tiềm năng</option>
-                                        <option value="2">Khách hàng tự do</option>
+                                    <select id="shop_type_id" name="shop_type_id" class="form-control">
+                                        @foreach ($shoptypes as $key => $value)
+                                            @if ($value->id == $shop->shop_type_id)
+                                                <option selected="selected" value="{{$value->id}}">{{$value->name}}</option>
+                                            @else
+                                                <option value="{{$value->id}}">{{$value->name}}</option>
+                                            @endif
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -212,9 +215,8 @@
                                 <div class="col-sm-10">
                                     <select id="profile_status" name="profile_status" class="form-control" pre_value="{{$shop->profile_status}}"
                                             data-parsley-trigger="change">
-                                        <option value="0">Mới đăng kí</option>
-                                        <option value="1">Đang phê duyệt</option>
-                                        <option value="2">Hoàn thành</option>
+                                        <option value="0">Chưa xác thực</option>
+                                        <option value="1">Đã xác thực</option>
                                     </select>
                                 </div>
                             </div>
@@ -251,7 +253,6 @@
 </section>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#shop_type_id').val($('#shop_type_id').attr("pre_value"));
         $('#profile_status').val($('#profile_status').attr("pre_value"));
     });
     function check_update_user_duplicate(selector, colum_name, user_id) {

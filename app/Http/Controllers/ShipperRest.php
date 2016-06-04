@@ -15,7 +15,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Response;
 use App\ShipperOrderHistory;
 
-class ShipperRest extends Controller {
+
+class ShipperRest extends Controller
+{
 
     /**
      * Display a listing of the resource.
@@ -238,6 +240,8 @@ class ShipperRest extends Controller {
                         $order->ship_success_at = Carbon::now()->toDateTimeString();
                     } else if ($status == ORDER_PAYED) {
                         $order->payed_at = Carbon::now()->toDateTimeString();
+                    } else if ($status == ORDER_RETURNING) {
+                        $order->returning_at = Carbon::now()->toDateTimeString();
                     } else if ($status == ORDER_SHOP_CANCEL) {
                         return Response::json(
                                         array(
@@ -246,6 +250,7 @@ class ShipperRest extends Controller {
                                         ), 200
                         );
                     } else if ($status == ORDER_RETURN_ITEMS) {
+
                         $order->return_items_at = Carbon::now()->toDateTimeString();
                     }
                     $order->status = $status;
@@ -279,6 +284,7 @@ class ShipperRest extends Controller {
         );
     }
 
+<<<<<<< HEAD
     public function deleteShipperOrderHistory($id) {
         $shipperOrderHistory = ShipperOrderHistory::find($id);
         if (empty($shipperOrderHistory)) {
@@ -287,6 +293,18 @@ class ShipperRest extends Controller {
                         'accept' => 0,
                         'message' => 'Lịch sử không tồn tại',
                             ), 200
+=======
+    public function deleteShipperOrderHistory($id)
+    {
+        $shipperOrderHistory = ShipperOrderHistory::find($id);
+        if (empty($shipperOrderHistory)) {
+            return Response::json(
+                array(
+                    'accept'  => 0,
+                    'message' => 'Lịch sử không tồn tại',
+                ),
+                200
+>>>>>>> refs/remotes/origin/master
             );
         } else {
             $shipper_id = Auth::guard('api')->id();
@@ -305,7 +323,6 @@ class ShipperRest extends Controller {
                                 'accept' => 1,
                                 'message' => 'Xóa lịch sử nhận thành công!',
                                     ), 200
-                    );
                 }
             } else {
                 return Response::json(
