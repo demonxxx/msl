@@ -26,10 +26,14 @@ class Shop extends Model
         $data = DB::table("shops")
                     ->select(array("users.id","users.name", "users.email","users.identity_card","users.phone_number",
                         DB::raw('COUNT(orders.id) as count_order'), DB::raw('COUNT(agencys.id) as count_agency'),
-                        "shops.code as shop_code","shops.shop_name","shops.home_number","shops.home_ward", "shops.home_district","shops.home_city",
-                        "shops.office_number","shops.office_ward", "shops.office_district","shops.office_city" ))
+                        "shops.code as shop_code","shops.shop_name",
+                        "shops.office_number",DB::raw('city.name as office_city'), DB::raw('district.name as office_district'),
+                        DB::raw('ward.name as office_ward')))
                     ->join("users","shops.user_id","=","users.id")
                     ->leftjoin("orders","orders.user_id","=","users.id")
+                    ->join("administrative_units as city","city.id","=","shops.office_city_id")
+                    ->join("administrative_units as district","district.id","=","shops.office_district_id")
+                    ->join("administrative_units as ward","ward.id","=","shops.office_ward_id")
                     ->leftjoin("agencys","agencys.user_id","=","users.id")
                     ->groupBy("shops.id")
                     ->skip($post["start"])->take($post["length"])
