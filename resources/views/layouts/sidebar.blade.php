@@ -54,7 +54,7 @@
             @endcan
             @can('admin')
                 <li>
-                    <a role="button" tabindex="0"><i class="fa fa-taxi"></i> <span>Cài đặt</span><span
+                    <a role="button" tabindex="0"><i class="fa fa-cogs"></i> <span>Cài đặt</span><span
                                 class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="{{url( '/distance_freights' )}}"> Bảng giá</a>
@@ -65,15 +65,8 @@
                         <li><a href="{{url( 'admin/settings/shopScopes' )}}"> Phạm vi shop</a></li>
                         <li><a href="{{url( 'admin/settings/shipperTypes' )}}"> Loại tài xế</a></li>
                         <li><a href="{{url( 'admin/settings/orderTypes' )}}"> Loại đơn hàng</a></li>
-                        <li><a href="ui-navs.html"> Nhóm người dùng</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a role="button" tabindex="0"><i class="fa fa-cogs"></i> <span>Cài đặt</span><span
-                                class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level collapse">
-                        <li><a href="ui-general.html"> Thêm người dùng</a></li>
-                        <li><a href="{{url('/account')}}"> Danh sách tài khoản</a></li>
+                        <li><a href="{{url( 'admin/settings/administrative_units' )}}"> Địa điểm</a></li>
+                        <li><a href="{{url('/account')}}"> Quản lý giao dịch</a></li>
                     </ul>
                 </li>
             @endcan

@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::post('/shipper/load_list', 'ShippersController@load_list');
         Route::post('/shipper/check_new_user_duplicate', 'ShippersController@check_new_user_duplicate');
         Route::post('/shipper/check_update_user_duplicate', 'ShippersController@check_update_user_duplicate');
+
         Route::get('/distance_freights', 'DistanceFreightsController@index');
         Route::get('/distance_freights/create', 'DistanceFreightsController@create');
         Route::post('/distance_freights/store', 'DistanceFreightsController@store');
@@ -63,6 +64,10 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::post('/account/load_list', 'AccountsController@load_list');
         Route::post('/account/update_money', 'AccountsController@update_money');
         Route::get('/administrative_units', 'SettingsController@show_administrative_units');
+        Route::get('/admin/settings/administrative_units/{unit_id}/delete', 'SettingsController@delete_administrative_units');
+        Route::post('/admin/settings/administrative_units/edit', 'SettingsController@edit_administrative_units');
+        Route::post('/admin/settings/administrative_units/add', 'SettingsController@add_administrative_units');
+        Route::get('/admin/settings/administrative_units/{unit_id}/get_unit_by_parrent', 'SettingsController@get_unit_by_parrent');
     });
 
 
@@ -120,6 +125,8 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
     Route::get('shop/deleteOrderHistory/{id}', 'ShopRest@deleteShopOrderHistory');
     Route::post('shop/getShipperLocations', 'ShopRest@getShipperIntoDistance');
     Route::get('shop/shipperLocation/{id}', 'ShopRest@getShipperLocation');
+
+    Route::post("shop/updateBaseFreight/{id}", "OrderRest@freightBaseDistance");
 
     Route::resource('shop', 'ShopRest');
     Route::resource('shipper', 'ShipperRest');

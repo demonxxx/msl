@@ -18,6 +18,11 @@ define("ORDER_SHIP_SUCCESS", 5);
 define("ORDER_PAYED", 6);
 define("ORDER_SHOP_CANCEL", 7);
 define("ORDER_RETURN_ITEMS", 8);
+define("ORDER_RETURNING", 9);
+
+define("MSG_ORDER_NOT_EXIST", "Đơn hàng không tồn tại!");
+define("MSG_NOT_HAVE_PERMISSION", "Bạn không có quyền này!");
+define("MSG_DISTANCE_FREIGHT_NOT_EXIST", "Không tồn tại giá cước này!");
 
 // Mobile notification
 define("IOS_CERTIFICATE_FILE", "ios_certificate.pem");
@@ -29,3 +34,7 @@ define("GOOGLE_API_KEY", 'google_api_key');
 define("CITY_UNIT", 0);
 define("DISTRICT_UNIT", 1);
 define("WARD_UNIT", 2);
+
+// ajax result
+define("AJAX_SUCCESS", 1);
+define("AJAX_FAILED", 0);
