@@ -10,12 +10,7 @@
                 <div class="ibox-title">
                     <h5>Danh sách đơn vị hành chính</h5>
                     <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
+                        <button class="btn btn-primary" onclick="addCity()"><i class="fa fa-plus"></i> Thêm thành phố</button>
                     </div>
                 </div>
                 <div class="ibox-content">
@@ -169,6 +164,53 @@
                                     swal({
                                     title: "Thành Công!",
                                             text: "Đơn vị hành chính đã được thêm.",
+                                            type: "success",
+                                    }, function () {
+                                    window.location.reload();
+                                    });
+                                    } else {
+                                    swal("Lỗi", "Thêm không thành công, kiểm tra có đơn vị hành chính cùng cấp trùng tên không?", "error");
+                                    }
+                                    },
+                                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                    swal("Lỗi", "Thêm không thành công!", "error");
+                                    }
+                            });
+                            }
+                            }
+                    }
+            }
+    });
+    }
+
+    function addCity() {
+    bootbox.dialog({
+    message: "<input id='add_city_input' class='fomr-control' style='width:100%;'>",
+            title: "Thêm thành phố",
+            buttons: {
+            success: {
+            label: "Hủy",
+                    className: "btn-success",
+                    callback: function() {
+                    }
+            },
+                    main: {
+                    label: "Thêm",
+                            className: "btn-primary",
+                            callback: function() {
+                            if (document.getElementById('add_city_input').value == "") {
+                            $("#add_city_input").notify("Không được để trống", "error");
+                            return false;
+                            } else {
+                            $.ajax({
+                            url: base_url + "/admin/settings/administrative_units/add_city",
+                                    type: 'post',
+                                    data:{city_name:document.getElementById('add_city_input').value},
+                                    success: function (result) {
+                                    if (parseInt(result) == AJAX_SUCCESS) {
+                                    swal({
+                                    title: "Thành Công!",
+                                            text: "Thành phố đã được thêm.",
                                             type: "success",
                                     }, function () {
                                     window.location.reload();
