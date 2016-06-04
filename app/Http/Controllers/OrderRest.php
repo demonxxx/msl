@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Distance_freights;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -12,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\ShopOrderHistory;
 use Illuminate\Support\Facades\Response;
+use App\VehicleType;
+use App\OrderType;
 
 class OrderRest extends Controller
 {
@@ -121,7 +124,7 @@ class OrderRest extends Controller
             return Response::json(
                 array(
                     'accept'   => 1,
-                    'messages' => "Đơn hàng không tồn tại!",
+                    'messages' => MSG_ORDER_NOT_EXIST,
                 ),
                 200
             );
@@ -161,7 +164,7 @@ class OrderRest extends Controller
                 return Response::json(
                     array(
                         'accept'   => 0,
-                        'messages' => "Bạn không được xem đơn hàng này.",
+                        'messages' => MSG_NOT_HAVE_PERMISSION,
                     ),
                     200
                 );
@@ -176,7 +179,7 @@ class OrderRest extends Controller
             return Response::json(
                 array(
                     'accept'   => 1,
-                    'messages' => "Đơn hàng không tồn tại!",
+                    'messages' => MSG_ORDER_NOT_EXIST,
                 ),
                 200
             );
@@ -216,7 +219,7 @@ class OrderRest extends Controller
                 return Response::json(
                     array(
                         'accept'   => 0,
-                        'messages' => "Bạn không được xem đơn hàng này.",
+                        'messages' => MSG_NOT_HAVE_PERMISSION,
                     ),
                     200
                 );
@@ -250,7 +253,7 @@ class OrderRest extends Controller
             return Response::json(
                 array(
                     'accept'   => 1,
-                    'messages' => "Order do not exist!",
+                    'messages' => MSG_ORDER_NOT_EXIST,
                 ),
                 200
             );
@@ -261,7 +264,6 @@ class OrderRest extends Controller
                 $validator = Validator::make($request->all(), [
                     "order_type_id"     => "required|numeric",
                     "vehicle_type_id"   => "required|numeric",
-                    "name"              => "required",
                     "recipient_name"    => "required",
                     "recipient_phone"   => "required|numeric",
                     "full_address_to"   => "required",
@@ -281,7 +283,6 @@ class OrderRest extends Controller
                 } else {
                     $order->order_type_id = $request->order_type_id;
                     $order->vehicle_type_id = $request->vehicle_type_id;
-                    $order->name = $request->name;
                     $order->recipient_name = $request->recipient_name;
                     $order->recipient_phone = $request->recipient_phone;
                     $order->full_address_to = $request->full_address_to;
@@ -303,7 +304,77 @@ class OrderRest extends Controller
                 return Response::json(
                     array(
                         'accept'   => 0,
-                        'messages' => "You do not have permission",
+                        'messages' => MSG_NOT_HAVE_PERMISSION,
+                    ),
+                    200
+                );
+            }
+        }
+    }
+
+    public function freightBaseDistance(Request $request, $id){
+        $order = Order::where("id",$id)->select("id","user_id","base_freight","vas_freight","discount_freight","main_freight")
+            ->first();
+        if (empty($order)) {
+            return Response::json(
+                array(
+                    'accept'   => 1,
+                    'messages' => MSG_ORDER_NOT_EXIST,
+                ),
+                200
+            );
+        } else {
+            $user = User::find(Auth::guard('api')->id());
+            if ($user->id == $order->user_id) {
+                $validator = Validator::make($request->all(), [
+                    "vehicle_type_id"  => "required|numeric",
+                    "distance"   => "required|numeric",
+                ]);
+                if ($validator->fails()) {  
+                    return Response::json(
+                        array(
+                            'accept'   => 0,
+                            'messages' => $validator->messages(),
+                        ),
+                        200
+                    );
+                } else {
+                    $base_freight_obj = Distance_freights::where("vehicle_type_id",$request->vehicle_type_id)
+                                    ->where("from", "<=", $request->distance)
+                                    ->where("to", ">=", $request->distance)
+                                    ->first();
+                    if(empty($base_freight_obj)){
+                        return Response::json(
+                            array(
+                                'accept'   => 0,
+                                'messages' => MSG_DISTANCE_FREIGHT_NOT_EXIST,
+                            ),
+                            200
+                        );
+                    }else {
+                        $base_freight = $base_freight_obj->freight;
+                        $vas_freight = $order->vas_freight;
+                        $discount_freight = $order->discount_freight;
+                        $main_freight = (int) (($base_freight + $vas_freight) - $discount_freight);
+                        $order->main_freight = $main_freight;
+                        $order->base_freight = $base_freight;
+                        $order->distance = $request->distance;
+                        $order->vehicle_type_id = $request->vehicle_type_id;
+                        $order->save();
+                        return Response::json(
+                            array(
+                                'accept'   => 1,
+                                'messages' => $order->toArray(),
+                            ),
+                            200
+                        );
+                    }
+                }
+            } else {
+                return Response::json(
+                    array(
+                        'accept'   => 0,
+                        'messages' => MSG_NOT_HAVE_PERMISSION,
                     ),
                     200
                 );
@@ -317,8 +388,7 @@ class OrderRest extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public
-    function destroy($id)
+    public function destroy($id)
     {
         //
     }
