@@ -29,36 +29,36 @@
                     <table class="table table-striped table-hover table-bordered" id="orders-list" style="width: 100%;">
                         <thead>
                             <tr>
-                                <th class="text-center" width="10%">Mã ĐH</th>
-                                <th class="text-center" width="10%">Mã khách hàng</th>
-                                <th class="text-center" width="10%">Mã tài xế</th>
-                                <th class="text-center" width="10%">Phố đi</th>
-                                <th class="text-center" width="10%">Quận đi</th>
-                                <th class="text-center" width="10%">Phố đến</th>
-                                <th class="text-center" width="10%">Quận đến</th>
-                                <th class="text-center" width="10%">Chức năng</th>
+                                <th class="text-center" >Mã ĐH</th>
+                                <th class="text-center" >Mã khách hàng</th>
+                                <th class="text-center" >Mã tài xế</th>
+                                <th class="text-center" >Phố đi</th>
+                                <th class="text-center" >Quận đi</th>
+                                <th class="text-center" >Phố đến</th>
+                                <th class="text-center" >Quận đến</th>
+                                <th class="text-center" >Chức năng</th>
                             </tr>
                             <tr class="table-header-search">
-                                <th class="text-center" width="4%">
-                                    <input class="text-center" name="code" value="" placeholder="Mã ĐH" />
+                                <th class="text-center" >
+                                    <input class="text-center" style="max-width: 100px;" name="code" value="" placeholder="Mã ĐH" />
                                 </th>
                                 <th class="text-center">
-                                    <input class="text-center" name="shop_code" value="" placeholder="Mã khách hàng" />
+                                    <input class="text-center" style="max-width: 100px;" name="shop_code" value="" placeholder="Mã khách hàng" />
                                 </th>
                                 <th class="text-center">
-                                    <input class="text-center" name="shipper_code" value="" placeholder="Mã tài xế" />
+                                    <input class="text-center" style="max-width: 100px;" name="shipper_code" value="" placeholder="Mã tài xế" />
                                 </th>
                                 <th class="text-center">
-                                    <input class="text-center" name="street_from" value="" placeholder="Phố đi" />
+                                    <input class="text-center" style="max-width: 100px;" name="street_from" value="" placeholder="Phố đi" />
                                 </th>
                                 <th class="text-center">
-                                    <input class="text-center" name="district_from" value="" placeholder="Quận đi" />
+                                    <input class="text-center" style="max-width: 100px;" name="district_from" value="" placeholder="Quận đi" />
                                 </th>
                                 <th class="text-center">
-                                    <input class="text-center" name="street_to" value="" placeholder="Phố đến" />
+                                    <input class="text-center" style="max-width: 100px;" name="street_to" value="" placeholder="Phố đến" />
                                 </th>
                                 <th class="text-center">
-                                    <input class="text-center" name="district_to" value="" placeholder="Quận đến" />
+                                    <input class="text-center" style="max-width: 100px;" name="district_to" value="" placeholder="Quận đến" />
                                 </th>
                                 <th class="text-center clear-filter"></th>
                             </tr>
@@ -86,7 +86,7 @@
         };
 
         function render_common(data) {
-            return "<div class='text-center' style='vertical-align: middle;'>" + data + "</div>";
+            return "<div class='text-center' style='vertical-align: middle;'>" + (data == null ? "-": data ) + "</div>";
         }
 
         function render_function(data) {

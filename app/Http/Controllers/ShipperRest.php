@@ -284,16 +284,7 @@ class ShipperRest extends Controller
         );
     }
 
-<<<<<<< HEAD
-    public function deleteShipperOrderHistory($id) {
-        $shipperOrderHistory = ShipperOrderHistory::find($id);
-        if (empty($shipperOrderHistory)) {
-            return Response::json(
-                            array(
-                        'accept' => 0,
-                        'message' => 'Lịch sử không tồn tại',
-                            ), 200
-=======
+
     public function deleteShipperOrderHistory($id)
     {
         $shipperOrderHistory = ShipperOrderHistory::find($id);
@@ -304,7 +295,6 @@ class ShipperRest extends Controller
                     'message' => 'Lịch sử không tồn tại',
                 ),
                 200
->>>>>>> refs/remotes/origin/master
             );
         } else {
             $shipper_id = Auth::guard('api')->id();
@@ -323,6 +313,7 @@ class ShipperRest extends Controller
                                 'accept' => 1,
                                 'message' => 'Xóa lịch sử nhận thành công!',
                                     ), 200
+                    );
                 }
             } else {
                 return Response::json(
