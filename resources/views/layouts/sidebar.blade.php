@@ -65,7 +65,7 @@
                         <li><a href="{{url( 'admin/settings/shopScopes' )}}"> Phạm vi shop</a></li>
                         <li><a href="{{url( 'admin/settings/shipperTypes' )}}"> Loại tài xế</a></li>
                         <li><a href="{{url( 'admin/settings/orderTypes' )}}"> Loại đơn hàng</a></li>
-                        <li><a href="ui-navs.html"> Nhóm người dùng</a></li>
+                        <li><a href="{{url( 'admin/settings/administrative_units' )}}"> Địa điểm</a></li>
                     </ul>
                 </li>
                 <li>
