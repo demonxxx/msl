@@ -1,13 +1,5 @@
 @extends('app.shippers.shipper')
 @section('shipper')
-    <link href="{{ asset("theme/css/plugins/dataTables/datatables.min.css") }}" rel="stylesheet">
-    <script src="{{ asset("theme/js/plugins/datatables/dataTables.min.js") }}"></script>
-    <script src="{{ asset("theme/js/plugins/datatables/js/jquery.dataTables.min.js") }}"></script>
-    <script src="{{ asset("theme/js/plugins/datatables/extensions/dataTables.bootstrap.js") }}"></script>
-    <script src="{{ asset("theme/js/plugins/datatables/extensions/Pagination/input.js") }}"></script>
-
-    <script src="{{ asset("js/datatable.ajax.js") }}"></script>
-    <script src="{{ asset("js/constants.js") }}"></script>
 <!-- tile -->
     <div class="row">
         <div class="col-lg-12">
@@ -41,10 +33,11 @@
                                 <th class="text-center" width="4%">Mã TX</th>
                                 <th class="text-center">Họ và tên</th>
                                 <th class="text-center">CMT</th>
-                                <th class="text-center">Phường/xã</th>
                                 <th class="text-center">Quận/huyện</th>
-                                <th class="text-center">Thành phố</th>
                                 <th class="text-center">SĐT</th>
+                                <th class="text-center">Đánh giá</th>
+                                <th class="text-center">Tổng đơn hàng</th>
+                                <th class="text-center">Tình trạng hồ sơ</th>
                                 <th class="text-center">Chức năng</th>
                             </tr>
                             <tr class="table-header-search">
@@ -58,16 +51,19 @@
                                     <input class="text-center" name="identity_card" value="" placeholder="CMT" />
                                 </th>
                                 <th class="text-center">
-                                    <input class="text-center" name="home_ward" value="" placeholder="Phường/xã" />
-                                </th>
-                                <th class="text-center">
                                     <input class="text-center" name="home_district" value="" placeholder="Quận/huyện" />
                                 </th>
                                 <th class="text-center">
-                                    <input class="text-center" name="home_city" value="" placeholder="Thành phố" />
+                                    <input class="text-center" name="phone_number" value="" placeholder="SĐT" />
                                 </th>
                                 <th class="text-center">
-                                    <input class="text-center" name="phone_number" value="" placeholder="SĐT" />
+                                    <input class="text-center" name="average_score" value="" placeholder="Đánh giá" />
+                                </th>
+                                <th class="text-center">
+                                    <input class="text-center" name="count_order" value="" placeholder="Tổng đơn hàng" />
+                                </th>
+                                <th class="text-center">
+                                    <input class="text-center" name="profile_status" value="" placeholder="Tình trạng hồ sơ" />
                                 </th>
                                 <th class="text-center clear-filter"></th>
                             </tr>
@@ -85,14 +81,14 @@
             "render": function (data, type, row) {
                 return render_common(data);
             },
-            "targets": [0, 1, 2, 3, 4, 5, 6]
+            "targets": [0, 1, 2, 3, 4, 5, 6, 7]
         };
 
         var function_render = {
             "render": function (data, type, row) {
                 return render_function(data);
             },
-            "targets": [7]
+            "targets": [8]
         };
 
         function render_common(data) {
@@ -103,7 +99,7 @@
             var edit_url = base_url + "/shipper/" + data + "/edit";
             return "<div class='text-center'>" +
                     "<a class='btn btn-primary' href='" + edit_url + "' style='width: 70px;'>Sửa</a>" +
-                    "<a class='btn btn-danger' style='width: 70px; margin-left: 10px;'>Xóa</a>" +
+                    "<a class='btn btn-danger' disabled style='width: 70px; margin-left: 10px;'>Xóa</a>" +
                     "</div>";
         }
 
@@ -111,12 +107,12 @@
         var renders = [];
         renders.push(common_render);
         renders.push(function_render);
-        config['colums'] = ["code", "name", "identity_card", "home_ward", "home_district", "home_city", "phone_number", "id"];
+        config['colums'] = ["code", "name", "identity_card", "home_district", "phone_number", "average_score", "count_order", "profile_status", "id"];
         config['url'] = "/shipper/load_list";
         config['id'] = "shippers-list";
         config['data_array'] = renders;
         config['clear_filter'] = true;
-        config['sort_off'] = [6];
+        config['sort_off'] = [8];
         config['hidden_global_seach'] = true;
         setAjaxDataTable(config);
     });

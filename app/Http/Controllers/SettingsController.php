@@ -14,21 +14,20 @@ use App\OrderType;
 use App\ShipperType;
 use App\ShopScope;
 use App\ShopType;
+use App\Adminnistrative_units;
 
-class SettingsController extends Controller
-{
+class SettingsController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         //
     }
 
-    public function showVehicleTypes()
-    {
+    public function showVehicleTypes() {
         $vehicle_types = VehicleType::all();
         return view('app.settings.vehicle_types', ['vehicle_types' => $vehicle_types]);
     }
@@ -38,16 +37,14 @@ class SettingsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
-    public function createVehicleType(Request $request)
-    {
+    public function createVehicleType(Request $request) {
         $validator = \Validator::make($request->all(), [
-            'code' => 'required|unique:vehicle_types',
-            'name' => 'required|',
+                    'code' => 'required|unique:vehicle_types',
+                    'name' => 'required|',
         ]);
         if ($validator->fails()) {
             flash_message("Thêm phương tiện không thành công!", "danger");
@@ -62,12 +59,10 @@ class SettingsController extends Controller
         }
     }
 
-
-    public function editVehicleType(Request $request, $id)
-    {
+    public function editVehicleType(Request $request, $id) {
         $validator = \Validator::make($request->all(), [
-            'code' => 'required',
-            'name' => 'required',
+                    'code' => 'required',
+                    'name' => 'required',
         ]);
         if ($validator->fails()) {
             flash_message("Sửa phương tiện không thành công!", "danger");
@@ -91,25 +86,23 @@ class SettingsController extends Controller
         }
     }
 
-    public function showAddedServices()
-    {
+    public function showAddedServices() {
         $added_services = DB::table('added_services')
-            ->join('vehicle_types', 'added_services.vehicle_type_id', '=', 'vehicle_types.id')
-            ->where('added_services.deleted_at')
-            ->where('vehicle_types.deleted_at')
-            ->select('added_services.*', 'vehicle_types.name as vehicle_name')->get();
+                        ->join('vehicle_types', 'added_services.vehicle_type_id', '=', 'vehicle_types.id')
+                        ->where('added_services.deleted_at')
+                        ->where('vehicle_types.deleted_at')
+                        ->select('added_services.*', 'vehicle_types.name as vehicle_name')->get();
 
         $vehicle_types = VehicleType::all();
         return view('app.settings.added_service', ['added_services' => $added_services, 'vehicle_types' => $vehicle_types]);
     }
 
-    public function createAddedService(Request $request)
-    {
+    public function createAddedService(Request $request) {
         $validator = \Validator::make($request->all(), [
-            'code'            => 'required|unique:added_services',
-            'name'            => 'required',
-            'vehicle_type_id' => 'required|integer',
-            'freight'         => 'required'
+                    'code' => 'required|unique:added_services',
+                    'name' => 'required',
+                    'vehicle_type_id' => 'required|integer',
+                    'freight' => 'required'
         ]);
         if ($validator->fails()) {
             flash_message("Thêm dịch vụ không thành công!", "danger");
@@ -126,13 +119,12 @@ class SettingsController extends Controller
         }
     }
 
-    public function editAddedService(Request $request, $id)
-    {
+    public function editAddedService(Request $request, $id) {
         $validator = \Validator::make($request->all(), [
-            'code'            => 'required',
-            'name'            => 'required',
-            'vehicle_type_id' => 'required|integer',
-            'freight'         => 'required'
+                    'code' => 'required',
+                    'name' => 'required',
+                    'vehicle_type_id' => 'required|integer',
+                    'freight' => 'required'
         ]);
         if ($validator->fails()) {
             flash_message("Thêm dịch vụ không thành công!", "danger");
@@ -158,44 +150,44 @@ class SettingsController extends Controller
         }
     }
 
-    public function deleteAddedService($id){
+    public function deleteAddedService($id) {
         $user = Auth::user();
-        if($user->isAdmin()){
+        if ($user->isAdmin()) {
             $added_service = AddedService::find($id);
-            if(empty($added_service)){
+            if (empty($added_service)) {
                 return 0;
-            }else {
+            } else {
                 $added_service->delete();
                 return 1;
             }
-        }else {
+        } else {
             return 0;
         }
     }
 
-    public function deleteVehicleType($id){
+    public function deleteVehicleType($id) {
         $user = Auth::user();
-        if($user->isAdmin()){
+        if ($user->isAdmin()) {
             $vehicleType = VehicleType::find($id);
-            if(empty($vehicleType)){
+            if (empty($vehicleType)) {
                 return 0;
-            }else {
+            } else {
                 $vehicleType->delete();
                 return 1;
             }
-        }else {
+        } else {
             return 0;
         }
     }
 
-    public function showShopTypes(){
+    public function showShopTypes() {
         $shopTypes = ShopType::all();
         return view('app.settings.shop_types', ['shop_types' => $shopTypes]);
     }
 
-    public function createShopType(Request $request){
+    public function createShopType(Request $request) {
         $validator = \Validator::make($request->all(), [
-            'name' => 'required',
+                    'name' => 'required',
         ]);
         if ($validator->fails()) {
             flash_message("Thêm loại khách hàng không thành công!", "danger");
@@ -209,9 +201,9 @@ class SettingsController extends Controller
         }
     }
 
-    public function editShopType(Request $request, $id){
+    public function editShopType(Request $request, $id) {
         $validator = \Validator::make($request->all(), [
-            'name' => 'required',
+                    'name' => 'required',
         ]);
         if ($validator->fails()) {
             flash_message("Sửa loại khách hàng không thành công!", "danger");
@@ -230,29 +222,29 @@ class SettingsController extends Controller
         }
     }
 
-    public function deleteShopType($id){
+    public function deleteShopType($id) {
         $user = Auth::user();
-        if($user->isAdmin()){
+        if ($user->isAdmin()) {
             $shopType = ShopType::find($id);
-            if(empty($shopType)){
+            if (empty($shopType)) {
                 return 0;
-            }else {
+            } else {
                 $shopType->delete();
                 return 1;
             }
-        }else {
+        } else {
             return 0;
         }
     }
 
-    public function showShopScopes(){
+    public function showShopScopes() {
         $shopScopes = ShopScope::all();
         return view('app.settings.shop_scopes', ['shop_scopes' => $shopScopes]);
     }
 
-    public function createShopScope(Request $request){
+    public function createShopScope(Request $request) {
         $validator = \Validator::make($request->all(), [
-            'name' => 'required',
+                    'name' => 'required',
         ]);
         if ($validator->fails()) {
             flash_message("Thêm phạm vi shop không thành công!", "danger");
@@ -266,9 +258,9 @@ class SettingsController extends Controller
         }
     }
 
-    public function editShopScope(Request $request, $id){
+    public function editShopScope(Request $request, $id) {
         $validator = \Validator::make($request->all(), [
-            'name' => 'required',
+                    'name' => 'required',
         ]);
         if ($validator->fails()) {
             flash_message("Sửa phạm vi shop không thành công!", "danger");
@@ -286,29 +278,29 @@ class SettingsController extends Controller
         }
     }
 
-    public function deleteShopScope($id){
+    public function deleteShopScope($id) {
         $user = Auth::user();
-        if($user->isAdmin()){
+        if ($user->isAdmin()) {
             $shopScope = ShopScope::find($id);
-            if(empty($shopScope)){
+            if (empty($shopScope)) {
                 return 0;
-            }else {
+            } else {
                 $shopScope->delete();
                 return 1;
             }
-        }else {
+        } else {
             return 0;
         }
     }
 
-    public function showShipperTypes(){
+    public function showShipperTypes() {
         $shipperTypes = ShipperType::all();
         return view('app.settings.shipper_types', ['shipper_types' => $shipperTypes]);
     }
 
-    public function createShipperType(Request $request){
+    public function createShipperType(Request $request) {
         $validator = \Validator::make($request->all(), [
-            'name' => 'required',
+                    'name' => 'required',
         ]);
         if ($validator->fails()) {
             flash_message("Thêm loại tài xế không thành công!", "danger");
@@ -322,9 +314,9 @@ class SettingsController extends Controller
         }
     }
 
-    public function editShipperType(Request $request, $id){
+    public function editShipperType(Request $request, $id) {
         $validator = \Validator::make($request->all(), [
-            'name' => 'required',
+                    'name' => 'required',
         ]);
         if ($validator->fails()) {
             flash_message("Sửa loại tài xế không thành công!", "danger");
@@ -343,31 +335,31 @@ class SettingsController extends Controller
         }
     }
 
-    public function deleteShipperType($id){
+    public function deleteShipperType($id) {
         $user = Auth::user();
-        if($user->isAdmin()){
+        if ($user->isAdmin()) {
             $shipperType = ShipperType::find($id);
-            if(empty($shipperType)){
+            if (empty($shipperType)) {
                 return 0;
-            }else {
+            } else {
                 $shipperType->delete();
                 return 1;
             }
-        }else {
+        } else {
             return 0;
         }
     }
 
-    public function showOrderTypes(){
+    public function showOrderTypes() {
         $orderTypes = OrderType::all();
         return view('app.settings.order_types', ['order_types' => $orderTypes]);
     }
 
-    public function createOrderType(Request $request){
+    public function createOrderType(Request $request) {
 //        dd("create order type");
         $validator = \Validator::make($request->all(), [
-            'name' => 'required',
-            'freight' => 'required|integer'
+                    'name' => 'required',
+                    'freight' => 'required|integer'
         ]);
         if ($validator->fails()) {
             flash_message("Thêm loại đơn hàng không thành công!", "danger");
@@ -382,10 +374,10 @@ class SettingsController extends Controller
         }
     }
 
-    public function editOrderType(Request $request, $id){
+    public function editOrderType(Request $request, $id) {
         $validator = \Validator::make($request->all(), [
-            'name' => 'required',
-            'freight' => 'required|integer'
+                    'name' => 'required',
+                    'freight' => 'required|integer'
         ]);
         if ($validator->fails()) {
             flash_message("Sửa loại đơn hàng không thành công!", "danger");
@@ -405,18 +397,84 @@ class SettingsController extends Controller
         }
     }
 
-    public function deleteOrderType($id){
+    public function deleteOrderType($id) {
         $user = Auth::user();
-        if($user->isAdmin()){
+        if ($user->isAdmin()) {
             $orderType = OrderType::find($id);
-            if(empty($orderType)){
+            if (empty($orderType)) {
                 return 0;
-            }else {
+            } else {
                 $orderType->delete();
                 return 1;
             }
-        }else {
+        } else {
             return 0;
+        }
+    }
+
+    public function show_administrative_units() {
+        $admin_unit = new Adminnistrative_units();
+        $unit_list = $admin_unit->get_all();
+        $cities = $admin_unit->get_city();
+
+        foreach ($cities as $key => $city) {
+            $cities[$key]->districts = [];
+            $districts = $admin_unit->get_district($city->id);
+            if (!empty($districts)) {
+                foreach ($districts as $key_1 => $district) {
+                    $districts[$key_1]->wards = $admin_unit->get_ward($district->id);
+                }
+            }
+            $cities[$key]->districts = $districts;
+        }
+        return view('app.settings.administrative_units', ['cities' => $cities]);
+    }
+
+    public function delete_administrative_units($unit_id) {
+        $admin_unit = new Adminnistrative_units();
+        $check_children = $admin_unit::where('parent_id', $unit_id)->take(1)->get()->toArray();
+        if (!empty($check_children)) {
+            echo AJAX_FAILED;
+        } else {
+            $admin_unit::destroy($unit_id);
+            echo AJAX_SUCCESS;
+        }
+    }
+
+    public function edit_administrative_units(Request $request) {
+        $edit_info = $request->all();
+        $admin_unit = new Adminnistrative_units();
+        $unit = $admin_unit->find($edit_info['id']);
+        $check_duplicate = $admin_unit::where('name', 'like', $edit_info['edit_name'])
+                        ->where('id', '!=', $edit_info['id'])
+                        ->where('level', $unit['level'])
+                        ->take(1)->get()->toArray();
+        if (!empty($check_duplicate)) {
+            echo AJAX_FAILED;
+        } else {
+            $unit['name'] = $edit_info['edit_name'];
+            $unit->save();
+            echo AJAX_SUCCESS;
+        }
+    }
+
+    public function add_administrative_units(Request $request) {
+        $add_info = $request->all();
+        $admin_unit = new Adminnistrative_units();
+        $unit = $admin_unit->find($add_info['parrent_id']);
+        $check_duplicate = $admin_unit::where('name', 'like', $add_info['unit_name'])
+                        ->where('level', ($unit['level'] + 1))
+                        ->where('parent_id', $unit['id'])
+                        ->take(1)->get()->toArray();
+        if (!empty($check_duplicate)) {
+            echo AJAX_FAILED;
+        } else {
+            $add_unit = new Adminnistrative_units();
+            $add_unit['name'] = $add_info['unit_name'];
+            $add_unit['parent_id'] = $unit['id'];
+            $add_unit['level'] = ($unit['level'] + 1);
+            $add_unit->save();
+            echo AJAX_SUCCESS;
         }
     }
 
@@ -426,8 +484,7 @@ class SettingsController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
@@ -437,8 +494,7 @@ class SettingsController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -448,8 +504,7 @@ class SettingsController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         //
     }
 
@@ -460,8 +515,7 @@ class SettingsController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         //
     }
 
@@ -471,8 +525,8 @@ class SettingsController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
+
 }

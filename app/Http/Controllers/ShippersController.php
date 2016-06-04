@@ -8,6 +8,8 @@ use App\User;
 use App\Shipper;
 use App\Shop;
 use App\Shop_shipper;
+use App\ShipperType;
+use App\VehicleType;
 use App\Helpers\helpers;
 use Auth;
 
@@ -28,9 +30,11 @@ class ShippersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $max_id = User::max('id');
-        $shipper_code = $max_id + 1;
-        return view('app.shippers.create', ['shipper_code' => $shipper_code]);
+        $shippertype = new ShipperType;
+        $shippertypes = $shippertype->all();
+        $vehicletype = new VehicleType;
+        $vehicletypes = $vehicletype->all();
+        return view('app.shippers.create', ['shippertypes' => $shippertypes, 'vehicletypes' => $vehicletypes]);
     }
 
     /**
@@ -41,42 +45,28 @@ class ShippersController extends Controller {
      */
     public function store(Request $request) {
         $validator = \Validator::make($request->all(), [
-                    'code' => 'required|max:15|unique:users',
-                    'name' => 'required|max:255',
-                    'username' => 'required|max:255|unique:users',
-                    'password' => 'required|min:6|confirmed',
-                    'phone_number' => 'required|min:10|max:11',
-                    'email' => 'email|max:255|unique:users',
-                    'home_number' => 'required|max:255',
-                    'home_ward' => 'required|max:255',
+                    'name'          => 'required|max:255',
+                    'username'      => 'required|max:255|unique:users',
+                    'password'      => 'required|min:6|confirmed',
+                    'phone_number'  => 'required|min:10|max:11',
+                    'email'         => 'required|email|max:255|unique:users',
+                    'home_number'   => 'required|max:255',
+                    'home_ward'     => 'required|max:255',
                     'home_district' => 'required|max:255',
-                    'home_city' => 'required|max:255',
+                    'home_city'     => 'required|max:255',
                     'identity_card' => 'required|min:9|max:12',
                     'vehicle_type_id' => 'required',
-                    'licence_plate' => 'required|max:10',
+                    'shipper_type_id' => 'required',
+                    'licence_plate' => 'required|max:12',
+                    'licence_driver_number' => 'required|max:12',
         ]);
         if ($validator->fails()) {
             flash_message("Tạo tài xế mới không thành công!", "danger");
             return redirect('shipper/create')->withErrors($validator)->withInput();
         } else {
             $user = new User;
-            $check_code = $user->where('code', $request->code)->first();
-            if (!empty($check_code)) {
-                return redirect('shipper/create')->withErrors(['Mã tài xế đã tồn tại!'])->withInput();
-            }
-            $check_username = $user->where('username', $request->username)->first();
-            if (!empty($check_username)) {
-                return redirect('shipper/create')->withErrors(['Tài khoản đăng nhập đã tồn tại!'])->withInput();
-            }
-            $check_email = User::where('email', $request->email)->first();
-            if (!empty($check_email)) {
-                return redirect('shipper/create')->withErrors(['Tài khoản email đã tồn tại!'])->withInput();
-            }
-            $check_phone = User::where('phone_number', $request->phone_number)->first();
-            if (!empty($check_phone)) {
-                return redirect('shipper/create')->withErrors(['Số điện thoại đã tồn tại!'])->withInput();
-            }
-            $user->code = $request->code;
+            $max_id = User::max('id')+1;
+            $user->code = "U".$max_id;
             $user->username = $request->username;
             $user->name = $request->name;
             $user->email = $request->email;
@@ -85,12 +75,17 @@ class ShippersController extends Controller {
             $user->api_token = str_random(60);
             $user->save();
             $shipper = new Shipper;
+            $max_id = Shipper::max('id')+1;
+            $shipper->code = "TX".$max_id;
             $shipper->home_number = $request->home_number;
             $shipper->home_ward = $request->home_ward;
             $shipper->home_district = $request->home_district;
             $shipper->home_city = $request->home_city;
             $shipper->vehicle_type_id = $request->vehicle_type_id;
+            $shipper->shipper_type_id = $request->shipper_type_id;
             $shipper->licence_plate = $request->licence_plate;
+            $shipper->licence_driver_number = $request->licence_driver_number;
+            $shipper->profile_status = "Chưa xác thực";
             $user->shipper()->save($shipper);
             flash_message("Tạo tài xế mới thành công!");
             return back();
@@ -117,7 +112,12 @@ class ShippersController extends Controller {
         $user = new User;
         $user_obj = $user->find($user_id);
         $shipper_obj = $user_obj->shipper;
-        return view("app/shippers/edit", [ "shipper" => $shipper_obj, "user" => $user_obj, "user_id" => $user_id]);
+        $shippertype = new ShipperType;
+        $shippertypes = $shippertype->all();
+        $vehicletype = new VehicleType;
+        $vehicletypes = $vehicletype->all();
+        return view("app/shippers/edit", [ "shipper" => $shipper_obj, "user" => $user_obj, "user_id" => $user_id,
+            'shippertypes' => $shippertypes, 'vehicletypes' => $vehicletypes]);
     }
 
     /**
@@ -130,16 +130,17 @@ class ShippersController extends Controller {
     public function update(Request $request, $id) {
         //dd($request->all());
         $validator = \Validator::make($request->all(), [
-                    'code' => 'required|max:15',
-                    'name' => 'required|max:255',
-                    'phone_number' => 'required|min:10|max:11',
-                    'email' => 'email|max:255',
-                    'home_ward' => 'required|max:255',
-                    'home_district' => 'required|max:255',
-                    'home_city' => 'required|max:255',
-                    'identity_card' => 'required|min:9|max:12',
-                    'vehicle_type_id' => 'required',
-                    'licence_plate' => 'required|max:10',
+                    'name'                  => 'required|max:255',
+                    'phone_number'          => 'required|min:10|max:11',
+                    'email'                 => 'required|email|max:255',
+                    'home_number'           => 'required|max:255',
+                    'home_ward'             => 'required|max:255',
+                    'home_district'         => 'required|max:255',
+                    'home_city'             => 'required|max:255',
+                    'identity_card'         => 'required|min:9|max:12',
+                    'vehicle_type_id'       => 'required',
+                    'licence_plate'         => 'required|max:12',
+                    'licence_driver_number' => 'required|max:12',
         ]);
         if ($validator->fails()) {
             flash_message("Sửa tài xế không thành công!", "danger");
@@ -147,8 +148,6 @@ class ShippersController extends Controller {
         } else {
             $user = new User;
             $user_obj = $user->find($id);
-            $user_obj->code = $request->code;
-            $user_obj->username = $request->username;
             $user_obj->name = $request->name;
             $user_obj->email = $request->email;
             $user_obj->phone_number = $request->phone_number;
@@ -159,14 +158,10 @@ class ShippersController extends Controller {
             $shipper_obj->home_ward = $request->home_ward;
             $shipper_obj->home_district = $request->home_district;
             $shipper_obj->home_city = $request->home_city;
-            $shipper_obj->office_number = $request->office_number;
-            $shipper_obj->office_ward = $request->office_ward;
-            $shipper_obj->office_district = $request->office_district;
-            $shipper_obj->office_city = $request->office_city;
             $shipper_obj->vehicle_type_id = $request->vehicle_type_id;
             $shipper_obj->licence_plate = $request->licence_plate;
+            $shipper_obj->licence_driver_number = $request->licence_driver_number;
             $shipper_obj->shipper_type_id = $request->shipper_type_id;
-            $shipper_obj->average_score = $request->average_score;
             $shipper_obj->profile_status = $request->profile_status;
             $shipper_obj->save();
             flash_message("Sửa tài xế thành công!");
@@ -245,15 +240,13 @@ class ShippersController extends Controller {
         } else {
             $shop = Shop::where('user_id', '=', $request->user_id)->first();
             $shipper = new Shipper;
+            $max_id = Shipper::max('id')+1;
+            $shipper->code = "TX".$max_id;
             $shipper->user_id = $shop->user_id;
             $shipper->home_number = $shop->home_number;
             $shipper->home_ward = $shop->home_ward;
             $shipper->home_district = $shop->home_district;
             $shipper->home_city = $shop->home_city;
-            $shipper->office_number = $shop->office_number;
-            $shipper->office_ward = $shop->office_ward;
-            $shipper->office_district = $shop->office_district;
-            $shipper->office_city = $shop->office_city;
             $shipper->save();
             flash_message("Đăng kí tài xế thành công!");
         }
