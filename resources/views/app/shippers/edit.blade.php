@@ -92,44 +92,65 @@
                                 </div>
                                 <hr class="line-dashed line-full"/>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Địa chỉ nhà (*)</label>
-                                    <div class="col-sm-2{{ $errors->has('home_number') ? ' has-error' : '' }}">
+                                    <label class="col-md-2 control-label">Địa chỉ nhà (*)</label>
+                                    <div class="col-md-2{{ $errors->has('home_city_id') ? ' has-error' : '' }}">
+                                        <select name="home_city_id" id="home_city_id" class="form-control" value="{{ old('home_city_id') }}" onchange="selectCity(this)" required>
+                                            <option value="" class="first-select">Chọn thành phố</option>
+                                            @foreach($cities AS $city)
+                                                @if ($city->id == $shipper->home_city_id)
+                                                    <option selected="selected" value="{{$city->id}}">{{$city->name}}</option>
+                                                @else
+                                                    <option value="{{$city->id}}">{{$city->name}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('home_city_id'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('home_city_id') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                    <div class="col-md-2{{ $errors->has('home_district_id') ? ' has-error' : '' }}">
+                                        <select name="home_district_id" id="home_district_id" class="form-control" value="{{ old('home_district_id') }}" onchange="selectDistrict(this)" required>
+                                            <option value="" class="first-select">Chọn Quận/Huyện</option>
+                                            @foreach($districts AS $district)
+                                                @if ($district->id == $shipper->home_district_id)
+                                                    <option selected="selected" value="{{$district->id}}">{{$district->name}}</option>
+                                                @else
+                                                    <option value="{{$district->id}}">{{$district->name}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('home_district_id'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('home_district_id') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                    <div class="col-md-2{{ $errors->has('home_ward_id') ? ' has-error' : '' }}">
+                                        <select name="home_ward_id" id="home_ward_id" class="form-control" value="{{ old('home_ward_id') }}" required>
+                                            <option value="" class="first-select">Chọn Xã/Phường</option>
+                                            @foreach($wards AS $ward)
+                                                @if ($ward->id == $shipper->home_ward_id)
+                                                    <option selected="selected" value="{{$ward->id}}">{{$ward->name}}</option>
+                                                @else
+                                                    <option value="{{$ward->id}}">{{$ward->name}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('home_ward_id'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('home_ward_id') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                    <div class="col-sm-4{{ $errors->has('home_number') ? ' has-error' : '' }}">
                                         <input type="text" name="home_number" class="form-control"
-                                               placeholder="Xóm/Số nhà"
-                                               data-parsley-trigger="change" value="{{$shipper->home_number}}" required>
+                                               placeholder="Xóm/Số nhà" value="{{ $shipper->home_number }}" required>
                                         @if ($errors->has('home_number'))
-                                            <span class="help-block">
-                                                <strong>{{ $errors->first('home_number') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                    <div class="col-sm-2{{ $errors->has('home_ward') ? ' has-error' : '' }}">
-                                        <input type="text" name="home_ward" class="form-control" placeholder="Xã/Phường"
-                                               data-parsley-trigger="change" value="{{$shipper->home_ward}}" required>
-                                        @if ($errors->has('home_ward'))
-                                            <span class="help-block">
-                                                <strong>{{ $errors->first('home_ward') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                    <div class="col-sm-2{{ $errors->has('home_district') ? ' has-error' : '' }}">
-                                        <input type="text" name="home_district" class="form-control"
-                                               placeholder="Quận/huyện"
-                                               data-parsley-trigger="change" value="{{$shipper->home_district}}" required>
-                                        @if ($errors->has('home_district'))
-                                            <span class="help-block">
-                                                <strong>{{ $errors->first('home_district') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                    <div class="col-sm-2{{ $errors->has('home_city') ? ' has-error' : '' }}">
-                                        <input type="text" name="home_city" class="form-control"
-                                               placeholder="Tỉnh/Thành phố"
-                                               data-parsley-trigger="change" value="{{$shipper->home_city}}" required>
-                                        @if ($errors->has('home_city'))
-                                            <span class="help-block">
-                                                <strong>{{ $errors->first('home_city') }}</strong>
-                                            </span>
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('home_number') }}</strong>
+                                        </span>
                                         @endif
                                     </div>
                                 </div>
@@ -264,6 +285,47 @@
             $('#average_score').val($('#average_score').attr("pre_value"));
             $('#profile_status').val($('#profile_status').attr("pre_value"));
         });
+        function selectCity(selectObj) {
+            if (selectObj.value !== "") {
+                $("#home_district_id option:not(:first)").remove().end();
+                $("#home_ward_id option:not(:first)").remove().end();
+                $.ajax({
+                    url: base_url + '/admin/settings/administrative_units/' + selectObj.value + '/get_unit_by_parrent',
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (response) {
+                        var optionContent = "";
+                        for (key in response) {
+                            optionContent += "<option value='" + response[key].id + "'>" + response[key].name + "</option>";
+                        }
+                        $("#home_district_id").append(optionContent);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+
+                    }
+                });
+            }
+        }
+        function selectDistrict(selectObj) {
+            if (selectObj.value !== "") {
+                $("#home_ward_id option:not(:first)").remove().end();
+                $.ajax({
+                    url: base_url + '/admin/settings/administrative_units/' + selectObj.value + '/get_unit_by_parrent',
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (response) {
+                        var optionContent = "";
+                        for (key in response) {
+                            optionContent += "<option value='" + response[key].id + "'>" + response[key].name + "</option>";
+                        }
+                        $("#home_ward_id").append(optionContent);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+
+                    }
+                });
+            }
+        }
         function check_update_user_duplicate(selector, colum_name, user_id) {
             $.ajax({
                 url: "/shipper/check_update_user_duplicate",
