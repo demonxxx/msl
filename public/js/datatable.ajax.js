@@ -18,22 +18,20 @@ function setDatatable(data) {
     }
     var oTable = $('#' + tableId).DataTable(
             {
-
                 dom: '<"html5buttons"B>lTfgitp',
                 buttons: [
-                    { extend: 'copy'},
+                    {extend: 'copy'},
                     {extend: 'csv'},
                     {extend: 'excel', title: 'ExampleFile'},
                     {extend: 'pdf', title: 'ExampleFile'},
-
                     {extend: 'print',
-                        customize: function (win){
+                        customize: function (win) {
                             $(win.document.body).addClass('white-bg');
                             $(win.document.body).css('font-size', '10px');
 
                             $(win.document.body).find('table')
-                                .addClass('compact')
-                                .css('font-size', 'inherit');
+                                    .addClass('compact')
+                                    .css('font-size', 'inherit');
                         }
                     }
                 ],
@@ -59,28 +57,7 @@ function setDatatable(data) {
                 "aoColumnDefs": columDefs,
                 "drawCallback": function (settings, json) {
 
-                },
-                "language": {
-                    "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",
-                    "zeroRecords": "Không tìm thấy thông tin",
-                    "info": "Hiển thị trang _PAGE_ trên _PAGES_",
-                    "infoEmpty": "Không có thông tin",
-                    "infoFiltered": "(lọc từ _MAX_ tổng số kết quả)",
-                    "paginate": {
-                        "first": "Trang đầu",
-                        "last": "Trang cuối",
-                        "next": "Tiếp",
-                        "previous": "Trước"
-                    },
-                    "decimal": "",
-                    "infoEmpty": "Hiển thị 0 đến 0 của 0 kết quả",
-                            "infoPostFix": "",
-                    "thousands": ",",
-                    "loadingRecords": "Đang tải dữ liệu...",
-                    "processing": "Đang xử lý dữ liệu...",
-                    "search": "Tìm kiếm:",
-                },
-
+                }
             });
     return oTable;
 }
@@ -99,6 +76,31 @@ jQuery.fn.dataTableExt.oApi.fnPagingInfo = function (oSettings)
                 0 : Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength)
     };
 };
+
+// setting default datatable
+$.extend(true, $.fn.dataTable.defaults, {
+    "language": {
+        "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",
+        "zeroRecords": "Không tìm thấy thông tin",
+        "info": "Hiển thị trang _PAGE_ trên _PAGES_",
+        "infoEmpty": "Không có thông tin",
+        "infoFiltered": "(lọc từ _MAX_ tổng số kết quả)",
+        "paginate": {
+            "first": "Trang đầu",
+            "last": "Trang cuối",
+            "next": "Sau",
+            "previous": "Trước"
+        },
+        "decimal": "",
+        "infoEmpty": "Hiển thị 0 đến 0 của 0 kết quả",
+                "infoPostFix": "",
+        "thousands": ",",
+        "loadingRecords": "Đang tải dữ liệu...",
+        "processing": "Đang xử lý dữ liệu...",
+        "search": "Tìm kiếm:",
+    }
+});
+
 // function add datatable
 // config required:
 // table id, ajax url, columns config
@@ -235,27 +237,7 @@ function setAjaxDataTable(config) {
             }
         },
         "aoColumns": convert_colums,
-        "aoColumnDefs": colums_render,
-        "language": {
-            "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",
-            "zeroRecords": "Không tìm thấy thông tin",
-            "info": "Hiển thị trang _PAGE_ trên _PAGES_",
-            "infoEmpty": "Không có thông tin",
-            "infoFiltered": "(lọc từ _MAX_ tổng số kết quả)",
-            "paginate": {
-                "first": "Trang đầu",
-                "last": "Trang cuối",
-                "next": "Tiếp",
-                "previous": "Trước"
-            },
-            "decimal": "",
-            "infoEmpty": "Hiển thị 0 đến 0 của 0 kết quả",
-                    "infoPostFix": "",
-            "thousands": ",",
-            "loadingRecords": "Đang tải dữ liệu...",
-            "processing": "Đang xử lý dữ liệu...",
-            "search": "Tìm kiếm:",
-        }
+        "aoColumnDefs": colums_render
     });
     config['oTable'] = oTable;
     // add action listener

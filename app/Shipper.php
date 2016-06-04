@@ -24,20 +24,21 @@ class Shipper extends Model {
 
     public function get_all_shippers($post) {
         $builder = DB::table("shippers");
-        $builder->select(array("users.id", "users.code", "users.name", "users.email", "users.identity_card", "shippers.average_score", 
-            "shippers.profile_status", "shippers.home_district", "users.phone_number",DB::raw('COUNT(shipper_order_histories.id) as count_order'),))
+        $builder->select(array("users.id", "shippers.code", "users.name", "users.email", "users.identity_card", "shippers.average_score",
+                    "shippers.profile_status", "administrative_units.name as home_district", "users.phone_number", DB::raw('COUNT(shipper_order_histories.id) as count_order'),))
                 ->join("users", "shippers.user_id", "=", "users.id")
+                ->join("administrative_units", "shippers.home_district_id", "=", "administrative_units.id")
                 ->leftjoin("shipper_order_histories", "shipper_order_histories.shipper_id", "=", "users.id");
         $search_params = $post['searchParams'];
         $this->table_condition($builder, $search_params);
         $builder->skip($post["iDisplayStart"])->take($post["iDisplayLength"])
-                ->orderBy($post["orderBy"], $post["orderSort"]);
+                ->orderBy($post["orderBy"], $post["orderSort"])
+                ->groupBy("users.id");
         $data = $builder->get();
         return $data;
     }
 
     public function count_all($post) {
-//        $count = DB::table('shippers')->count();
         $builder = DB::table("shippers");
         $builder->select("users.id")
                 ->join("users", "shippers.user_id", "=", "users.id");
@@ -50,7 +51,7 @@ class Shipper extends Model {
     public function table_condition($builder, $search_params) {
         if (!empty($search_params)) {
             if (array_key_exists('code', $search_params)) {
-                $builder->where('users.code', 'like', '%' . $search_params['code'] . '%');
+                $builder->where('shippers.code', 'like', '%' . $search_params['code'] . '%');
             }
             if (array_key_exists('name', $search_params)) {
                 $builder->where('users.name', 'like', '%' . $search_params['name'] . '%');
@@ -68,7 +69,7 @@ class Shipper extends Model {
                 $builder->where('shippers.home_ward', 'like', '%' . $search_params['home_ward'] . '%');
             }
             if (array_key_exists('home_district', $search_params)) {
-                $builder->where('shippers.home_district', 'like', '%' . $search_params['home_district'] . '%');
+                $builder->where('shippers.home_district_id', '=', $search_params['home_district']);
             }
             if (array_key_exists('home_city', $search_params)) {
                 $builder->where('shippers.home_city', 'like', '%' . $search_params['home_city'] . '%');

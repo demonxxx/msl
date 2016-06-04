@@ -8,6 +8,7 @@ use App\User;
 use App\Shipper;
 use App\Shop;
 use App\Shop_shipper;
+use App\Adminnistrative_units;
 use App\ShipperType;
 use App\VehicleType;
 use App\Helpers\helpers;
@@ -21,7 +22,8 @@ class ShippersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return view('app.shippers.index');
+        $districts = Adminnistrative_units::where("level", DISTRICT_UNIT)->get();
+        return view('app.shippers.index', ["districts" => $districts]);
     }
 
     /**
@@ -30,11 +32,13 @@ class ShippersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
+        $cities = Adminnistrative_units::where("level", CITY_UNIT)->get();
         $shippertype = new ShipperType;
         $shippertypes = $shippertype->all();
         $vehicletype = new VehicleType;
         $vehicletypes = $vehicletype->all();
-        return view('app.shippers.create', ['shippertypes' => $shippertypes, 'vehicletypes' => $vehicletypes]);
+        return view('app.shippers.create', ['shippertypes' => $shippertypes, 'vehicletypes' => $vehicletypes, 'cities' => $cities, 'vehicles' => $vehicles]);
+
     }
 
     /**
@@ -45,15 +49,15 @@ class ShippersController extends Controller {
      */
     public function store(Request $request) {
         $validator = \Validator::make($request->all(), [
-                    'name'          => 'required|max:255',
-                    'username'      => 'required|max:255|unique:users',
-                    'password'      => 'required|min:6|confirmed',
-                    'phone_number'  => 'required|min:10|max:11',
-                    'email'         => 'required|email|max:255|unique:users',
-                    'home_number'   => 'required|max:255',
-                    'home_ward'     => 'required|max:255',
-                    'home_district' => 'required|max:255',
-                    'home_city'     => 'required|max:255',
+                    'name' => 'required|max:255',
+                    'username' => 'required|max:255|unique:users',
+                    'password' => 'required|min:6|confirmed',
+                    'phone_number' => 'required|min:10|max:11|unique:users',
+                    'email' => 'required|email|max:255|unique:users',
+                    'home_number' => 'required|max:255',
+                    'home_ward_id' => 'required',
+                    'home_district_id' => 'required',
+                    'home_city_id' => 'required',
                     'identity_card' => 'required|min:9|max:12',
                     'vehicle_type_id' => 'required',
                     'shipper_type_id' => 'required',
@@ -65,8 +69,8 @@ class ShippersController extends Controller {
             return redirect('shipper/create')->withErrors($validator)->withInput();
         } else {
             $user = new User;
-            $max_id = User::max('id')+1;
-            $user->code = "U".$max_id;
+            $max_id = User::max('id') + 1;
+            $user->code = "U" . $max_id;
             $user->username = $request->username;
             $user->name = $request->name;
             $user->email = $request->email;
@@ -75,12 +79,13 @@ class ShippersController extends Controller {
             $user->api_token = str_random(60);
             $user->save();
             $shipper = new Shipper;
+
             $max_id = Shipper::max('id')+1;
             $shipper->code = "TX".$max_id;
             $shipper->home_number = $request->home_number;
-            $shipper->home_ward = $request->home_ward;
-            $shipper->home_district = $request->home_district;
-            $shipper->home_city = $request->home_city;
+            $shipper->home_ward_id = $request->home_ward_id;
+            $shipper->home_district_id = $request->home_district_id;
+            $shipper->home_city_id = $request->home_city_id;
             $shipper->vehicle_type_id = $request->vehicle_type_id;
             $shipper->shipper_type_id = $request->shipper_type_id;
             $shipper->licence_plate = $request->licence_plate;
@@ -130,16 +135,16 @@ class ShippersController extends Controller {
     public function update(Request $request, $id) {
         //dd($request->all());
         $validator = \Validator::make($request->all(), [
-                    'name'                  => 'required|max:255',
-                    'phone_number'          => 'required|min:10|max:11',
-                    'email'                 => 'required|email|max:255',
-                    'home_number'           => 'required|max:255',
-                    'home_ward'             => 'required|max:255',
-                    'home_district'         => 'required|max:255',
-                    'home_city'             => 'required|max:255',
-                    'identity_card'         => 'required|min:9|max:12',
-                    'vehicle_type_id'       => 'required',
-                    'licence_plate'         => 'required|max:12',
+                    'name' => 'required|max:255',
+                    'phone_number' => 'required|min:10|max:11',
+                    'email' => 'required|email|max:255',
+                    'home_number' => 'required|max:255',
+                    'home_ward' => 'required|max:255',
+                    'home_district' => 'required|max:255',
+                    'home_city' => 'required|max:255',
+                    'identity_card' => 'required|min:9|max:12',
+                    'vehicle_type_id' => 'required',
+                    'licence_plate' => 'required|max:12',
                     'licence_driver_number' => 'required|max:12',
         ]);
         if ($validator->fails()) {
@@ -231,12 +236,11 @@ class ShippersController extends Controller {
         $shop_shipper->notable_shipper($request->shipper_id, $request->shop_id, $request->notable);
         echo json_encode(['message' => 'success']);
     }
-    
+
     public function register_shipper(Request $request) {
         $shipper = Shipper::where('user_id', '=', $request->user_id)->first();
         if (!empty($shipper)) {
             flash_message("Tài khoản đã là tài xế!", "danger");
-            
         } else {
             $shop = Shop::where('user_id', '=', $request->user_id)->first();
             $shipper = new Shipper;
