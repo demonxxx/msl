@@ -31,6 +31,7 @@ class Shop extends Model
                     ->join("users","shops.user_id","=","users.id")
                     ->leftjoin("orders","orders.user_id","=","users.id")
                     ->leftjoin("agencys","agencys.user_id","=","users.id")
+                    ->groupBy("shops.id")
                     ->skip($post["start"])->take($post["length"])
                     ->get();
         return $data;
