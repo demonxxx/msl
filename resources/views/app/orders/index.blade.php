@@ -86,7 +86,7 @@
         };
 
         function render_common(data) {
-            return "<div class='text-center' style='vertical-align: middle;'>" + data + "</div>";
+            return "<div class='text-center' style='vertical-align: middle;'>" + (data == null ? "-": data ) + "</div>";
         }
 
         function render_function(data) {
