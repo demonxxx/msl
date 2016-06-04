@@ -432,7 +432,7 @@ class SettingsController extends Controller {
 
     public function delete_administrative_units($unit_id) {
         $admin_unit = new Adminnistrative_units();
-        $check_children = $admin_unit::where('parrent_id', $unit_id)->take(1)->get()->toArray();
+        $check_children = $admin_unit::where('parent_id', $unit_id)->take(1)->get()->toArray();
         if (!empty($check_children)) {
             echo AJAX_FAILED;
         } else {
@@ -461,7 +461,7 @@ class SettingsController extends Controller {
     public function add_administrative_units(Request $request) {
         $add_info = $request->all();
         $admin_unit = new Adminnistrative_units();
-        $unit = $admin_unit->find($add_info['parrent_id']);
+        $unit = $admin_unit->find($add_info['parent_id']);
         $check_duplicate = $admin_unit::where('name', 'like', $add_info['unit_name'])
                         ->where('level', ($unit['level'] + 1))
                         ->where('parent_id', $unit['id'])
@@ -471,15 +471,31 @@ class SettingsController extends Controller {
         } else {
             $add_unit = new Adminnistrative_units();
             $add_unit['name'] = $add_info['unit_name'];
-            $add_unit['parrent_id'] = $unit['id'];
+            $add_unit['parent_id'] = $unit['id'];
             $add_unit['level'] = ($unit['level'] + 1);
+            $add_unit->save();
+            echo AJAX_SUCCESS;
+        }
+    }
+    public function add_city(Request $request) {
+        $add_info = $request->all();
+        $admin_unit = new Adminnistrative_units();
+        $check_duplicate = $admin_unit::where('name', 'like', $add_info['city_name'])
+                        ->where('level', CITY_UNIT)
+                        ->take(1)->get()->toArray();
+        if (!empty($check_duplicate)) {
+            echo AJAX_FAILED;
+        } else {
+            $add_unit = new Adminnistrative_units();
+            $add_unit['name'] = $add_info['city_name'];
+            $add_unit['level'] = CITY_UNIT;
             $add_unit->save();
             echo AJAX_SUCCESS;
         }
     }
 
     public function get_unit_by_parrent($unit_id) {
-        return json_encode(Adminnistrative_units::select("id", "name")->where("parrent_id", $unit_id)->get());
+        return json_encode(Adminnistrative_units::select("id", "name")->where("parent_id", $unit_id)->get());
     }
 
     /**
