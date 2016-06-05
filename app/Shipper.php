@@ -27,7 +27,7 @@ class Shipper extends Model {
         $builder->select(array("users.id", "shippers.code", "users.name", "users.email", "users.identity_card", "shippers.average_score",
                     "shippers.profile_status", "administrative_units.name as home_district", "users.phone_number", DB::raw('COUNT(shipper_order_histories.id) as count_order'),))
                 ->join("users", "shippers.user_id", "=", "users.id")
-                ->join("administrative_units", "shippers.home_district_id", "=", "administrative_units.id")
+                ->leftjoin("administrative_units", "shippers.home_district_id", "=", "administrative_units.id")
                 ->leftjoin("shipper_order_histories", "shipper_order_histories.shipper_id", "=", "users.id");
         $search_params = $post['searchParams'];
         $this->table_condition($builder, $search_params);
