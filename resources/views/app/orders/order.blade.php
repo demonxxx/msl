@@ -8,9 +8,7 @@
             <div class="row">
                 <!-- col -->
                 <div class="col-md-12">
-
                         @yield('order')
-                    
                 </div>
                 <!-- /col -->
             </div>
