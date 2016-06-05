@@ -23,15 +23,6 @@
             </li>
             @can('shop')
                 <li>
-                    <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Khách hàng</span><span
-                                class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level collapse">
-                        <li><a href="{{url( '/shop/create' )}}"> Thêm khách hàng mới</a></li>
-                        <li><a href="{{url('/shop')}}">Danh sách khách hàng</a></li>
-                    </ul>
-                </li>
-
-                <li>
                     <a role="button" tabindex="0"><i class="fa fa-list"></i> <span>Đơn hàng</span><span
                                 class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
@@ -41,7 +32,16 @@
 
             @endcan
             @can('shipper')
-
+            @endcan
+            @can('admin')
+                <li>
+                    <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Khách hàng</span><span
+                                class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="{{url( '/shop/create' )}}"> Thêm khách hàng mới</a></li>
+                        <li><a href="{{url('/shop')}}">Danh sách khách hàng</a></li>
+                    </ul>
+                </li>
                 <li>
                     <a role="button" tabindex="0"><i class="fa fa-taxi"></i> <span>Tài xế</span><span
                                 class="fa arrow"></span></a>
@@ -51,8 +51,6 @@
                         <li><a href="{{url( '/shipper/notable_list' )}}"> Đánh giá tài xế</a></li>
                     </ul>
                 </li>
-            @endcan
-            @can('admin')
                 <li>
                     <a role="button" tabindex="0"><i class="fa fa-cogs"></i> <span>Cài đặt</span><span
                                 class="fa arrow"></span></a>
