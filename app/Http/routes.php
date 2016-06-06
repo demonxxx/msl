@@ -128,6 +128,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
     Route::get('shop/shipperLocation/{id}', 'ShopRest@getShipperLocation');
 
     Route::post("shop/updateBaseFreight/{id}", "OrderRest@freightBaseDistance");
+    Route::get("shop/cancelOrder/{id}","ShopRest@cancelOrder");
 
     Route::resource('shop', 'ShopRest');
     Route::resource('shipper', 'ShipperRest');

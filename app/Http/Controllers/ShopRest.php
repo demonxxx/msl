@@ -13,7 +13,7 @@ use Validator;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
-
+use App\Order;
 class ShopRest extends Controller
 {
     /**
@@ -157,68 +157,51 @@ class ShopRest extends Controller
     }
 
     public function cancelOrder($id){
-        $order = Order::where("id",$id)->select("id","user_id","base_freight","vas_freight","discount_freight","main_freight")
-            ->first();
+        $order = Order::find($id);
         if (empty($order)) {
             return Response::json(
                 array(
                     'accept'   => 1,
-                    'messages' => "Đơn hàng không tồn tại!",
+                    'messages' => MSG_ORDER_NOT_EXIST,
                 ),
                 200
             );
         } else {
             $user = User::find(Auth::guard('api')->id());
             if ($user->id == $order->user_id) {
-                $validator = Validator::make($request->all(), [
-                    "vehicle_type_id"  => "required|numeric",
-                    "distance"   => "required|numeric",
-                ]);
-                if ($validator->fails()) {
+                if($order->status == ORDER_PENDING){
+                    $order->status = ORDER_SHOP_CANCEL;
+                    $order->save();
                     return Response::json(
                         array(
-                            'accept'   => 0,
-                            'messages' => $validator->messages(),
+                            'accept'   => 1,
+                            'messages' => MSG_CANCEL_ORDER_SUCCESSFULLY,
                         ),
                         200
                     );
-                } else {
-                    $base_freight_obj = Distance_freights::where("vehicle_type_id",$request->vehicle_type_id)
-                        ->where("from", "<=", $request->distance)
-                        ->where("to", ">=", $request->distance)
-                        ->first();
-                    if(empty($base_freight_obj)){
-                        return Response::json(
-                            array(
-                                'accept'   => 0,
-                                'messages' => "Không tồn tại giá cước!",
-                            ),
-                            200
-                        );
-                    }else {
-                        $base_freight = $base_freight_obj->freight;
-                        $vas_freight = $order->vas_freight;
-                        $discount_freight = $order->discount_freight;
-                        $main_freight = (int) (($base_freight + $vas_freight) - $discount_freight);
-                        $order->main_freight = $main_freight;
-                        $order->base_freight = $base_freight;
-                        $order->distance = $request->distance;
-                        $order->vehicle_type_id = $request->vehicle_type_id;
-                        $order->save();
-                        return Response::json(
-                            array(
-                                'accept'   => 1,
-                                'messages' => $order->toArray(),
-                            ),
-                            200
-                        );
-                    }
+                }else if ($order->status == ORDER_SHOP_CANCEL){
+                    return Response::json(
+                        array(
+                            'accept'   => 0,
+                            'messages' => MSG_ORDER_HAVE_BEEN_CANCEL,
+                        ),
+                        200
+                    );
+                }else {
+                    return Response::json(
+                        array(
+                             " status" => $order,
+                            'accept'   => 0,
+                            'messages' => MSG_CAN_NOT_CANCEL_ORDER,
+                        ),
+                        200
+                    );
                 }
             } else {
                 return Response::json(
                     array(
                         'accept'   => 0,
-                        'messages' => "You do not have permission",
+                        'messages' => MSG_NOT_HAVE_PERMISSION,
                     ),
                     200
                 );
