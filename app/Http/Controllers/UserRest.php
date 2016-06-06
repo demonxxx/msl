@@ -161,9 +161,10 @@ class UserRest extends Controller
         }
     }
 
-    public function getMyInfo($type){
+    public function getMyInfo(){
         $user_id = Auth::guard('api')->id();
         $user = User::find($user_id);
+        $type = $user->type;
         if($type == SHOP_TYPE){
             $user->shop = Shop::where("user_id", $user_id)
                                 ->leftjoin("administrative_units as home_ward",'shops.home_ward_id', '=', 'home_ward.id')
@@ -186,7 +187,7 @@ class UserRest extends Controller
                             ->where("home_ward.deleted_at")
                             ->where("office_ward.deleted_at")
                             ->select("shippers.*", "home_ward.name as home_ward_name", "home_ward.id as home_ward_id", "office_ward.name as office_ward_name",
-                                "office_ward.id as office_ward_id")->first();
+                                "office_ward.id as office_ward_id")->first();;
             return Response::json(
                 array(
                     'accept' => 1,
@@ -197,8 +198,9 @@ class UserRest extends Controller
         }
     }
 
-    public function getUserInfo($type, $id){
+    public function getUserInfo($id){
         $user = User::where("id", $id)->select("id", "name", "phone_number", "identity_card")->first();
+        $type = $user->type;
         if (empty($user)){
             return Response::json(
                 array(
@@ -210,12 +212,12 @@ class UserRest extends Controller
         }else {
             if($type == SHOP_TYPE){
                 $user->shop = Shop::where("user_id", $id)
-                                ->leftjoin("administrative_units as home_ward",'shops.home_ward_id', '=', 'home_ward.id')
-                                ->leftjoin("administrative_units as office_ward",'shops.office_ward_id', '=', 'office_ward.id')
-                                ->where("home_ward.deleted_at")
-                                ->where("office_ward.deleted_at")
-                                ->select("shops.*", "home_ward.name as home_ward_name", "home_ward.id as home_ward_id", "office_ward.name as office_ward_name",
-                                    "office_ward.id as office_ward_id")->first();
+                    ->leftjoin("administrative_units as home_ward",'shops.home_ward_id', '=', 'home_ward.id')
+                    ->leftjoin("administrative_units as office_ward",'shops.office_ward_id', '=', 'office_ward.id')
+                    ->where("home_ward.deleted_at")
+                    ->where("office_ward.deleted_at")
+                    ->select("shops.*", "home_ward.name as home_ward_name", "home_ward.id as home_ward_id", "office_ward.name as office_ward_name",
+                        "office_ward.id as office_ward_id")->first();;
                 return Response::json(
                     array(
                         'accept' => 1,
