@@ -164,7 +164,7 @@ class UserRest extends Controller
     public function getMyInfo(){
         $user_id = Auth::guard('api')->id();
         $user = User::find($user_id);
-        $type = $user->type;
+        $type = $user->user_type;
         if($type == SHOP_TYPE){
             $user->shop = Shop::where("user_id", $user_id)
                                 ->leftjoin("administrative_units as home_ward",'shops.home_ward_id', '=', 'home_ward.id')
@@ -200,7 +200,7 @@ class UserRest extends Controller
 
     public function getUserInfo($id){
         $user = User::where("id", $id)->select("id", "name", "phone_number", "identity_card")->first();
-        $type = $user->type;
+        $type = $user->user_type;
         if (empty($user)){
             return Response::json(
                 array(
