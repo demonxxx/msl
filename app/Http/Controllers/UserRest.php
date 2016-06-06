@@ -199,7 +199,7 @@ class UserRest extends Controller
     }
 
     public function getUserInfo($id){
-        $user = User::where("id", $id)->select("id", "name", "phone_number", "identity_card")->first();
+        $user = User::where("id", $id)->select("id", "name", "user_type", "email", "longitude", "latitude", "lastUpdate", "phone_number", "identity_card")->first();
         $type = $user->user_type;
         if (empty($user)){
             return Response::json(
