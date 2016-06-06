@@ -27,6 +27,8 @@ define("MSG_CAN_NOT_CANCEL_ORDER", "Bạn không thể hủy đơn hàng đượ
 define("MSG_ORDER_HAVE_BEEN_CANCEL", "Đơn hàng đã được hủy");
 define("MSG_CANCEL_ORDER_SUCCESSFULLY", "Hủy đơn hàng thành công!");
 define("MSG_USER_DO_NOT_EXIST", "Người dùng không tồn tại");
+define("MSG_PHONE_NUMBER_EXIST", "Đã tồn tại số điện thoại");
+define("MSG_UPDATE_USER_INFO_SUCCESSFULLY", "Cập nhật thông tin thành công");
 
 
 // Mobile notification
