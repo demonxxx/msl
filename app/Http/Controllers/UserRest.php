@@ -159,6 +159,64 @@ class UserRest extends Controller
         }
     }
 
+    public function getMyInfo($type){
+        $user_id = Auth::guard('api')->id();
+        $user = User::find($user_id);
+        if($type == SHOP_TYPE){
+            $user->shop = $user->shop;
+            return Response::json(
+                array(
+                    'accept' => 1,
+                    'user'   => $user,
+                ),
+                200
+            );
+        } else {
+            $user->shipper = $user->shipper;
+            return Response::json(
+                array(
+                    'accept' => 1,
+                    'user'   => $user,
+                ),
+                200
+            );
+        }
+    }
+
+    public function getUserInfo($type, $id){
+        $user = User::where("id", $id)->select("id", "name", "phone_number", "identity_card")->first();
+        if (empty($user)){
+            return Response::json(
+                array(
+                    'accept' => 0,
+                    'user'   => MSG_USER_DO_NOT_EXIST,
+                ),
+                200
+            );
+        }else {
+            if($type == SHOP_TYPE){
+                $user->shop = $user->shop;
+                return Response::json(
+                    array(
+                        'accept' => 1,
+                        'user'   => $user,
+                    ),
+                    200
+                );
+            } else {
+                $user->shipper = $user->shipper;
+                return Response::json(
+                    array(
+                        'accept' => 1,
+                        'user'   => $user,
+                    ),
+                    200
+                );
+            }
+        }
+
+    }
+
     public function index()
     {
         //
@@ -193,8 +251,6 @@ class UserRest extends Controller
      */
     public function store(Request $request)
     {
-        //
-
         return Response::json(
             array(
                 'values' => "Store User",
