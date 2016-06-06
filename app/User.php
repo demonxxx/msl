@@ -87,7 +87,7 @@ class User extends Authenticatable
     }
 
     public function isAdmin(){
-        return $this->isAdmin == 1 ? true : false;
+        return $this->isAdmin == 1 ? true : false;  
     }
     
     public function get_all_accounts($post) {

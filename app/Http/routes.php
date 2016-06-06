@@ -111,6 +111,8 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
     Route::post('user/changeType', 'UserRest@changeUserType');
     Route::post('user/update/onlineStatus', 'UserRest@updateOnlineStatus');
     Route::get('check/isShipper', 'ShipperRest@isShipper');
+    Route::get("user/getMyInfo/{type}", "UserRest@getMyInfo");
+    Route::get("user/getUserInfo/{type}/{id}", "UserRest@getUserInfo");
 
     Route::post('shipper/find', 'ShipperRest@findByLocation');
     Route::get('shipper/take/{id}', 'ShipperRest@takeOrder');

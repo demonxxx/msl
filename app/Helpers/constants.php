@@ -26,6 +26,8 @@ define("MSG_DISTANCE_FREIGHT_NOT_EXIST", "Không tồn tại giá cước này!"
 define("MSG_CAN_NOT_CANCEL_ORDER", "Bạn không thể hủy đơn hàng được, đơn hàng đã được nhận!");
 define("MSG_ORDER_HAVE_BEEN_CANCEL", "Đơn hàng đã được hủy");
 define("MSG_CANCEL_ORDER_SUCCESSFULLY", "Hủy đơn hàng thành công!");
+define("MSG_USER_DO_NOT_EXIST", "Người dùng không tồn tại");
+
 
 // Mobile notification
 define("IOS_CERTIFICATE_FILE", "ios_certificate.pem");
