@@ -169,7 +169,7 @@ class ShopRest extends Controller
         } else {
             $user = User::find(Auth::guard('api')->id());
             if ($user->id == $order->user_id) {
-                if($order->status == ORDER_PENDING){
+                if($order->status == ORDER_PENDING || $order->status == ORDER_TAKEN_ORDER){
                     $order->status = ORDER_SHOP_CANCEL;
                     $order->save();
                     return Response::json(
