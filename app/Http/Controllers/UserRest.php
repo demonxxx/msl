@@ -7,6 +7,8 @@ use Auth;
 use App\User;
 use App\Shipper;
 use App\Http\Requests;
+use App\Shop;
+use Illuminate\Support\Facades\DB;
 use Validator;
 use Illuminate\Support\Facades\Response;
 
@@ -163,7 +165,13 @@ class UserRest extends Controller
         $user_id = Auth::guard('api')->id();
         $user = User::find($user_id);
         if($type == SHOP_TYPE){
-            $user->shop = $user->shop;
+            $user->shop = Shop::where("user_id", $user_id)
+                                ->leftjoin("administrative_units as home_ward",'shops.home_ward_id', '=', 'home_ward.id')
+                                ->leftjoin("administrative_units as office_ward",'shops.office_ward_id', '=', 'office_ward.id')
+                                ->where("home_ward.deleted_at")
+                                ->where("office_ward.deleted_at")
+                                ->select("shops.*", "home_ward.name as home_ward_name", "home_ward.id as home_ward_id", "office_ward.name as office_ward_name",
+                                    "office_ward.id as office_ward_id")->first();
             return Response::json(
                 array(
                     'accept' => 1,
@@ -172,7 +180,13 @@ class UserRest extends Controller
                 200
             );
         } else {
-            $user->shipper = $user->shipper;
+            $user->shipper = Shipper::where("user_id", $user_id)
+                            ->leftjoin("administrative_units as home_ward",'shippers.home_ward_id', '=', 'home_ward.id')
+                            ->leftjoin("administrative_units as office_ward",'shippers.office_ward_id', '=', 'office_ward.id')
+                            ->where("home_ward.deleted_at")
+                            ->where("office_ward.deleted_at")
+                            ->select("shippers.*", "home_ward.name as home_ward_name", "home_ward.id as home_ward_id", "office_ward.name as office_ward_name",
+                                "office_ward.id as office_ward_id")->first();
             return Response::json(
                 array(
                     'accept' => 1,
@@ -195,7 +209,13 @@ class UserRest extends Controller
             );
         }else {
             if($type == SHOP_TYPE){
-                $user->shop = $user->shop;
+                $user->shop = Shop::where("user_id", $id)
+                                ->leftjoin("administrative_units as home_ward",'shops.home_ward_id', '=', 'home_ward.id')
+                                ->leftjoin("administrative_units as office_ward",'shops.office_ward_id', '=', 'office_ward.id')
+                                ->where("home_ward.deleted_at")
+                                ->where("office_ward.deleted_at")
+                                ->select("shops.*", "home_ward.name as home_ward_name", "home_ward.id as home_ward_id", "office_ward.name as office_ward_name",
+                                    "office_ward.id as office_ward_id")->first();
                 return Response::json(
                     array(
                         'accept' => 1,
@@ -204,7 +224,13 @@ class UserRest extends Controller
                     200
                 );
             } else {
-                $user->shipper = $user->shipper;
+                $user->shipper = Shipper::where("user_id", $id)
+                    ->leftjoin("administrative_units as home_ward",'shippers.home_ward_id', '=', 'home_ward.id')
+                    ->leftjoin("administrative_units as office_ward",'shippers.office_ward_id', '=', 'office_ward.id')
+                    ->where("home_ward.deleted_at")
+                    ->where("office_ward.deleted_at")
+                    ->select("shippers.*", "home_ward.name as home_ward_name", "home_ward.id as home_ward_id", "office_ward.name as office_ward_name",
+                        "office_ward.id as office_ward_id")->first();
                 return Response::json(
                     array(
                         'accept' => 1,
