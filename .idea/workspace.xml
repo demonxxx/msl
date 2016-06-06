@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="20a971c6-a5c0-41d6-ab15-8b99e42c63e6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Helpers/constants.php" afterPath="$PROJECT_DIR$/app/Helpers/constants.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/UserRest.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserRest.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/routes.php" afterPath="$PROJECT_DIR$/app/Http/routes.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/User.php" afterPath="$PROJECT_DIR$/app/User.php" />
     </list>
     <ignored path="flash.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,9 +36,11 @@
       <file leaf-file-name="UserRest.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/UserRest.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="555">
-              <caret line="207" column="38" selection-start-line="207" selection-start-column="38" selection-end-line="207" selection-end-column="38" />
-              <folding />
+            <state relative-caret-position="306">
+              <caret line="217" column="81" selection-start-line="217" selection-start-column="81" selection-end-line="217" selection-end-column="81" />
+              <folding>
+                <element signature="e#40#68#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -305,13 +304,13 @@
       <workItem from="1465022214323" duration="17883000" />
       <workItem from="1465085870142" duration="1496000" />
       <workItem from="1465110873034" duration="39000" />
-      <workItem from="1465219077944" duration="2977000" />
+      <workItem from="1465219077944" duration="5084000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="325865000" />
+    <option name="totallyTimeSpent" value="327972000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="773" extended-state="6" />
@@ -931,9 +930,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/UserRest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="207" column="38" selection-start-line="207" selection-start-column="38" selection-end-line="207" selection-end-column="38" />
-          <folding />
+        <state relative-caret-position="306">
+          <caret line="217" column="81" selection-start-line="217" selection-start-column="81" selection-end-line="217" selection-end-column="81" />
+          <folding>
+            <element signature="e#40#68#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
