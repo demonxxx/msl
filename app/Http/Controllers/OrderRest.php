@@ -83,6 +83,7 @@ class OrderRest extends Controller
             $order_code = "OD" . ($order_count + 1);
             $order = new Order;
             $order->code = $order_code;
+            $order->user_id = $user->id;
             $order->order_type_id = $request->order_type_id;
             $order->vehicle_type_id = $request->vehicle_type_id;
             $order->name = $request->name;
@@ -96,7 +97,7 @@ class OrderRest extends Controller
             $order->description = $request->description;
             $order->start_time = empty($request->start_time) ? null : $request->start_time;
             $order->end_time = empty($request->end_time) ? null : $request->end_time;
-            $user->orders()->save($order);
+            $order->save();
             $shopOrderHistory = new ShopOrderHistory;
             $shopOrderHistory->shop_id = $user->id;
             $shopOrderHistory->order_id = $order->id;
