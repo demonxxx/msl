@@ -23,6 +23,13 @@ define("ORDER_RETURNING", 9);
 define("MSG_ORDER_NOT_EXIST", "Đơn hàng không tồn tại!");
 define("MSG_NOT_HAVE_PERMISSION", "Bạn không có quyền này!");
 define("MSG_DISTANCE_FREIGHT_NOT_EXIST", "Không tồn tại giá cước này!");
+define("MSG_CAN_NOT_CANCEL_ORDER", "Bạn không thể hủy đơn hàng được, đơn hàng đã được nhận!");
+define("MSG_ORDER_HAVE_BEEN_CANCEL", "Đơn hàng đã được hủy");
+define("MSG_CANCEL_ORDER_SUCCESSFULLY", "Hủy đơn hàng thành công!");
+define("MSG_USER_DO_NOT_EXIST", "Người dùng không tồn tại");
+define("MSG_PHONE_NUMBER_EXIST", "Đã tồn tại số điện thoại");
+define("MSG_UPDATE_USER_INFO_SUCCESSFULLY", "Cập nhật thông tin thành công");
+
 
 // Mobile notification
 define("IOS_CERTIFICATE_FILE", "ios_certificate.pem");

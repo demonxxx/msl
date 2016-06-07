@@ -235,7 +235,7 @@ class ShipperRest extends Controller
                     } else if ($status == ORDER_TAKEN_ITEMS) {
                         $order->taken_items_at = Carbon::now()->toDateTimeString();
                     } else if ($status == ORDER_SHIPPING) {
-                        $order->cancel_at = Carbon::now()->toDateTimeString();
+                        $order->shipping_at = Carbon::now()->toDateTimeString();
                     } else if ($status == ORDER_SHIP_SUCCESS) {
                         $order->ship_success_at = Carbon::now()->toDateTimeString();
                     } else if ($status == ORDER_PAYED) {
@@ -250,8 +250,14 @@ class ShipperRest extends Controller
                                         ), 200
                         );
                     } else if ($status == ORDER_RETURN_ITEMS) {
-
                         $order->return_items_at = Carbon::now()->toDateTimeString();
+                    }else {
+                        return Response::json(
+                            array(
+                                'accept' => 0,
+                                'messages' => 'Không tồn tại trạng thái đơn hàng',
+                            ), 200
+                        );
                     }
                     $order->status = $status;
                     $order->description = $description;

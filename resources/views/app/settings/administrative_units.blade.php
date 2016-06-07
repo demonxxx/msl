@@ -158,7 +158,7 @@
                             $.ajax({
                             url: base_url + "/admin/settings/administrative_units/add",
                                     type: 'post',
-                                    data:{parrent_id:unit_id, unit_name:document.getElementById('add_unit_input').value},
+                                    data:{parent_id:unit_id, unit_name:document.getElementById('add_unit_input').value},
                                     success: function (result) {
                                     if (parseInt(result) == AJAX_SUCCESS) {
                                     swal({
