@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::get('/shop/{user_id}/edit', 'ShopsController@edit')->name("editShop");
         Route::post('/shop/{id}/update', 'ShopsController@update')->name("updateShop");
         Route::post('/shop/check_user_duplicate', 'ShopsController@check_user_duplicate');
+        Route::get('/shop/{id}/update_isActive', 'ShopsController@update_isActive');
 
         Route::get('/order', 'OrdersController@index')->name("orders");
         Route::get('/order/create', 'OrdersController@create')->name("createOrder");
