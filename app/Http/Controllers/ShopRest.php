@@ -14,6 +14,7 @@ use DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\Order;
+
 class ShopRest extends Controller
 {
     /**
@@ -138,6 +139,8 @@ class ShopRest extends Controller
             );
         }
     }
+
+    
 
     public function getOrders(){
         $shop_id = Auth::guard('api')->id();
