@@ -59,14 +59,15 @@ class OrderRest extends Controller
         $validator = Validator::make($request->all(), [
             "order_type_id"     => "required|numeric",
             "vehicle_type_id"   => "required|numeric",
-            "name"              => "required",
             "recipient_name"    => "required",
             "recipient_phone"   => "required|numeric",
             "full_address_to"   => "required",
             "full_address_from" => "required",
             "order_values"      => "required",
             "longitude"         => "required",
-            "latitude"          => "required"
+            "latitude"          => "required",
+            "start_time"        => "date",
+            "end_time"        => "date"
         ]);
         if ($validator->fails()) {
             return Response::json(
@@ -93,6 +94,8 @@ class OrderRest extends Controller
             $order->longitude = $request->longitude;
             $order->latitude = $request->latitude;
             $order->description = $request->description;
+            $order->start_time = empty($request->start_time) ? null : $request->start_time;
+            $order->end_time = empty($request->end_time) ? null : $request->end_time;
             $user->orders()->save($order);
             $shopOrderHistory = new ShopOrderHistory;
             $shopOrderHistory->shop_id = $user->id;
