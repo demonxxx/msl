@@ -164,7 +164,7 @@ class UserRest extends Controller
     public function getMyInfo(){
         $user_id = Auth::guard('api')->id();
         $user = User::find($user_id);
-        $type = $user->type;
+        $type = $user->user_type;
         if($type == SHOP_TYPE){
             $user->shop = Shop::where("user_id", $user_id)
                                 ->leftjoin("administrative_units as home_ward",'shops.home_ward_id', '=', 'home_ward.id')
@@ -199,8 +199,8 @@ class UserRest extends Controller
     }
 
     public function getUserInfo($id){
-        $user = User::where("id", $id)->select("id", "name", "phone_number", "identity_card")->first();
-        $type = $user->type;
+        $user = User::where("id", $id)->select("id", "name", "user_type", "email", "longitude", "latitude", "lastUpdate", "phone_number", "identity_card")->first();
+        $type = $user->user_type;
         if (empty($user)){
             return Response::json(
                 array(
@@ -242,7 +242,134 @@ class UserRest extends Controller
                 );
             }
         }
+    }
 
+    public function updateMyInfo(Request $request){
+        $user_id = Auth::guard('api')->id();
+        $user = User::find($user_id);
+        $type = $user->user_type;
+        if($type == SHOP_TYPE){
+            $validator = Validator::make($request->all(), [
+                'name'                      => 'max:255',
+                'phone_number'              => 'min:10|max:11',
+                'identity_card'             => 'min:9|max:12',
+                'shop_name'                 => 'max:255',
+                'home_number'               => 'max:255',
+                'office_number'               => 'max:255',
+
+            ]);
+            if ($validator->fails()) {
+                return Response::json(
+                    array(
+                        'accept'   => 0,
+                        'messages' => $validator->messages(),
+                    ),
+                    200
+                );
+            } else {
+                $errors = [];
+                $isError = 0;
+                if(!empty($request->phone_number)){
+                    $user_tmp = User::where("id","<>", $user_id)->where("phone_number", $request->phone_number)->first();
+                    if (!empty($user_tmp)){
+                        $isError = 1;
+                        array_push($errors, MSG_PHONE_NUMBER_EXIST);
+                    }
+                }
+                if ($isError == 1){
+                    return Response::json(
+                        array(
+                            'accept'   => 0,
+                            'messages' => $user_tmp,
+                        ),
+                        200
+                    );
+                }
+                $user->name = !empty($request->name) ? $request->name : $user->name;
+                $user->phone_number = !empty($request->phone_number) ? $request->phone_number : $user->phone_number;
+                $user->identity_card = !empty($request->identity_card) ? $request->identity_card : $user->identity_card;
+                $shop = $user->shop;
+                if(!empty($shop)){
+                    $shop->name = !empty($request->shop_name) ? $request->shop_name : $shop->name;
+                    $shop->home_number = !empty($request->home_number) ? $request->home_number : $shop->home_number;
+                    $shop->office_number = !empty($request->office_number) ? $request->office_number : $shop->office_number;
+                    $shop->home_ward = !empty($request->home_ward) ? $request->home_ward : $shop->home_ward;
+                    $shop->home_ward_id = !empty($request->home_ward_id) ? $request->home_ward_id : $shop->home_ward_id;
+                    $shop->office_ward = !empty($request->office_ward) ? $request->office_ward : $shop->office_ward;
+                    $shop->office_ward_id = !empty($request->office_ward_id) ? $request->office_ward_id : $shop->office_ward_id;
+                    $shop->save();
+                }
+                $user->save();
+                $user->shop = $shop;
+                return Response::json(
+                    array(
+                        'accept'   => 1,
+                        'messages' => $user,
+                    ),
+                    200
+                );
+            }
+        }else {
+            $validator = Validator::make($request->all(), [
+                'name'                      => 'max:255',
+                'phone_number'              => 'min:10|max:11',
+                'identity_card'             => 'min:9|max:12',
+                'shop_name'                 => 'max:255',
+                'home_number'               => 'max:255',
+            ]);
+            if ($validator->fails()) {
+                return Response::json(
+                    array(
+                        'accept'   => 0,
+                        'messages' => $validator->messages(),
+                    ),
+                    200
+                );
+            } else {
+                $errors = [];
+                $isError = 0;
+                if(!empty($request->phone_number)){
+                    $user_tmp = User::where("id","<>", $user_id)->where("phone_number", $request->phone_number)->first();
+                    if (!empty($user_tmp)){
+                        $isError = 1;
+                        array_push($errors, MSG_PHONE_NUMBER_EXIST);
+                    }
+                }
+                if ($isError == 1){
+                    return Response::json(
+                        array(
+                            'accept'   => 0,
+                            'messages' => $isError,
+                        ),
+                        200
+                    );
+                }
+                $user->name = !empty($request->name) ? $request->name : $user->name;
+                $user->phone_number = !empty($request->phone_number) ? $request->phone_number : $user->phone_number;
+                $user->identity_card = !empty($request->identity_card) ? $request->identity_card : $user->identity_card;
+                $shipper = $user->shipper;
+                if(!empty($shipper)){
+                    $shipper->home_number = !empty($request->home_number) ? $request->home_number : $shipper->home_number;
+                    $shipper->office_number = !empty($request->office_number) ? $request->office_number : $shipper->office_number;
+                    $shipper->home_ward = !empty($request->home_ward) ? $request->home_ward : $shipper->home_ward;
+                    $shipper->home_ward_id = !empty($request->home_ward_id) ? $request->home_ward_id : $shipper->home_ward_id;
+                    $shipper->office_ward = !empty($request->office_ward) ? $request->office_ward : $shipper->office_ward;
+                    $shipper->office_ward_id = !empty($request->office_ward_id) ? $request->office_ward_id : $shipper->office_ward_id;
+                    $shipper->licence_plate = !empty($request->licence_plate) ? $request->licence_plate : $shipper->licence_plate;
+                    $shipper->save();
+                }
+
+                $user->save();
+                $user->shipper = $shipper;
+                return Response::json(
+                    array(
+                        'accept'   => 1,
+                        'messages' => $user,
+                    ),
+                    200
+                );
+            }
+        }
     }
 
     public function index()

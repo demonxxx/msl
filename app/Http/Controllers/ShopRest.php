@@ -158,6 +158,7 @@ class ShopRest extends Controller
 
     public function cancelOrder($id){
         $order = Order::find($id);
+
         if (empty($order)) {
             return Response::json(
                 array(
@@ -169,8 +170,9 @@ class ShopRest extends Controller
         } else {
             $user = User::find(Auth::guard('api')->id());
             if ($user->id == $order->user_id) {
-                if($order->status == ORDER_PENDING){
+                if($order->status == ORDER_PENDING || $order->status == ORDER_TAKEN_ORDER){
                     $order->status = ORDER_SHOP_CANCEL;
+                    $order->shop_cancel_at = Carbon::now()->toDateTimeString();
                     $order->save();
                     return Response::json(
                         array(
@@ -190,7 +192,6 @@ class ShopRest extends Controller
                 }else {
                     return Response::json(
                         array(
-                             " status" => $order,
                             'accept'   => 0,
                             'messages' => MSG_CAN_NOT_CANCEL_ORDER,
                         ),
