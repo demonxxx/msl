@@ -251,12 +251,13 @@ class UserRest extends Controller
         if($type == SHOP_TYPE){
             $validator = Validator::make($request->all(), [
                 'name'                      => 'max:255',
-                'phone_number'              => 'min:10|max:11',
-                'identity_card'             => 'min:9|max:12',
+                'phone_number'              => 'min:10|max:14',
+                'identity_card'             => 'min:9|max:14',
                 'shop_name'                 => 'max:255',
                 'home_number'               => 'max:255',
                 'office_number'               => 'max:255',
-
+                'email'                     => 'email',
+                'isActive'                  => 'integer|between:0,3',
             ]);
             if ($validator->fails()) {
                 return Response::json(
@@ -276,27 +277,38 @@ class UserRest extends Controller
                         array_push($errors, MSG_PHONE_NUMBER_EXIST);
                     }
                 }
+                if(!empty($request->email)){
+                    $user_tmp = User::where("id","<>", $user_id)->where("email", $request->email)->first();
+                    if (!empty($user_tmp)){
+                        $isError = 1;
+                        array_push($errors, MSG_EMAIL_EXIST);
+                    }
+                }
                 if ($isError == 1){
                     return Response::json(
                         array(
                             'accept'   => 0,
-                            'messages' => $user_tmp,
+                            'messages' => $errors,
                         ),
                         200
                     );
                 }
+                $user->email = !empty($request->email) ? $request->email : $user->email;
                 $user->name = !empty($request->name) ? $request->name : $user->name;
                 $user->phone_number = !empty($request->phone_number) ? $request->phone_number : $user->phone_number;
                 $user->identity_card = !empty($request->identity_card) ? $request->identity_card : $user->identity_card;
                 $shop = $user->shop;
                 if(!empty($shop)){
-                    $shop->name = !empty($request->shop_name) ? $request->shop_name : $shop->name;
+                    $shop->isActive = !empty($request->isActive) ? $request->isActive : $shop->isActive;
+                    $shop->shop_name = !empty($request->shop_name) ? $request->shop_name : $shop->shop_name;
                     $shop->home_number = !empty($request->home_number) ? $request->home_number : $shop->home_number;
                     $shop->office_number = !empty($request->office_number) ? $request->office_number : $shop->office_number;
                     $shop->home_ward = !empty($request->home_ward) ? $request->home_ward : $shop->home_ward;
                     $shop->home_ward_id = !empty($request->home_ward_id) ? $request->home_ward_id : $shop->home_ward_id;
                     $shop->office_ward = !empty($request->office_ward) ? $request->office_ward : $shop->office_ward;
                     $shop->office_ward_id = !empty($request->office_ward_id) ? $request->office_ward_id : $shop->office_ward_id;
+                    $shop->home_full_address = !empty($request->home_full_address) ? $request->home_full_address : $shop->home_full_address;
+                    $shop->office_full_address = !empty($request->office_full_address) ? $request->office_full_address : $shop->office_full_address;
                     $shop->save();
                 }
                 $user->save();
@@ -316,6 +328,9 @@ class UserRest extends Controller
                 'identity_card'             => 'min:9|max:12',
                 'shop_name'                 => 'max:255',
                 'home_number'               => 'max:255',
+                'email'                     => 'email',
+                'isActive'                  => 'integer|between:0,3',
+                'vehicle_type_id'           => 'integer'
             ]);
             if ($validator->fails()) {
                 return Response::json(
@@ -335,20 +350,29 @@ class UserRest extends Controller
                         array_push($errors, MSG_PHONE_NUMBER_EXIST);
                     }
                 }
+                if(!empty($request->email)){
+                    $user_tmp = User::where("id","<>", $user_id)->where("email", $request->email)->first();
+                    if (!empty($user_tmp)){
+                        $isError = 1;
+                        array_push($errors, MSG_EMAIL_EXIST);
+                    }
+                }
                 if ($isError == 1){
                     return Response::json(
                         array(
                             'accept'   => 0,
-                            'messages' => $isError,
+                            'messages' => $errors,
                         ),
                         200
                     );
                 }
+                $user->email = !empty($request->email) ? $request->email : $user->email;
                 $user->name = !empty($request->name) ? $request->name : $user->name;
                 $user->phone_number = !empty($request->phone_number) ? $request->phone_number : $user->phone_number;
                 $user->identity_card = !empty($request->identity_card) ? $request->identity_card : $user->identity_card;
                 $shipper = $user->shipper;
                 if(!empty($shipper)){
+                    $shipper->isActive = !empty($request->isActive) ? $request->isActive : $shipper->isActive;
                     $shipper->home_number = !empty($request->home_number) ? $request->home_number : $shipper->home_number;
                     $shipper->office_number = !empty($request->office_number) ? $request->office_number : $shipper->office_number;
                     $shipper->home_ward = !empty($request->home_ward) ? $request->home_ward : $shipper->home_ward;
@@ -356,6 +380,10 @@ class UserRest extends Controller
                     $shipper->office_ward = !empty($request->office_ward) ? $request->office_ward : $shipper->office_ward;
                     $shipper->office_ward_id = !empty($request->office_ward_id) ? $request->office_ward_id : $shipper->office_ward_id;
                     $shipper->licence_plate = !empty($request->licence_plate) ? $request->licence_plate : $shipper->licence_plate;
+                    $shipper->licence_driver_number = !empty($request->licence_driver_number) ? $request->licence_driver_number : $shipper->licence_driver_number;
+                    $shipper->vehicle_type_id = !empty($request->vehicle_type_id) ? $request->vehicle_type_id : $shipper->vehicle_type_id;
+                    $shipper->home_full_address = !empty($request->home_full_address) ? $request->home_full_address : $shipper->home_full_address;
+                    $shipper->office_full_address = !empty($request->office_full_address) ? $request->office_full_address : $shipper->office_full_address;
                     $shipper->save();
                 }
 
