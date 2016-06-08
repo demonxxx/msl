@@ -223,4 +223,10 @@ class ShopsController extends Controller {
         echo $shop_obj->save();
     }
 
+    public function details($shop_id) {
+        $shop = new Shop();
+        $returnHTML = view('app.shops.details', ["shop" => $shop->details($shop_id)])->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
+    }
+
 }

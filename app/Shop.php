@@ -90,4 +90,21 @@ class Shop extends Model {
         return $count;
     }
 
+    public function details($shop_id) {
+        $builder = DB::table('shop_view');
+        $builder->where('id', '=', $shop_id);
+        $shop = $builder->first();
+        $order = DB::table("orders")
+                ->select('orders.id')
+                ->where("orders.user_id", "=", $shop->user_id)
+                ->count();
+        $shop->order_number = $order;
+        $agency = DB::table("agencys")
+                ->select('agencys.id')
+                ->where("agencys.user_id", "=", $shop->user_id)
+                ->count();
+        $shop->agency_number = $agency;
+        return $shop;
+    }
+
 }
