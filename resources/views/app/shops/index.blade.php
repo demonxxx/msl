@@ -82,9 +82,9 @@
 </div>
 <script>
     var shopTable;
-    var blockShopFunction = function (id, name) {
+    var blockShopFunction = function (id, name, message) {
         swal({
-            title: "Bạn có chắc muốn khóa shop " + name + "?",
+            title: "Bạn có chắc muốn " + message + " shop " + name + "?",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
@@ -108,11 +108,36 @@
             });
         });
     };
+
+    var getShopDetails = function (shop_id) {
+        $.ajax({
+            url: base_url + "/shop/" + shop_id + "/details",
+            type: 'GET',
+            dataType: 'json',
+            success: function (data, textStatus, jqXHR) {
+                bootbox.dialog({
+                    message: data.html,
+                    title: "Thông tin chi tiết",
+                    buttons: {
+                        main: {
+                            label: "Okie",
+                            className: "btn-primary",
+                            callback: function () {
+
+                            }
+                        }
+                    }
+                });
+            }, error: function (jqXHR, textStatus, errorThrown) {
+
+            }
+        });
+    }
     $(document).ready(function () {
         var common_render = {
             "render": function (data, type, row) {
                 data = (data !== null) ? data : "";
-                return "<div class='text-center'>" + data + "</div>";
+                return "<div class='text-center' shop-id='" + row.id + "'>" + data + "</div>";
             },
             "targets": [0, 1, 2, 3, 4, 5, 6]
         };
@@ -129,7 +154,7 @@
                 var text = (row.isActive == 2) ? "Mở" : "Khóa";
                 return "<div class='text-center'>" +
                         "<a class='btn btn-primary btn-sm' href='" + edit_url + "'>Sửa</a>" +
-                        "<button class='btn btn-danger btn-sm' onclick='blockShopFunction(" + row.id + ",\"" + row.shop_name + "\")' style='margin-left: 10px;'>" + text + "</button>" +
+                        "<button class='btn btn-danger btn-sm' onclick='blockShopFunction(" + row.id + ",\"" + row.shop_name + "\",\"" + text + "\")' style='margin-left: 10px;'>" + text + "</button>" +
                         "</div>";
             },
             "targets": [8]
@@ -147,6 +172,13 @@
         config['clear_filter'] = true;
         config['sort_off'] = [8];
         config['hidden_global_seach'] = true;
+        config['fnRowCallback'] = function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            var rowClass = (aData.isActive == 2) ? "danger" : "";
+            $(nRow).addClass(rowClass);
+            $('td', nRow).eq(0).find('div').addClass('text-info').bind("click", function (e) {
+                getShopDetails($(this).attr("shop-id"));
+            });
+        };
         shopTable = setAjaxDataTable(config);
     });
 </script>
