@@ -285,5 +285,6 @@ function setAjaxDataTable(config) {
             callback(config);
         }
     }
+   
     return oTable;
 }

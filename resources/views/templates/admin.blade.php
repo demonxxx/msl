@@ -5,11 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>MSL | Việt Nam</title>
+        <link href="{{ asset("theme/css/plugins/jQueryUI/jquery-ui-1.10.4.custom.min.css")}}" rel="stylesheet">
         <script src="{{ asset("js/constants.js") }}"></script>
         <link href="{{ asset("theme/css/bootstrap.min.css") }}" rel="stylesheet">
         <link href="{{ asset("theme/font-awesome/css/font-awesome.css") }}" rel="stylesheet">
         <link href="{{ asset("theme/css/animate.css") }}" rel="stylesheet">
         <link href="{{ asset("theme/css/style.css") }}" rel="stylesheet">
+        <link href="{{ asset("theme/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css") }}" rel="stylesheet">
+        <link href="{{ asset("theme/css/plugins/iCheck/custom.css") }}" rel="stylesheet">
 
         <!-- Mainly scripts -->
         <script src="{{ asset("theme/js/jquery-2.1.1.js") }}"></script>
@@ -45,7 +48,7 @@
         <script src="{{ asset("js/select2.js")}}"></script>
         <link href="{{ asset("css/select2.css") }}" rel="stylesheet">
         <link href="{{ asset("css/select2-bootstrap.css") }}" rel="stylesheet">
-
+        <script src="{{ asset("theme/js/plugins/iCheck/icheck.min.js") }}"></script>
         <!--custom js always in end of header-->
         <script src="{{ asset("js/custom.js") }}"></script>
     </head>
@@ -58,6 +61,7 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
+
         </script>
         <div id="wrapper">
             @include('layouts.sidebar')
