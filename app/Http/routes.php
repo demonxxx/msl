@@ -32,6 +32,8 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::get('/shop/{user_id}/edit', 'ShopsController@edit')->name("editShop");
         Route::post('/shop/{id}/update', 'ShopsController@update')->name("updateShop");
         Route::post('/shop/check_user_duplicate', 'ShopsController@check_user_duplicate');
+        Route::get('/shop/{id}/update_isActive', 'ShopsController@update_isActive');
+        Route::get('/shop/{shop_id}/details', 'ShopsController@details')->name("details");
 
         Route::get('/order', 'OrdersController@index')->name("orders");
         Route::get('/order/create', 'OrdersController@create')->name("createOrder");
@@ -137,7 +139,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
     Route::get('shop/shipperLocation/{id}', 'ShopRest@getShipperLocation');
 
     Route::post("shop/updateBaseFreight/{id}", "OrderRest@freightBaseDistance");
-    Route::get("shop/cancelOrder/{id}","ShopRest@cancelOrder");
+    Route::get("shop/cancelOrder/{id}", "ShopRest@cancelOrder");
 
     Route::resource('shop', 'ShopRest');
     Route::resource('shipper', 'ShipperRest');

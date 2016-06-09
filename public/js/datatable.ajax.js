@@ -1,7 +1,26 @@
-/**
- * Created by ngoduyanh on 4/29/16.
- */
-
+// setting default datatable
+$.extend(true, $.fn.dataTable.defaults, {
+    "language": {
+        "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",
+        "zeroRecords": "Không tìm thấy thông tin",
+        "info": "Hiển thị trang _PAGE_ trên _PAGES_",
+        "infoEmpty": "Không có thông tin",
+        "infoFiltered": "(lọc từ _MAX_ tổng số kết quả)",
+        "paginate": {
+            "first": "Trang đầu",
+            "last": "Trang cuối",
+            "next": "Sau",
+            "previous": "Trước"
+        },
+        "decimal": "",
+        "infoEmpty": "Hiển thị 0 đến 0 của 0 kết quả",
+                "infoPostFix": "",
+        "thousands": ",",
+        "loadingRecords": "Đang tải dữ liệu...",
+        "processing": "Đang xử lý dữ liệu...",
+        "search": "Tìm kiếm:",
+    }
+});
 function setDatatable(data) {
     var tableId = data.id;
     var url = data.url;
@@ -35,16 +54,6 @@ function setDatatable(data) {
                         }
                     }
                 ],
-                "language": {
-                    "sLengthMenu": 'View _MENU_ records',
-                    "sInfo": 'Found _TOTAL_ records',
-                    "oPaginate": {
-                        "sPage": "Page ",
-                        "sPageOf": "of",
-                        "sNext": '<i class="fa fa-angle-right"></i>',
-                        "sPrevious": '<i class="fa fa-angle-left"></i>'
-                    }
-                },
                 "processing": true,
                 "serverSide": true,
                 "pagingType": "input",
@@ -76,30 +85,6 @@ jQuery.fn.dataTableExt.oApi.fnPagingInfo = function (oSettings)
                 0 : Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength)
     };
 };
-
-// setting default datatable
-$.extend(true, $.fn.dataTable.defaults, {
-    "language": {
-        "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",
-        "zeroRecords": "Không tìm thấy thông tin",
-        "info": "Hiển thị trang _PAGE_ trên _PAGES_",
-        "infoEmpty": "Không có thông tin",
-        "infoFiltered": "(lọc từ _MAX_ tổng số kết quả)",
-        "paginate": {
-            "first": "Trang đầu",
-            "last": "Trang cuối",
-            "next": "Sau",
-            "previous": "Trước"
-        },
-        "decimal": "",
-        "infoEmpty": "Hiển thị 0 đến 0 của 0 kết quả",
-                "infoPostFix": "",
-        "thousands": ",",
-        "loadingRecords": "Đang tải dữ liệu...",
-        "processing": "Đang xử lý dữ liệu...",
-        "search": "Tìm kiếm:",
-    }
-});
 
 // function add datatable
 // config required:
@@ -263,7 +248,7 @@ function setAjaxDataTable(config) {
         });
     }
     if (config['clear_filter'] !== undefined) {
-        var clearButton = '<button id="clear_' + config['id'] + '" class="btn btn-primary btn-clear btn-sm"> <i class="fa fa-refresh"></i> Reload</button>';
+        var clearButton = '<button id="clear_' + config['id'] + '" class="btn btn-primary btn-clear btn-xs"> <i class="fa fa-refresh"></i> Reload</button>';
         $(table).find("tr.table-header-search").find("th.clear-filter").append(clearButton);
     }
     $("#clear_" + config['id']).click(function (e) {

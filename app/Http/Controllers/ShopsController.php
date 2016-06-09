@@ -10,19 +10,19 @@ use App\ShopType;
 use App\Adminnistrative_units;
 use Validator;
 
-class ShopsController extends Controller
-{
+class ShopsController extends Controller {
+
     protected $controller_name = "ShopsController";
     protected $permissions = array(
-        "index"  => "Danh sách khách hàng",
+        "index" => "Danh sách khách hàng",
         "create" => "Giao diện tạo khách hàng",
-        "store"  => "Lưu khách hàng",
-        "show"   => "Xem chi tiết khách hàng",
+        "store" => "Lưu khách hàng",
+        "show" => "Xem chi tiết khách hàng",
     );
     public $breadcrumbs = [];
 
-    public function __construct()
-    {
+    public function __construct() {
+
     }
 
     /**
@@ -30,10 +30,9 @@ class ShopsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-
-        return view('app.shops.index');
+    public function index() {
+        $districts = Adminnistrative_units::where("level", DISTRICT_UNIT)->get();
+        return view('app.shops.index', ["districts" => $districts]);
     }
 
     /**
@@ -41,12 +40,11 @@ class ShopsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $shoptype = new ShopType;
         $shoptypes = $shoptype->all();
         $cities = Adminnistrative_units::where("level", CITY_UNIT)->get();
-        return view('app.shops.create',["shoptypes" => $shoptypes, "cities" => $cities]);
+        return view('app.shops.create', ["shoptypes" => $shoptypes, "cities" => $cities]);
     }
 
     /**
@@ -55,29 +53,28 @@ class ShopsController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $validator = Validator::make($request->all(), [
-            'name'                  => 'required|max:255',
-            'password'              => 'required|min:6|confirmed',
-            'phone_number'          => 'required|min:10|max:11|unique:users',
-            'email'                 => 'required|email|max:255|unique:users',
-            'username'              => 'required|max:255|unique:users',
-            'shop_name'             => 'max:255',
-            'home_number'           => 'max:255',
-            'office_number'         => 'required|max:255',
-            'office_ward_id'        => 'required',
-            'office_district_id'    => 'required',
-            'office_city_id'        => 'required',
-            'identity_card'         => 'required|min:9|max:12',
+                    'name' => 'required|max:255',
+                    'password' => 'required|min:6|confirmed',
+                    'phone_number' => 'required|min:10|max:11|unique:users',
+                    'email' => 'required|email|max:255|unique:users',
+                    'username' => 'required|max:255|unique:users',
+                    'shop_name' => 'max:255',
+                    'home_number' => 'max:255',
+                    'office_number' => 'required|max:255',
+                    'office_ward_id' => 'required',
+                    'office_district_id' => 'required',
+                    'office_city_id' => 'required',
+                    'identity_card' => 'required|min:9|max:12',
         ]);
         if ($validator->fails()) {
             flash_message("Tạo khách hàng mới không thành công!", "danger");
             return redirect('shop/create')->withErrors($validator)->withInput();
         } else {
             $user = new User;
-            $max_id = User::max('id')+1;
-            $user->code = "U".$max_id;
+            $max_id = User::max('id') + 1;
+            $user->code = "U" . $max_id;
             $user->name = $request->name;
             $user->username = $request->username;
             $user->password = bcrypt($request->password);
@@ -87,8 +84,8 @@ class ShopsController extends Controller
             $user->api_token = str_random(60);
             $user->save();
             $shop = new Shop;
-            $max_id = Shop::max('id')+1;
-            $shop->code = "KH".$max_id;
+            $max_id = Shop::max('id') + 1;
+            $shop->code = "KH" . $max_id;
             $shop->shop_name = $request->shop_name;
             $shop->home_number = $request->home_number;
             $shop->home_ward = $request->home_ward;
@@ -112,8 +109,7 @@ class ShopsController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -123,8 +119,7 @@ class ShopsController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($user_id)
-    {
+    public function edit($user_id) {
         $user = new User;
         $user_obj = $user->find($user_id);
         $shop_obj = $user_obj->shop;
@@ -132,13 +127,12 @@ class ShopsController extends Controller
         $shoptypes = $shoptype->all();
         $cities = Adminnistrative_units::where("level", CITY_UNIT)->get();
         $districts_home = Adminnistrative_units::where("level", DISTRICT_UNIT)->where("parent_id", $shop_obj->home_city_id)->get();
-        $wards_home = Adminnistrative_units::where("level",WARD_UNIT)->where("parent_id", $shop_obj->home_district_id)->get();
+        $wards_home = Adminnistrative_units::where("level", WARD_UNIT)->where("parent_id", $shop_obj->home_district_id)->get();
         $districts_office = Adminnistrative_units::where("level", DISTRICT_UNIT)->where("parent_id", $shop_obj->office_city_id)->get();
-        $wards_office = Adminnistrative_units::where("level",WARD_UNIT)->where("parent_id", $shop_obj->office_district_id)->get();
+        $wards_office = Adminnistrative_units::where("level", WARD_UNIT)->where("parent_id", $shop_obj->office_district_id)->get();
         return view("app/shops/edit", ["user" => $user_obj, "shop" => $shop_obj, "user_id" => $user_id, "shoptypes" => $shoptypes,
-            'cities' => $cities, 'districts_home' => $districts_home, 'wards_home' => $wards_home, 
+            'cities' => $cities, 'districts_home' => $districts_home, 'wards_home' => $wards_home,
             'districts_office' => $districts_office, 'wards_office' => $wards_office]);
-
     }
 
     /**
@@ -148,19 +142,18 @@ class ShopsController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         $validator = \Validator::make($request->all(), [
-            'name'                      => 'required|max:255',
-            'phone_number'              => 'required|min:10|max:11',
-            'email'                     => 'required|email|max:255',
-            'shop_name'                 => 'max:255',
-            'home_number'               => 'max:255',
-            'office_number'             => 'required|max:255',
-            'office_ward_id'            => 'required',
-            'office_district_id'        => 'required',
-            'office_city_id'            => 'required',
-            'identity_card'             => 'required|min:9|max:12',
+                    'name' => 'required|max:255',
+                    'phone_number' => 'required|min:10|max:11',
+                    'email' => 'required|email|max:255',
+                    'shop_name' => 'max:255',
+                    'home_number' => 'max:255',
+                    'office_number' => 'required|max:255',
+                    'office_ward_id' => 'required',
+                    'office_district_id' => 'required',
+                    'office_city_id' => 'required',
+                    'identity_card' => 'required|min:9|max:12',
         ]);
         if ($validator->fails()) {
             flash_message("Sửa khách hàng không thành công!", "danger");
@@ -191,29 +184,27 @@ class ShopsController extends Controller
         }
     }
 
-    /**fi
+    /*     * fi
      * Remove the specified resource from storage.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+
+    public function destroy($id) {
         //
     }
 
-    public function load_list(Request $request)
-    {
-        $posts = get_post_datatable($request->all());
+    public function load_list(Request $request) {
+        $posts = get_post_datatable_new($request->all());
         $shop = new Shop();
         $data = $shop->get_all_shops($posts);
         $length = $shop->count_all($posts);
-        $result = build_json_datatable($data, $length, $posts);
+        $result = build_json_datatable_new($data, $length, $posts);
         return $result;
     }
 
-    public function check_user_duplicate(Request $request)
-    {
+    public function check_user_duplicate(Request $request) {
         $params = $request->all();
         $colum = $params['colum_name'];
         $value = $params['value'];
@@ -223,6 +214,19 @@ class ShopsController extends Controller
         } else {
             return "fail";
         }
+    }
+
+    public function update_isActive($id) {
+        $shop = new Shop();
+        $shop_obj = $shop::find($id);
+        $shop_obj->isActive = ($shop_obj->isActive == 2) ? 1 : 2;
+        echo $shop_obj->save();
+    }
+
+    public function details($shop_id) {
+        $shop = new Shop();
+        $returnHTML = view('app.shops.details', ["shop" => $shop->details($shop_id)])->render();
+        return response()->json(array('success' => true, 'html' => $returnHTML));
     }
 
 }

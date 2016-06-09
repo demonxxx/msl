@@ -33,8 +33,8 @@ class CreateShopsTable extends Migration
             $table->smallInteger('office_city_id')->nullable()->references('id')->on('administrative_units')->onDelete('cascade');
             $table->smallInteger('shop_scope_id')->nullable()->references('id')->on('shop_scopes')->onDelete('cascade')->comment('scope of shop ex');
             $table->smallInteger('shop_type_id')->nullable()->references('id')->on('shop_types')->onDelete('cascade');
-            $table->smallInteger('isActive')->default(1)->comment('0: not active, 1:activated ');
-            $table->integer('profile_status')->nullable()->commnet('percent of complete profile status, ex: 90%');
+            $table->smallInteger('isActive')->default(1)->comment('0: not active, 1:activated, 2:block');
+            $table->integer('profile_status')->default(0)->commnet('percent of complete profile status, ex: 90%');
             $table->timestamps();
             $table->softDeletes();
         });
