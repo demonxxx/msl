@@ -40,7 +40,7 @@ class OrdersController extends Controller
     public function store(Request $request)
     {
         //
-        dd($request->all());
+//        dd($request->all());
         $validator = Validator::make($request->all(), [
             "order_type_id"     => "required",
             "vehicle_type_id"   => "required",
