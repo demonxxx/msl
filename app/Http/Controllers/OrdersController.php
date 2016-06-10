@@ -3,22 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use Validator;
 use App\User;
 use App\Order;
+use App\Adminnistrative_units;
 
-class OrdersController extends Controller
-{
+class OrdersController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return view('app.orders.index');
+    public function index() {
+        $districts = Adminnistrative_units::where("level", DISTRICT_UNIT)->get();
+        $wards = Adminnistrative_units::where("level", WARD_UNIT)->get();
+        return view('app.orders.index', ['districts' => $districts, 'wards' => $wards]);
     }
 
     /**
@@ -26,8 +27,7 @@ class OrdersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         return view('app.orders.create');
     }
 
@@ -37,19 +37,18 @@ class OrdersController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
-        dd($request->all());
+//        dd($request->all());
         $validator = Validator::make($request->all(), [
-            "order_type_id"     => "required",
-            "vehicle_type_id"   => "required",
-            "name"              => "required",
-            "recipient_name"    => "required",
-            "recipient_phone"   => "required",
-            "full_address_to"   => "required",
-            "full_address_from" => "required",
-            "order_values"      => "required",
+                    "order_type_id" => "required",
+                    "vehicle_type_id" => "required",
+                    "name" => "required",
+                    "recipient_name" => "required",
+                    "recipient_phone" => "required",
+                    "full_address_to" => "required",
+                    "full_address_from" => "required",
+                    "order_values" => "required",
         ]);
         if ($validator->fails()) {
             flash_message("Tạo khách hàng mới không thành công!", "danger");
@@ -101,8 +100,7 @@ class OrdersController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -112,8 +110,7 @@ class OrdersController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         //
     }
 
@@ -124,8 +121,7 @@ class OrdersController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         //
     }
 
@@ -135,11 +131,10 @@ class OrdersController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
-    
+
     public function load_list(Request $request) {
         $user_id = $request->user()["id"];
         $posts = get_post_datatable_new($request->all());
@@ -149,4 +144,5 @@ class OrdersController extends Controller
         $result = build_json_datatable_new($data, $length, $posts);
         return $result;
     }
+
 }

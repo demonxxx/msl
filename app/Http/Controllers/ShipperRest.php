@@ -192,6 +192,49 @@ class ShipperRest extends Controller
         }
     }
 
+    public function getTakenOrder($id){
+        $order = Order::find($id);
+        if (empty($order)) {
+            return Response::json(
+                array(
+                    'accept'   => 1,
+                    'messages' => MSG_ORDER_NOT_EXIST,
+                ),
+                200
+            );
+        } else {
+            $user = User::find(Auth::guard('api')->id());
+            if ($user->id == $order->shipper_id) {
+                $shipperOrderHistory = ShipperOrderHistory::where("shipper_id", $user->id)
+                    ->where("order_id", $order->id)
+                    ->first();
+                if(empty($shipperOrderHistory)){
+                    $shipper_order_id = null;
+                }else {
+                    $shipper_order_id = $shipperOrderHistory->id;
+                }
+                $order->shipper_order_id = $shipper_order_id;
+                $shop = User::where('id', $order->user_id)->select('id', 'name', 'phone_number', 'email')->first();
+                return Response::json(
+                    array(
+                        'accept'  => 1,
+                        'order'   => $order->toArray(),
+                        'shop' => $shop->toArray(),
+                    ),
+                    200
+                );
+            } else {
+                return Response::json(
+                    array(
+                        'accept'   => 0,
+                        'messages' => MSG_NOT_HAVE_PERMISSION,
+                    ),
+                    200
+                );
+            }
+        }
+    }
+
     public function updateOrderStatusShipper(Request $request, $id) {
         $order = Order::find($id);
         if (empty($order)) {
