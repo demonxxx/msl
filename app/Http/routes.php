@@ -32,6 +32,8 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::get('/shop/{user_id}/edit', 'ShopsController@edit')->name("editShop");
         Route::post('/shop/{id}/update', 'ShopsController@update')->name("updateShop");
         Route::post('/shop/check_user_duplicate', 'ShopsController@check_user_duplicate');
+        Route::get('/shop/{id}/update_isActive', 'ShopsController@update_isActive');
+        Route::get('/shop/{shop_id}/details', 'ShopsController@details')->name("details");
 
         Route::get('/order', 'OrdersController@index')->name("orders");
         Route::get('/order/create', 'OrdersController@create')->name("createOrder");
@@ -60,7 +62,16 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::get('/distance_freights/{dist_freight_id}/destroy', 'DistanceFreightsController@destroy');
     });
     Route::group(['roles' => ['admin']], function () {
-        Route::get('/account', 'AccountsController@index')->name("accounts");
+        Route::get('/admin/transaction/index', 'AccountsController@showTransactions');
+        Route::post('/admin/transaction/loadTransactionHistories', 'AccountsController@loadTransactionHistories');
+        Route::get('/admin/transaction/getTransactionUsers', 'AccountsController@getTransactionUsers');
+        Route::get('/admin/transaction/getHistoryTransactionUsers/{id}', 'AccountsController@loadTransactionUserHistory');
+        Route::get('/admin/transaction/handleTransaction', 'AccountsController@handleTransaction');
+        Route::get('/admin/transaction/cancelTransaction', 'AccountsController@cancelTransaction');
+        Route::get('/admin/transaction/create', 'AccountsController@index')->name("createTransaction");
+        Route::post('/admin/transaction/putTransaction', 'AccountsController@putTransaction');
+        Route::get('/admin/transaction/confirm', 'AccountsController@transactionConfirm')->name("transactionConfirm");
+        Route::get('/admin/transaction/detail/{id}', 'AccountsController@transactionDetail')->name("transactionDetail");
         Route::post('/account/load_list', 'AccountsController@load_list');
         Route::post('/account/update_money', 'AccountsController@update_money');
         Route::get('/admin/settings/administrative_units', 'SettingsController@show_administrative_units');
@@ -69,6 +80,7 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::post('/admin/settings/administrative_units/add', 'SettingsController@add_administrative_units');
         Route::get('/admin/settings/administrative_units/{unit_id}/get_unit_by_parrent', 'SettingsController@get_unit_by_parrent');
         Route::post('/admin/settings/administrative_units/add_city', 'SettingsController@add_city');
+
     });
 
 
@@ -117,6 +129,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
 
     Route::post('shipper/find', 'ShipperRest@findByLocation');
     Route::get('shipper/take/{id}', 'ShipperRest@takeOrder');
+    Route::get('shipper/getTakenOrder/{id}', 'ShipperRest@getTakenOrder');
     Route::post('shipper/update/status/{id}', 'ShipperRest@updateOrderStatusShipper');
     Route::post('shipper/update/location', 'ShipperRest@updateLocation');
     Route::get('shipper/getTakenOrders/', 'ShipperRest@getTakenOrders');
@@ -131,7 +144,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
     Route::get('shop/shipperLocation/{id}', 'ShopRest@getShipperLocation');
 
     Route::post("shop/updateBaseFreight/{id}", "OrderRest@freightBaseDistance");
-    Route::get("shop/cancelOrder/{id}","ShopRest@cancelOrder");
+    Route::get("shop/cancelOrder/{id}", "ShopRest@cancelOrder");
 
     Route::resource('shop', 'ShopRest');
     Route::resource('shipper', 'ShipperRest');

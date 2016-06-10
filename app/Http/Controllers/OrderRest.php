@@ -59,8 +59,6 @@ class OrderRest extends Controller
         $validator = Validator::make($request->all(), [
             "order_type_id"     => "required|numeric",
             "vehicle_type_id"   => "required|numeric",
-            "recipient_name"    => "required",
-            "recipient_phone"   => "required|numeric",
             "full_address_to"   => "required",
             "full_address_from" => "required",
             "order_values"      => "required",
@@ -135,6 +133,16 @@ class OrderRest extends Controller
         } else {
             $user = User::find(Auth::guard('api')->id());
             if ($user->id == $order->user_id) {
+                $shopOrderHistory = ShopOrderHistory::where("shop_id", $user->id)
+                    ->where("order_id", $order->id)
+                    ->first();
+                if(empty($shopOrderHistory)){
+                    $shop_order_id = null;
+                }else {
+                    $shop_order_id = $shopOrderHistory->id;
+                }
+                $order->shop_order_id_aaa = $shop_order_id;
+
                 if ($order->status == ORDER_PENDING) {
                     return Response::json(
                         array(
@@ -190,6 +198,16 @@ class OrderRest extends Controller
         } else {
             $user = User::find(Auth::guard('api')->id());
             if ($user->id == $order->user_id) {
+                $shopOrderHistory = ShopOrderHistory::where("shop_id", $user->id)
+                    ->where("order_id", $order->id)
+                    ->first();
+                if(empty($shopOrderHistory)){
+                    $shop_order_id = null;
+                }else {
+                    $shop_order_id = $shopOrderHistory->id;
+                }
+                $order->shop_order_id = $shop_order_id;
+
                 if ($order->status == ORDER_PENDING) {
                     return Response::json(
                         array(

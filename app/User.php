@@ -93,7 +93,7 @@ class User extends Authenticatable
     public function get_all_accounts($post) {
         $builder = DB::table("users");
         $builder->select("users.id", "users.code", "users.name", "accounts.main", "accounts.second")
-                ->leftJoin("accounts", "accounts.user_id", "=", "users.id");
+                ->join("accounts", "accounts.user_id", "=", "users.id");
         $search_params = $post['searchParams'];
         $this->table_condition($builder, $search_params);
         $builder->skip($post["iDisplayStart"])->take($post["iDisplayLength"])
