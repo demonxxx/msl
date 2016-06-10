@@ -59,8 +59,6 @@ class OrderRest extends Controller
         $validator = Validator::make($request->all(), [
             "order_type_id"     => "required|numeric",
             "vehicle_type_id"   => "required|numeric",
-            "recipient_name"    => "required",
-            "recipient_phone"   => "required|numeric",
             "full_address_to"   => "required",
             "full_address_from" => "required",
             "order_values"      => "required",
