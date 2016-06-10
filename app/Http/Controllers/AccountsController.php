@@ -15,80 +15,46 @@ use Illuminate\Support\Facades\DB;
 
 class AccountsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return view('app.accounts.index');
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    
+    public function showTransactions(){
+        return view("app.accounts.transactions");
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function transactionDetail($id){
+        $transaction = Transaction::find($id);
+        if (empty($transaction)){
+            flash_message("Không tồn tại giao dịch!", "danger");
+            return redirect('admin/transaction/create');
+        }else {
+            $account_type = $transaction->account_type;
+            $transaction_type = $transaction->transaction_type;
+            $amount = $transaction->amount;
+            $note = $transaction->note;
+            $transaction_date = $transaction->transaction_date;
+            $transaction_code = $transaction->code;
+            $total_user = $transaction->total_user;
+            $user = User::find($transaction->creator_id);
+        }
+        return view("app.accounts.detail", ["account_type"     => $account_type,
+                                             "transaction_type" => $transaction_type,
+                                             "amount"           => $amount,
+                                             "note"             => $note,
+                                             "transaction_date" => $transaction_date,
+                                             "admin"            => $user,
+                                             "total_amount"     => (int) $total_user * (int) $amount,
+                                             "total_user"       => $total_user,
+                                            "transaction_id"    => $id,
+                                             "transaction_code" => $transaction_code]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+    public function loadTransactionUserHistory($id){
+        $transaction_user = new TransactionUser;
+        $users = $transaction_user->getUsersByTransaction($id);
+        return json_encode($users);
     }
 
     public function load_list(Request $request)
@@ -111,6 +77,7 @@ class AccountsController extends Controller
         $request->session()->forget('transaction_date');
         $request->session()->forget('transaction_code');
         $request->session()->forget('admin');
+        $request->session()->forget('total_user');
     }
 
     public function transactionConfirm(Request $request)
@@ -132,15 +99,26 @@ class AccountsController extends Controller
         $transaction_code = "GD-" . $transaction_max . "-" . Carbon::now()->year . "-" . Carbon::now()->month . "-" . Carbon::now()->day;
         $request->session()->put('transaction_date', $transaction_date);
         $request->session()->put('transaction_code', $transaction_code);
+        $total_user = count($transaction_customers);
+        $request->session()->put('total_user', $total_user);
         return view("app.accounts.confirm", ["account_type"     => $account_type,
                                              "transaction_type" => $transaction_type,
                                              "amount"           => $amount,
                                              "note"             => $note,
                                              "transaction_date" => $transaction_date,
                                              "admin"            => $user,
-                                             "total_amount"     => (int) count($transaction_customers) * (int) $amount,
-                                             "total_user"       => count($transaction_customers),
+                                             "total_amount"     => (int) $total_user * (int) $amount,
+                                             "total_user"       => $total_user,
                                              "transaction_code" => $transaction_code]);
+    }
+
+    public function loadTransactionHistories(Request $request){
+        $posts = get_post_datatable_new($request->all());
+        $transaction = new Transaction();
+        $data = $transaction->get_all_transactions($posts);
+        $length = $transaction->count_all($posts);
+        $result = build_json_datatable_new($data, $length, $posts);
+        return $result;
     }
 
     public function getTransactionUsers(Request $request)
@@ -161,6 +139,7 @@ class AccountsController extends Controller
         $transaction_date = $request->session()->get('transaction_date');
         $transaction_code = $request->session()->get('transaction_code');
         $admin_id = $request->session()->get('admin');
+        $total_user = $request->session()->get('total_user');
         $transaction_customers_tmp = json_decode($request->session()->get('transaction_customers', []));
         $transaction_customers = array_unique($transaction_customers_tmp);
         $isSuccess = 1;
@@ -175,6 +154,7 @@ class AccountsController extends Controller
             $transaction->account_type = $account_type;
             $transaction->note = $note;
             $transaction->transaction_date = $transaction_date;
+            $transaction->total_user = $total_user;
             $transaction->save();
             foreach ($transaction_customers as $transaction_customer){
                 $customer_account = Account::where("user_id", $transaction_customer)->first();
@@ -213,9 +193,11 @@ class AccountsController extends Controller
             $isSuccess = 0;
         }
         if ($isSuccess == 1){
+            $this->resetTransaction($request);
             flash_message("Giao dịch thành công!", "success");
             return redirect('admin/transaction/create');
         }else {
+            $this->resetTransaction($request);
             flash_message("Giao dịch không thành công!", "danger");
             return redirect('admin/transaction/create');
         }

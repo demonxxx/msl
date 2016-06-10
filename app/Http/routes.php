@@ -62,12 +62,16 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::get('/distance_freights/{dist_freight_id}/destroy', 'DistanceFreightsController@destroy');
     });
     Route::group(['roles' => ['admin']], function () {
+        Route::get('/admin/transaction/index', 'AccountsController@showTransactions');
+        Route::post('/admin/transaction/loadTransactionHistories', 'AccountsController@loadTransactionHistories');
         Route::get('/admin/transaction/getTransactionUsers', 'AccountsController@getTransactionUsers');
+        Route::get('/admin/transaction/getHistoryTransactionUsers/{id}', 'AccountsController@loadTransactionUserHistory');
         Route::get('/admin/transaction/handleTransaction', 'AccountsController@handleTransaction');
         Route::get('/admin/transaction/cancelTransaction', 'AccountsController@cancelTransaction');
         Route::get('/admin/transaction/create', 'AccountsController@index')->name("createTransaction");
         Route::post('/admin/transaction/putTransaction', 'AccountsController@putTransaction');
         Route::get('/admin/transaction/confirm', 'AccountsController@transactionConfirm')->name("transactionConfirm");
+        Route::get('/admin/transaction/detail/{id}', 'AccountsController@transactionDetail')->name("transactionDetail");
         Route::post('/account/load_list', 'AccountsController@load_list');
         Route::post('/account/update_money', 'AccountsController@update_money');
         Route::get('/admin/settings/administrative_units', 'SettingsController@show_administrative_units');
@@ -76,6 +80,7 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::post('/admin/settings/administrative_units/add', 'SettingsController@add_administrative_units');
         Route::get('/admin/settings/administrative_units/{unit_id}/get_unit_by_parrent', 'SettingsController@get_unit_by_parrent');
         Route::post('/admin/settings/administrative_units/add_city', 'SettingsController@add_city');
+
     });
 
 
