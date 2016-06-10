@@ -32,6 +32,11 @@ define("MSG_EMAIL_EXIST", "Đã tồn tại địa chỉ email");
 define("MSG_UPDATE_USER_INFO_SUCCESSFULLY", "Cập nhật thông tin thành công");
 
 
+define("ACCOUNT_TYPE_MAIN", 1);
+define("ACCOUNT_TYPE_SECOND", 2);
+
+define("TRANSACTION_TYPE_ADD", 1);
+define("TRANSACTION_TYPE_SUB", 2);
 // Mobile notification
 define("IOS_CERTIFICATE_FILE", "ios_certificate.pem");
 

@@ -64,7 +64,7 @@
                         <li><a href="{{url( 'admin/settings/shipperTypes' )}}"> Loại tài xế</a></li>
                         <li><a href="{{url( 'admin/settings/orderTypes' )}}"> Loại đơn hàng</a></li>
                         <li><a href="{{url( 'admin/settings/administrative_units' )}}"> Đơn vị hành chính</a></li>
-                        <li><a href="{{url('/account')}}"> Quản lý giao dịch</a></li>
+                        <li><a href="{{url('/admin/transaction/create')}}"> Quản lý giao dịch</a></li>
                     </ul>
                 </li>
             @endcan

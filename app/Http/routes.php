@@ -62,7 +62,12 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::get('/distance_freights/{dist_freight_id}/destroy', 'DistanceFreightsController@destroy');
     });
     Route::group(['roles' => ['admin']], function () {
-        Route::get('/account', 'AccountsController@index')->name("accounts");
+        Route::get('/admin/transaction/getTransactionUsers', 'AccountsController@getTransactionUsers');
+        Route::get('/admin/transaction/handleTransaction', 'AccountsController@handleTransaction');
+        Route::get('/admin/transaction/cancelTransaction', 'AccountsController@cancelTransaction');
+        Route::get('/admin/transaction/create', 'AccountsController@index')->name("createTransaction");
+        Route::post('/admin/transaction/putTransaction', 'AccountsController@putTransaction');
+        Route::get('/admin/transaction/confirm', 'AccountsController@transactionConfirm')->name("transactionConfirm");
         Route::post('/account/load_list', 'AccountsController@load_list');
         Route::post('/account/update_money', 'AccountsController@update_money');
         Route::get('/admin/settings/administrative_units', 'SettingsController@show_administrative_units');
