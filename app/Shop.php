@@ -26,7 +26,7 @@ class Shop extends Model {
         $builder = DB::table("shops");
         $builder->select(array("users.id", "users.name", "users.email", "users.identity_card", "users.phone_number",
                     DB::raw('COUNT(orders.id) as count_order'), DB::raw('COUNT(agencys.id) as count_agency'),
-                    "shops.code as shop_code", "shops.shop_name",
+                    "shops.code as shop_code", "shops.shop_name", "users.code as user_code",
                     "shops.office_number", 'city.name as office_city', DB::raw('district.name as office_district'),
                     DB::raw('ward.name as office_ward'), "shops.profile_status", "shops.isActive"))
                 ->join("users", "shops.user_id", "=", "users.id")
@@ -46,8 +46,8 @@ class Shop extends Model {
 
     public function table_condition($builder, $search_params) {
         if (!empty($search_params)) {
-            if (array_key_exists('shop_code', $search_params)) {
-                $builder->where('shops.shop_code', 'like', '%' . $search_params['shop_code'] . '%');
+            if (array_key_exists('user_code', $search_params)) {
+                $builder->where('users.code', 'like', '%' . $search_params['user_code'] . '%');
             }
             if (array_key_exists('name', $search_params)) {
                 $builder->where('users.name', 'like', '%' . $search_params['name'] . '%');
