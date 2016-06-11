@@ -53,6 +53,15 @@
                     </ul>
                 </li>
                 <li>
+                    <a role="button" tabindex="0"><i class="fa fa-taxi"></i> <span>Khuyến mại</span><span
+                                class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="{{url( '/discount/create' )}}"> Thêm mã khuyến mại</a></li>
+                        <li><a href="{{url( '/discount/create_giftcode' )}}"> Thêm mã quà tặng</a></li>
+                        <li><a href="{{url('/discount')}}"> Danh sách mã</a></li>
+                    </ul>
+                </li>
+                <li>
                     <a role="button" tabindex="0"><i class="fa fa-cogs"></i> <span>Cài đặt</span><span
                                 class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">

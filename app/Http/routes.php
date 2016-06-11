@@ -81,7 +81,15 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::post('/admin/settings/administrative_units/add', 'SettingsController@add_administrative_units');
         Route::get('/admin/settings/administrative_units/{unit_id}/get_unit_by_parrent', 'SettingsController@get_unit_by_parrent');
         Route::post('/admin/settings/administrative_units/add_city', 'SettingsController@add_city');
-
+        Route::get('/discount', 'DiscountsController@index')->name("discounts");
+        Route::get('/discount/create', 'DiscountsController@create');
+        Route::post('/discount/store', 'DiscountsController@store');
+        Route::get('/discount/create_giftcode', 'DiscountsController@create_giftcode');
+        Route::post('/discount/store_giftcode', 'DiscountsController@store_giftcode');
+        Route::get('/discount/{id}/lock', 'DiscountsController@lock');
+        Route::get('/discount/{id}/show', 'DiscountsController@show');
+        Route::post('/discount/load_list', 'DiscountsController@load_list');
+        Route::post('/discount/check_new_duplicate', 'DiscountsController@check_new_duplicate');
     });
 
 
