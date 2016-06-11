@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Distance_freights;
+use App\Shipper;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -437,6 +438,90 @@ class OrderRest extends Controller
                     array(
                         'accept'   => 1,
                         'freight' => $base_freight_obj->freight,
+                    ),
+                    200
+                );
+            }
+        }
+    }
+
+    public function rateShipper(Request $request, $id){
+
+        $order = Order::find($id);
+        if (empty($order)) {
+            return Response::json(
+                array(
+                    'accept'   => 1,
+                    'messages' => MSG_ORDER_NOT_EXIST,
+                ),
+                200
+            );
+        } else {
+            $user = User::find(Auth::guard('api')->id());
+            if ($user->id == $order->user_id) {
+                if (!empty($order->shipper_id)){
+                    $validator = Validator::make($request->all(), [
+                        "score"  => "required|integer|between:1,5",
+                    ]);
+                    if ($validator->fails()) {
+                        return Response::json(
+                            array(
+                                'accept'   => 0,
+                                'messages' => $validator->messages(),
+                            ),
+                            200
+                        );
+                    }else {
+                        $order->rate_score = $request->score;
+                        $order->save();
+                        if (empty($order->shipper_id))
+                            return Response::json(
+                                array(
+                                    'accept'   => 0,
+                                    'messages' => "Không tồn tại tài xế",
+                                ),
+                                200
+                            );
+
+                        $shipper = Shipper::where("user_id",$order->shipper_id)->first();
+                        if (empty($shipper))
+                            return Response::json(
+                                array(
+                                    'accept'   => 0,
+                                    'messages' => $order->shipper_id,
+                                ),
+                                200
+                            );
+                        $number_rate = empty($shipper->number_rate) ? 0 : $shipper->number_rate;
+                        $number_rate_update = (int) $number_rate + 1;
+                        $average_score = (int)(empty($shipper->average_score) ? 0 : $shipper->average_score) + $request->score;
+                        $average_score_update = round($average_score/$number_rate_update, 1);
+                        $shipper->number_rate = $number_rate_update;
+                        $shipper->average_score = $average_score_update;
+                        $shipper->save();
+                        return Response::json(
+                            array(
+                                'accept'   => 1,
+                                'rate' => ["number_rate" => $shipper->number_rate,
+                                            "average_score" => $shipper->average_score],
+                            ),
+                            200
+                        );
+                    }
+                }else {
+                    return Response::json(
+                        array(
+                            'accept'   => 0,
+                            'messages' => MSG_NOT_HAVE_PERMISSION,
+                        ),
+                        200
+                    );
+                }
+            } else {
+                return Response::json(
+                    array(
+                        'accept'   => 0,
+                        'messages' => MSG_NOT_HAVE_PERMISSION,
                     ),
                     200
                 );
