@@ -404,6 +404,46 @@ class OrderRest extends Controller
         }
     }
 
+    public function findFreight(Request $request){
+        $validator = Validator::make($request->all(), [
+            "vehicle_type_id"  => "required|numeric",
+            "distance"   => "required|numeric",
+        ]);
+        if ($validator->fails()) {
+            return Response::json(
+                array(
+                    'accept'   => 0,
+                    'messages' => $validator->messages(),
+                ),
+                200
+            );
+        } else {
+            $base_freight_obj = Distance_freights::where("vehicle_type_id",$request->vehicle_type_id)
+                ->where("from", "<", $request->distance)
+                ->where("to", ">=", $request->distance)
+                ->orderBy("to","asc")
+                ->orderBy("from","asc")
+                ->first();
+            if(empty($base_freight_obj)){
+                return Response::json(
+                    array(
+                        'accept'   => 0,
+                        'messages' => MSG_DISTANCE_FREIGHT_NOT_EXIST,
+                    ),
+                    200
+                );
+            }else {
+                return Response::json(
+                    array(
+                        'accept'   => 1,
+                        'freight' => $base_freight_obj->freight,
+                    ),
+                    200
+                );
+            }
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
