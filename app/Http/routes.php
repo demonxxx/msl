@@ -89,6 +89,7 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::get('/discount/{id}/lock', 'DiscountsController@lock');
         Route::get('/discount/{id}/show', 'DiscountsController@show');
         Route::post('/discount/load_list', 'DiscountsController@load_list');
+        Route::post('/discount/load_list_user', 'DiscountsController@load_list_user');
         Route::post('/discount/check_new_duplicate', 'DiscountsController@check_new_duplicate');
     });
 
