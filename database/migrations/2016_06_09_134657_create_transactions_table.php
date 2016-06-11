@@ -21,6 +21,7 @@ class CreateTransactionsTable extends Migration
             $table->smallInteger("account_type");
             $table->text("note");
             $table->dateTime("transaction_date");
+            $table->integer("total_user");
             $table->timestamps();
             $table->softDeletes();
         });
