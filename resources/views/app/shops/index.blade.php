@@ -12,19 +12,12 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-wrench"></i>
                     </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#">Config option 1</a>
-                        </li>
-                        <li><a href="#">Config option 2</a>
-                        </li>
-                    </ul>
                     <a class="close-link">
                         <i class="fa fa-times"></i>
                     </a>
                 </div>
             </div>
             <div class="ibox-content">
-
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered table-hover dataTables-example" id="shops-list">
                         <thead>
@@ -165,7 +158,7 @@
         renders.push(common_render);
         renders.push(profile_status_render);
         renders.push(function_render);
-        config['colums'] = ["shop_code", "name", "shop_name", "phone_number", "count_order", "count_agency", "office_district", "profile_status", "id"];
+        config['colums'] = ["user_code", "name", "shop_name", "phone_number", "count_order", "count_agency", "office_district", "profile_status", "id"];
         config['url'] = "/shop/load_list";
         config['id'] = "shops-list";
         config['data_array'] = renders;

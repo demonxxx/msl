@@ -44,6 +44,7 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::post('/shipper/load_notable_list', 'ShippersController@load_notable_list');
         Route::get('/shipper/{shipper_id}/{shop_id}/{notable}/notable_shipper', 'ShippersController@notable_shipper');
         Route::post('/shipper/register_shipper', 'ShippersController@register_shipper');
+        Route::get('/order/{order_id}/details', 'OrdersController@details');
     });
     Route::group(['roles' => ['shipper', 'admin']], function () {
         Route::get('/shipper', 'ShippersController@index')->name("shippers");

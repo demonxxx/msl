@@ -1,6 +1,14 @@
 @extends('app.orders.order')
 @section('order')
 <!-- tile -->
+<style>
+    .modal90 > .modal-dialog {
+        width:90% !important;
+    }
+    .modal-body {
+        padding: 10px 30px 0px 30px !important;
+    }
+</style>
 <div class="row">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
@@ -104,6 +112,28 @@
     </div>
 </div>
 <script >
+    function orderDetails(id) {
+        $.ajax({
+            url: base_url + "/order/" + id + "/details",
+            type: "GET",
+            dataType: 'html',
+            success: function (data, textStatus, jqXHR) {
+                bootbox.dialog({
+                    message: data,
+                    title: "Chi tiết đơn hàng",
+                    buttons: {
+                        main: {
+                            label: "Đóng",
+                            className: "btn-primary"
+                        }
+                    },
+                    className: "modal90"
+                });
+            }, error: function (jqXHR, textStatus, errorThrown) {
+                $.notify("Có lỗi, thử lại sau", "error");
+            }
+        });
+    }
     $(document).ready(function () {
         var common_render = {
             "render": function (data, type, row) {
@@ -153,7 +183,7 @@
         };
         var function_render = {
             "render": function (data, type, row) {
-                return "<div class='text-center'><button class='btn btn-success btn-sm'>Chi tiết</button></div>";
+                return "<div class='text-center'><button class='btn btn-success btn-sm' onclick='orderDetails(" + row.id + ")'>Chi tiết</button></div>";
             },
             "targets": [8]
         };
