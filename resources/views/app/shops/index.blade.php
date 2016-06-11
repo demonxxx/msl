@@ -123,7 +123,7 @@
                     }
                 });
             }, error: function (jqXHR, textStatus, errorThrown) {
-
+                $.notify("Không thể lấy thông tin shop, kiểm tra lại!", "error");
             }
         });
     }
