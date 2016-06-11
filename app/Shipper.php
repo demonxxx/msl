@@ -25,7 +25,7 @@ class Shipper extends Model {
     public function get_all_shippers($post) {
         $builder = DB::table("shippers");
         $builder->select(array("users.id", "shippers.code", "users.name", "users.email", "users.identity_card", "shippers.average_score",
-                    "shippers.profile_status", "administrative_units.name as home_district", "users.phone_number", DB::raw('COUNT(shipper_order_histories.id) as count_order'),))
+                    "shippers.isActive", "shippers.id as shipper_id", "shippers.profile_status", "administrative_units.name as home_district", "users.phone_number", DB::raw('COUNT(shipper_order_histories.id) as count_order'),))
                 ->join("users", "shippers.user_id", "=", "users.id")
                 ->leftjoin("administrative_units", "shippers.home_district_id", "=", "administrative_units.id")
                 ->leftjoin("shipper_order_histories", "shipper_order_histories.shipper_id", "=", "users.id");
@@ -35,6 +35,34 @@ class Shipper extends Model {
                 ->orderBy($post["orderBy"], $post["orderSort"])
                 ->groupBy("users.id");
         $data = $builder->get();
+        foreach ($data AS $key => $value) {
+            $success_orders = DB::table("orders")
+                    ->where("shipper_id", "=", $value->shipper_id)
+                    ->where("shipper_id", "=", ORDER_SHIP_SUCCESS)
+                    ->count();
+            $payed_orders = DB::table("orders")
+                    ->where("shipper_id", "=", $value->shipper_id)
+                    ->where("shipper_id", "=", ORDER_PAYED)
+                    ->count();
+            $payed_ship_success = $success_orders + $payed_orders;
+
+            $return_orders = DB::table("orders")
+                    ->where("shipper_id", "=", $value->shipper_id)
+                    ->where("shipper_id", "=", ORDER_RETURN_ITEMS)
+                    ->count();
+            $returning_order = DB::table("orders")
+                    ->where("shipper_id", "=", $value->shipper_id)
+                    ->where("shipper_id", "=", ORDER_RETURNING)
+                    ->count();
+            $cancel_order = DB::table("orders")
+                    ->where("shipper_id", "=", $value->shipper_id)
+                    ->where("shipper_id", "=", ORDER_SHOP_CANCEL)
+                    ->count();
+            $return_returning_cancel = $return_orders + $returning_order + $cancel_order;
+
+            $data[$key]->payed_ship_success = $payed_ship_success;
+            $data[$key]->return_returning_cancel = $return_returning_cancel;
+        }
         return $data;
     }
 

@@ -76,55 +76,103 @@
     </div>
 </div>
 <script >
-$(document).ready(function () {
-    var common_render = {
-        "render": function (data, type, row) {
-            return render_common(data);
-        },
-        "targets": [0, 1, 2, 3, 4, 5, 6]
+    var shipperTable;
+    var blockShipperFunction = function (id, name, message) {
+        name = (name !== null) ? name : "";
+        swal({
+            title: "Bạn có chắc muốn " + message + " shipper " + name + "?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Chắc chắn!",
+            cancelButtonText: "Hủy",
+            closeOnConfirm: false
+        }, function () {
+            $.ajax({
+                url: base_url + "/shipper/" + id + "/update_isActive",
+                type: 'GET',
+                success: function (data, textStatus, jqXHR) {
+                    if (data) {
+                        swal("Thành công!", "Đã thay đổi trạng thái", "success");
+                    } else {
+                        swal("Không thành công!", "Không thay đổi trạng thái", "error");
+                    }
+                    shipperTable.draw();
+                }, error: function (jqXHR, textStatus, errorThrown) {
+                    swal("Không thành công!", "Không thay đổi trạng thái", "error");
+                }
+            });
+        });
     };
-    var profile_render = {
-        "render": function (data, type, row) {
-            data = (data == null) ? "0" : data;
-            return "<div class='text-center'>" + data + "%</div>";
-        },
-        "targets": [7]
-    };
+    $(document).ready(function () {
+        var common_render = {
+            "render": function (data, type, row) {
+                return render_common(data);
+            },
+            "targets": [0, 1, 2, 3, 4, 5]
+        };
+        var order_render = {
+            "render": function (data, type, row) {
+                var html = "<div class='text-center'>";
+                html += "<p>Tổng: " + data;
+                html += " - Thành công: " + row.payed_ship_success;
+                html += " - Thất bại: " + row.return_returning_cancel + "</p>";
+                html += "</div>";
+                return html;
+            },
+            "targets": [6]
+        };
+        var profile_render = {
+            "render": function (data, type, row) {
+                data = (data == null) ? "0" : data;
+                return "<div class='text-center'>" + data + "%</div>";
+            },
+            "targets": [7]
+        };
 
-    var function_render = {
-        "render": function (data, type, row) {
-            return render_function(data);
-        },
-        "targets": [8]
-    };
+        var function_render = {
+            "render": function (data, type, row) {
+                return render_function(data, type, row);
+            },
+            "targets": [8]
+        };
 
-    function render_common(data) {
-        data = (data == null) ? "" : data;
-        return "<div class='text-center'>" + data + "</div>";
-    }
+        function render_common(data) {
+            data = (data == null) ? "" : data;
+            return "<div class='text-center'>" + data + "</div>";
+        }
 
-    function render_function(data) {
-        var edit_url = base_url + "/shipper/" + data + "/edit";
-        return "<div class='text-center'>" +
-                "<a class='btn btn-primary btn-sm' href='" + edit_url + "'>Sửa</a>" +
-                "<a class='btn btn-danger btn-sm' disabled style='margin-left: 10px;'>Xóa</a>" +
-                "</div>";
-    }
+        function render_function(data, type, row) {
+            var edit_url = base_url + "/shipper/" + data + "/edit";
+            var text = (row.isActive == 2) ? "Mở" : "Khóa";
+            return "<div class='text-center'>" +
+                    "<a class='btn btn-primary btn-sm' href='" + edit_url + "'>Sửa</a>" +
+                    "<button class='btn btn-danger btn-sm' style='margin-left: 10px;' onclick='blockShipperFunction(" + row.shipper_id + ",\"" + row.name + "\",\"" + text + "\")'>" + text + "</button>" +
+                    "</div>";
+        }
 
-    var config = [];
-    var renders = [];
-    renders.push(common_render);
-    renders.push(profile_render);
-    renders.push(function_render);
-    config['colums'] = ["code", "name", "identity_card", "home_district", "phone_number", "average_score", "count_order", "profile_status", "id"];
-    config['url'] = "/shipper/load_list";
-    config['id'] = "shippers-list";
-    config['data_array'] = renders;
-    config['clear_filter'] = true;
-    config['sort_off'] = [8];
-    config['hidden_global_seach'] = true;
-    setAjaxDataTable(config);
-});
+        var config = [];
+        var renders = [];
+        renders.push(common_render);
+        renders.push(profile_render);
+        renders.push(order_render);
+        renders.push(function_render);
+        config['colums'] = ["code", "name", "identity_card", "home_district", "phone_number", "average_score", "count_order", "profile_status", "id"];
+        config['url'] = "/shipper/load_list";
+        config['id'] = "shippers-list";
+        config['data_array'] = renders;
+        config['clear_filter'] = true;
+        config['sort_off'] = [8];
+        config['hidden_global_seach'] = true;
+        config['fnRowCallback'] = function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            var rowClass = (aData.isActive == 2) ? "danger" : "";
+            $(nRow).addClass(rowClass);
+//            $('td', nRow).eq(0).find('div').addClass('text-info').bind("click", function (e) {
+//                getShopDetails($(this).attr("shop-id"));
+//            });
+        };
+        shipperTable = setAjaxDataTable(config);
+    });
 </script>
 @endsection
 

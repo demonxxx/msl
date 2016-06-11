@@ -145,4 +145,10 @@ class OrdersController extends Controller {
         return $result;
     }
 
+    public function details($order_id) {
+        $order = new Order();
+//        dd($order->details($order_id));
+        return view("app.orders.details", ['details' => $order->details($order_id)])->render();
+    }
+
 }

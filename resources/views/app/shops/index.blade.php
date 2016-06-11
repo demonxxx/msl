@@ -12,19 +12,12 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-wrench"></i>
                     </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#">Config option 1</a>
-                        </li>
-                        <li><a href="#">Config option 2</a>
-                        </li>
-                    </ul>
                     <a class="close-link">
                         <i class="fa fa-times"></i>
                     </a>
                 </div>
             </div>
             <div class="ibox-content">
-
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered table-hover dataTables-example" id="shops-list">
                         <thead>
@@ -83,6 +76,7 @@
 <script>
     var shopTable;
     var blockShopFunction = function (id, name, message) {
+        name = (name !== null) ? name : "";
         swal({
             title: "Bạn có chắc muốn " + message + " shop " + name + "?",
             type: "warning",
@@ -129,7 +123,7 @@
                     }
                 });
             }, error: function (jqXHR, textStatus, errorThrown) {
-
+                $.notify("Không thể lấy thông tin shop, kiểm tra lại!", "error");
             }
         });
     }
@@ -154,7 +148,7 @@
                 var text = (row.isActive == 2) ? "Mở" : "Khóa";
                 return "<div class='text-center'>" +
                         "<a class='btn btn-primary btn-sm' href='" + edit_url + "'>Sửa</a>" +
-                        "<button class='btn btn-danger btn-sm' onclick='blockShopFunction(" + row.id + ",\"" + row.shop_name + "\",\"" + text + "\")' style='margin-left: 10px;'>" + text + "</button>" +
+                        "<button class='btn btn-danger btn-sm' onclick='blockShopFunction(" + row.shop_id + ",\"" + row.shop_name + "\",\"" + text + "\")' style='margin-left: 10px;'>" + text + "</button>" +
                         "</div>";
             },
             "targets": [8]
@@ -165,7 +159,7 @@
         renders.push(common_render);
         renders.push(profile_status_render);
         renders.push(function_render);
-        config['colums'] = ["shop_code", "name", "shop_name", "phone_number", "count_order", "count_agency", "office_district", "profile_status", "id"];
+        config['colums'] = ["user_code", "name", "shop_name", "phone_number", "count_order", "count_agency", "office_district", "profile_status", "id"];
         config['url'] = "/shop/load_list";
         config['id'] = "shops-list";
         config['data_array'] = renders;

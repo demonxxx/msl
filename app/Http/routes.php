@@ -44,12 +44,14 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::post('/shipper/load_notable_list', 'ShippersController@load_notable_list');
         Route::get('/shipper/{shipper_id}/{shop_id}/{notable}/notable_shipper', 'ShippersController@notable_shipper');
         Route::post('/shipper/register_shipper', 'ShippersController@register_shipper');
+        Route::get('/order/{order_id}/details', 'OrdersController@details');
     });
     Route::group(['roles' => ['shipper', 'admin']], function () {
         Route::get('/shipper', 'ShippersController@index')->name("shippers");
         Route::get('/shipper/create', 'ShippersController@create');
         Route::post('/shipper/store', 'ShippersController@store');
         Route::get('/shipper/{shipper_id}/edit', 'ShippersController@edit');
+        Route::get('/shipper/{shipper_id}/update_isActive', 'ShippersController@update_isActive');
         Route::post('/shipper/{id}/update', 'ShippersController@update');
         Route::post('/shipper/load_list', 'ShippersController@load_list');
         Route::post('/shipper/check_new_user_duplicate', 'ShippersController@check_new_user_duplicate');
