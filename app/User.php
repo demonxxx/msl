@@ -122,4 +122,38 @@ class User extends Authenticatable
         }
         return $builder;
     }
+    
+    public function get_all_users($post) {
+        $builder = DB::table("users");
+        $builder->select("users.id", "users.code", "users.name", "users.phone_number");
+        $search_params = $post['searchParams'];
+        $this->table_condition($builder, $search_params);
+        $builder->skip($post["iDisplayStart"])->take($post["iDisplayLength"])
+                ->orderBy($post["orderBy"], $post["orderSort"]);
+        $data = $builder->get();
+        return $data;
+    }
+    
+    public function count_all_users($post) {
+        $builder = DB::table("users");
+        $builder->select("users.id");
+        $search_params = $post['searchParams'];
+        $this->table_condition($builder, $search_params);
+        $count = $builder->count();
+        return $count;
+    }
+    public function table_condition_users($builder, $search_params) {
+        if (!empty($search_params)) {
+            if (array_key_exists('code', $search_params)) {
+                $builder->where('users.code', 'like', '%' . $search_params['code'] . '%');
+            }
+            if (array_key_exists('name', $search_params)) {
+                $builder->where('users.name', 'like', '%' . $search_params['name'] . '%');
+            }
+            if (array_key_exists('phone_number', $search_params)) {
+                $builder->where('users.phone_number', 'like', '%' . $search_params['phone_number'] . '%');
+            }
+        }
+        return $builder;
+    }
 }
