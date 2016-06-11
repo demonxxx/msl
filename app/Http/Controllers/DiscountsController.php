@@ -156,8 +156,10 @@ class DiscountsController extends Controller {
      */
     public function show($id) {
         $discount_model = new Discount();
+        $discount_user_model = new Discount_user();
         $discount = $discount_model->find($id);
-        return view('app.discounts.show',["discount" => $discount]);
+        $discount_users = $discount_user_model->list_discount_users($id);
+        return view('app.discounts.show',["discount" => $discount, "discount_users" => $discount_users]);
     }
 
     
