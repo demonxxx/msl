@@ -13,12 +13,14 @@
         <link href="{{ asset("theme/css/style.css") }}" rel="stylesheet">
         <link href="{{ asset("theme/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css") }}" rel="stylesheet">
         <link href="{{ asset("theme/css/plugins/iCheck/custom.css") }}" rel="stylesheet">
+        <link href="{{ asset("theme/js/plugins/jquery-ui-1.11.4/jquery-ui.css") }}" rel="stylesheet">
 
         <!-- Mainly scripts -->
         <script src="{{ asset("theme/js/jquery-2.1.1.js") }}"></script>
         <script src="{{ asset("theme/js/bootstrap.min.js") }}"></script>
         <script src="{{ asset("theme/js/plugins/metisMenu/jquery.metisMenu.js") }}"></script>
         <script src="{{ asset("theme/js/plugins/slimscroll/jquery.slimscroll.min.js") }}"></script>
+        <script src="{{ asset("theme/js/plugins/jquery-ui-1.11.4/jquery-ui.js") }}"></script>
 
         <!-- Custom and plugin javascript -->
         <script src="{{ asset("theme/js/inspinia.js") }}"></script>

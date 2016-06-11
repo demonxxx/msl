@@ -27,25 +27,25 @@
                                 <th class="text-center">Chức năng</th>
                             </tr>
                             <tr class="table-header-search">
-                                <th><input type="email" style="max-width: 100px;" placeholder="Mã GD" class="form-control"></th>
-                                <th><input type="email" style="max-width: 80px;"  placeholder="Số tiền" class="form-control"></th>
-                                <th><select class="form-control m-b" name="account">
+                                <th><input name="code" style="max-width: 100px;" placeholder="Mã GD" class="form-control"></th>
+                                <th><input name="amount" style="max-width: 80px;"  placeholder="Số tiền" class="form-control"></th>
+                                <th><select class="form-control m-b" name="transaction_type">
                                         <option value="">-Tất cả-</option>
                                         <option value="1">Cộng tiền</option>
                                         <option value="2">Trừ tiền</option>
                                     </select>
                                 </th>
-                                <th><select class="form-control m-b" name="account">
+                                <th><select class="form-control m-b" name="account_type">
                                         <option value="">-Tất cả-</option>
                                         <option value="1">TK Chính</option>
                                         <option value="2">TK Phụ</option>
                                     </select></th>
-                                <th><input type="email" style="max-width: 80px;" placeholder="Tổng số" class="form-control"></th>
-                                <th><input type="email" style="max-width: 100px;" placeholder="Tổng tiền" class="form-control"></th>
-                                <th><input type="email" style="max-width: 100px;" placeholder="Ghi chú" class="form-control"></th>
-                                <th><input type="email" style="max-width: 100px;" placeholder="Tên" class="form-control"></th>
-                                <th><input type="email" style="max-width: 100px;" placeholder="Thời gian" class="form-control"></th>
+                                <th><input name="total_user" style="max-width: 80px;" placeholder="Tổng số" class="form-control"></th>
                                 <th></th>
+                                <th><input name="note" style="max-width: 100px;" placeholder="Ghi chú" class="form-control"></th>
+                                <th><input name="creator_name" style="max-width: 100px;" placeholder="Tên" class="form-control"></th>
+                                <th><input name="transaction_date" style="max-width: 100px;" placeholder="Thời gian" class="form-control"></th>
+                                <th class="text-center clear-filter"></th>
                             </tr>
                             </thead>
                         </table>
