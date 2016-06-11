@@ -8,6 +8,7 @@ use App\User;
 use App\Shipper;
 use App\Shop;
 use App\Discount;
+use App\Discount_user;
 use App\Helpers\helpers;
 use Auth;
 
@@ -51,12 +52,20 @@ class DiscountsController extends Controller {
                     'total' => 'required',
                     'total_one_user' => 'required',
                     'start_time' => 'required',
-                    'end_time' => 'required'
+                    'end_time' => 'required',
+                    'list_users' => 'required'
         ]);
         if ($validator->fails()) {
             flash_message("Tạo khuyến mại mới không thành công!", "danger");
             return redirect('discount/create')->withErrors($validator)->withInput();
-        } else {
+        } 
+        $user_ids = json_decode($request->list_users);
+        if (empty($user_ids)) {
+            flash_message("Tạo giao dịch không thành công!", "danger");
+            return redirect('discount/create')->withErrors("Không có người dùng nào!")->withInput();
+        }
+        $admin = Auth::user();
+        if($admin->isAdmin()){
             $discount = new Discount;
             $max_id = Discount::max('id') + 1;
             $discount->code = "DC" . $max_id;
@@ -70,8 +79,20 @@ class DiscountsController extends Controller {
             $discount->start_time = $request->start_time;
             $discount->end_time = $request->end_time;
             $discount->save();
+            $list_users_tmp = json_decode($request->get('list_users', []));
+            $list_users = array_unique($list_users_tmp);
+            foreach ($list_users as $user_id){
+                $discount_user = new Discount_user;
+                $discount_user->discount_id = $discount->id;
+                $discount_user->user_id = $user_id;
+                $discount_user->count = $discount->total_one_user;
+                $discount_user->save();
+            }
             flash_message("Tạo khuyến mại mới thành công!");
             return back();
+        } else {
+            flash_message("Bạn không được phép thực hiện dịch vụ này!", "danger");
+            return redirect('discount/create');
         }
     }
     
@@ -83,12 +104,20 @@ class DiscountsController extends Controller {
                     'amount' => 'required',
                     'total' => 'required',
                     'start_time' => 'required',
-                    'end_time' => 'required'
+                    'end_time' => 'required',
+                    'list_users' => 'required'
         ]);
         if ($validator->fails()) {
             flash_message("Tạo mã quà tặng mới không thành công!", "danger");
             return redirect('discount/create_giftcode')->withErrors($validator)->withInput();
-        } else {
+        }
+        $user_ids = json_decode($request->list_users);
+        if (empty($user_ids)) {
+            flash_message("Tạo giao dịch không thành công!", "danger");
+            return redirect('discount/create_giftcode')->withErrors("Không có người dùng nào!")->withInput();
+        }
+        $admin = Auth::user();
+        if($admin->isAdmin()){
             $discount = new Discount;
             $max_id = Discount::max('id') + 1;
             $discount->code = "GC" . $max_id;
@@ -102,8 +131,20 @@ class DiscountsController extends Controller {
             $discount->start_time = $request->start_time;
             $discount->end_time = $request->end_time;
             $discount->save();
+            $list_users_tmp = json_decode($request->get('list_users', []));
+            $list_users = array_unique($list_users_tmp);
+            foreach ($list_users as $user_id){
+                $discount_user = new Discount_user;
+                $discount_user->discount_id = $discount->id;
+                $discount_user->user_id = $user_id;
+                $discount_user->count = 1; //default 1 time using for 1 person
+                $discount_user->save();
+            }
             flash_message("Tạo mã quà tặng mới thành công!");
             return back();
+        } else {
+            flash_message("Bạn không được phép thực hiện dịch vụ này!", "danger");
+            return redirect('discount/create');
         }
     }
     
@@ -149,7 +190,17 @@ class DiscountsController extends Controller {
         $result = build_json_datatable_new($data, $length, $posts);
         return $result;
     }
-
+    
+    public function load_list_user(Request $request)
+    {
+        $posts = get_post_datatable_new($request->all());
+        $users = new User();
+        $data = $users->get_all_users($posts);
+        $length = $users->count_all_users($posts);
+        $result = build_json_datatable_new($data, $length, $posts);
+        return $result;
+    }
+    
     public function check_new_duplicate(Request $request) {
         $params = $request->all();
         $colum = $params['colum_name'];
@@ -161,5 +212,6 @@ class DiscountsController extends Controller {
             return "fail";
         }
     }
+    
 
 }
