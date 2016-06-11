@@ -56,16 +56,13 @@ class Transaction extends Model
                 $builder->where('transactions.account_type', '=', $search_params['account_type']);
             }
 
-
             if (array_key_exists('total_user', $search_params)) {
                 $builder->where('transactions.total_user', '=', $search_params['total_user']);
             }
 
-
             if (array_key_exists('note', $search_params)) {
                 $builder->where('transactions.note', 'like', '%' . $search_params['note'] . '%');
             }
-
 
             if (array_key_exists('creator_name', $search_params)) {
                 $builder->where('users.name', 'like', '%' . $search_params['creator_name'] . '%');
