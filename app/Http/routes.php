@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::get('/shipper/create', 'ShippersController@create');
         Route::post('/shipper/store', 'ShippersController@store');
         Route::get('/shipper/{shipper_id}/edit', 'ShippersController@edit');
+        Route::get('/shipper/{shipper_id}/update_isActive', 'ShippersController@update_isActive');
         Route::post('/shipper/{id}/update', 'ShippersController@update');
         Route::post('/shipper/load_list', 'ShippersController@load_list');
         Route::post('/shipper/check_new_user_duplicate', 'ShippersController@check_new_user_duplicate');

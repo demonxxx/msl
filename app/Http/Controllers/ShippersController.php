@@ -38,7 +38,6 @@ class ShippersController extends Controller {
         $vehicletype = new VehicleType;
         $vehicletypes = $vehicletype->all();
         return view('app.shippers.create', ['shippertypes' => $shippertypes, 'vehicletypes' => $vehicletypes, 'cities' => $cities]);
-
     }
 
     /**
@@ -79,8 +78,8 @@ class ShippersController extends Controller {
             $user->api_token = str_random(60);
             $user->save();
             $shipper = new Shipper;
-            $max_id = Shipper::max('id')+1;
-            $shipper->code = "TX".$max_id;
+            $max_id = Shipper::max('id') + 1;
+            $shipper->code = "TX" . $max_id;
             $shipper->home_number = $request->home_number;
             $shipper->home_ward_id = $request->home_ward_id;
             $shipper->home_district_id = $request->home_district_id;
@@ -122,7 +121,7 @@ class ShippersController extends Controller {
         $vehicletypes = $vehicletype->all();
         $cities = Adminnistrative_units::where("level", CITY_UNIT)->get();
         $districts = Adminnistrative_units::where("level", DISTRICT_UNIT)->where("parent_id", $shipper_obj->home_city_id)->get();
-        $wards = Adminnistrative_units::where("level",WARD_UNIT)->where("parent_id", $shipper_obj->home_district_id)->get();
+        $wards = Adminnistrative_units::where("level", WARD_UNIT)->where("parent_id", $shipper_obj->home_district_id)->get();
         return view("app/shippers/edit", [ "shipper" => $shipper_obj, "user" => $user_obj, "user_id" => $user_id,
             'shippertypes' => $shippertypes, 'vehicletypes' => $vehicletypes, 'cities' => $cities, 'districts' => $districts, 'wards' => $wards]);
     }
@@ -137,17 +136,17 @@ class ShippersController extends Controller {
     public function update(Request $request, $id) {
         //dd($request->all());
         $validator = \Validator::make($request->all(), [
-                    'name'                  => 'required|max:255',
-                    'phone_number'          => 'required|min:10|max:11',
-                    'email'                 => 'required|email|max:255',
-                    'home_number'           => 'required|max:255',
-                    'home_ward_id'          => 'required',
-                    'home_district_id'      => 'required',
-                    'home_city_id'          => 'required',
-                    'identity_card'         => 'required|min:9|max:12',
-                    'vehicle_type_id'       => 'required',
-                    'shipper_type_id'       => 'required',
-                    'licence_plate'         => 'required|max:12',
+                    'name' => 'required|max:255',
+                    'phone_number' => 'required|min:10|max:11',
+                    'email' => 'required|email|max:255',
+                    'home_number' => 'required|max:255',
+                    'home_ward_id' => 'required',
+                    'home_district_id' => 'required',
+                    'home_city_id' => 'required',
+                    'identity_card' => 'required|min:9|max:12',
+                    'vehicle_type_id' => 'required',
+                    'shipper_type_id' => 'required',
+                    'licence_plate' => 'required|max:12',
                     'licence_driver_number' => 'required|max:12',
         ]);
         if ($validator->fails()) {
@@ -247,8 +246,8 @@ class ShippersController extends Controller {
         } else {
             $shop = Shop::where('user_id', '=', $request->user_id)->first();
             $shipper = new Shipper;
-            $max_id = Shipper::max('id')+1;
-            $shipper->code = "TX".$max_id;
+            $max_id = Shipper::max('id') + 1;
+            $shipper->code = "TX" . $max_id;
             $shipper->user_id = $shop->user_id;
             $shipper->home_number = $shop->home_number;
             $shipper->home_ward = $shop->home_ward;
@@ -257,6 +256,13 @@ class ShippersController extends Controller {
             $shipper->save();
             flash_message("Đăng kí tài xế thành công!");
         }
+    }
+
+    public function update_isActive($shipper_id) {
+        $shipper = new Shipper();
+        $shipper_obj = $shipper::find($shipper_id);
+        $shipper_obj->isActive = ($shipper_obj->isActive == 2) ? 1 : 2;
+        echo $shipper_obj->save();
     }
 
 }
