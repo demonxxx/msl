@@ -49,8 +49,41 @@
                     <td>{{$details->distance}}</td>
                     <th>Trọng lượng</th>
                     <td>{{$details->weight}}</td>
+                    <?php
+                    switch ($details->status) {
+                        case 1:
+                            $status = 'Đang xử lý';
+                            break;
+                        case 2:
+                            $status = 'Đã nhận đơn';
+                            break;
+                        case 3:
+                            $status = 'Đã nhận hàng';
+                            break;
+                        case 4:
+                            $status = 'Đang vận chuyển';
+                            break;
+                        case 5:
+                            $status = 'Vận chuyển thành công';
+                            break;
+                        case 6:
+                            $status = 'Đã trả tiền';
+                            break;
+                        case 7:
+                            $status = 'Hủy đơn hàng';
+                            break;
+                        case 8:
+                            $status = 'Đã trả hàng';
+                            break;
+                        case 9:
+                            $status = 'Đang trả hàng';
+                            break;
+                        default:
+                            $status = 'Đang xử lý';
+                    }
+                    ?>
                     <th>Trạng thái</th>
-                    <td>{{$details->status}}</td>
+                    <td><?php echo $status; ?></td>
                 </tr>
                 <tr>
                     <th>Cước chính</th>
