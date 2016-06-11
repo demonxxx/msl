@@ -59,8 +59,6 @@ class OrderRest extends Controller
         $validator = Validator::make($request->all(), [
             "order_type_id"     => "required|numeric",
             "vehicle_type_id"   => "required|numeric",
-            "recipient_name"    => "required",
-            "recipient_phone"   => "required|numeric",
             "full_address_to"   => "required",
             "full_address_from" => "required",
             "order_values"      => "required",
@@ -399,6 +397,46 @@ class OrderRest extends Controller
                     array(
                         'accept'   => 0,
                         'messages' => MSG_NOT_HAVE_PERMISSION,
+                    ),
+                    200
+                );
+            }
+        }
+    }
+
+    public function findFreight(Request $request){
+        $validator = Validator::make($request->all(), [
+            "vehicle_type_id"  => "required|numeric",
+            "distance"   => "required|numeric",
+        ]);
+        if ($validator->fails()) {
+            return Response::json(
+                array(
+                    'accept'   => 0,
+                    'messages' => $validator->messages(),
+                ),
+                200
+            );
+        } else {
+            $base_freight_obj = Distance_freights::where("vehicle_type_id",$request->vehicle_type_id)
+                ->where("from", "<", $request->distance)
+                ->where("to", ">=", $request->distance)
+                ->orderBy("to","asc")
+                ->orderBy("from","asc")
+                ->first();
+            if(empty($base_freight_obj)){
+                return Response::json(
+                    array(
+                        'accept'   => 0,
+                        'messages' => MSG_DISTANCE_FREIGHT_NOT_EXIST,
+                    ),
+                    200
+                );
+            }else {
+                return Response::json(
+                    array(
+                        'accept'   => 1,
+                        'freight' => $base_freight_obj->freight,
                     ),
                     200
                 );

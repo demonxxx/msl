@@ -40,6 +40,7 @@
                     <ul class="nav nav-second-level collapse">
                         <li><a href="{{url( '/shop/create' )}}"> Thêm khách hàng mới</a></li>
                         <li><a href="{{url('/shop')}}">Danh sách khách hàng</a></li>
+                        <li><a href="{{url('/admin/transaction/index')}}"> Quản lý giao dịch</a></li>
                     </ul>
                 </li>
                 <li>
@@ -49,6 +50,15 @@
                         <li><a href="{{url( '/shipper/create' )}}"> Thêm tài xế</a></li>
                         <li><a href="{{url('/shipper')}}"> Danh sách tài xế</a></li>
                         <li><a href="{{url( '/shipper/notable_list' )}}"> Đánh giá tài xế</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a role="button" tabindex="0"><i class="fa fa-taxi"></i> <span>Khuyến mại</span><span
+                                class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="{{url( '/discount/create' )}}"> Thêm mã khuyến mại</a></li>
+                        <li><a href="{{url( '/discount/create_giftcode' )}}"> Thêm mã quà tặng</a></li>
+                        <li><a href="{{url('/discount')}}"> Danh sách mã</a></li>
                     </ul>
                 </li>
                 <li>
@@ -64,7 +74,7 @@
                         <li><a href="{{url( 'admin/settings/shipperTypes' )}}"> Loại tài xế</a></li>
                         <li><a href="{{url( 'admin/settings/orderTypes' )}}"> Loại đơn hàng</a></li>
                         <li><a href="{{url( 'admin/settings/administrative_units' )}}"> Đơn vị hành chính</a></li>
-                        <li><a href="{{url('/admin/transaction/create')}}"> Quản lý giao dịch</a></li>
+
                     </ul>
                 </li>
             @endcan
