@@ -76,6 +76,7 @@
 <script>
     var shopTable;
     var blockShopFunction = function (id, name, message) {
+        name = (name !== null) ? name : "";
         swal({
             title: "Bạn có chắc muốn " + message + " shop " + name + "?",
             type: "warning",
@@ -147,7 +148,7 @@
                 var text = (row.isActive == 2) ? "Mở" : "Khóa";
                 return "<div class='text-center'>" +
                         "<a class='btn btn-primary btn-sm' href='" + edit_url + "'>Sửa</a>" +
-                        "<button class='btn btn-danger btn-sm' onclick='blockShopFunction(" + row.id + ",\"" + row.shop_name + "\",\"" + text + "\")' style='margin-left: 10px;'>" + text + "</button>" +
+                        "<button class='btn btn-danger btn-sm' onclick='blockShopFunction(" + row.shop_id + ",\"" + row.shop_name + "\",\"" + text + "\")' style='margin-left: 10px;'>" + text + "</button>" +
                         "</div>";
             },
             "targets": [8]

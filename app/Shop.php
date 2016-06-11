@@ -26,7 +26,7 @@ class Shop extends Model {
         $builder = DB::table("shops");
         $builder->select(array("users.id", "users.name", "users.email", "users.identity_card", "users.phone_number",
                     DB::raw('COUNT(orders.id) as count_order'), DB::raw('COUNT(agencys.id) as count_agency'),
-                    "shops.code as shop_code", "shops.shop_name", "users.code as user_code",
+                    "shops.id as shop_id", "shops.code as shop_code", "shops.shop_name", "users.code as user_code",
                     "shops.office_number", 'city.name as office_city', DB::raw('district.name as office_district'),
                     DB::raw('ward.name as office_ward'), "shops.profile_status", "shops.isActive"))
                 ->join("users", "shops.user_id", "=", "users.id")
