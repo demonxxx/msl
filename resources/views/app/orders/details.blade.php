@@ -3,7 +3,7 @@
         <table class="table table-condensed">
             <tbody>
                 <tr>
-                    <th colspan="8"><h4>Thông tin khách hàng</h4></th>
+                    <th colspan="8"><h3 style="color:green;">Thông tin khách hàng</h3></th>
                 </tr>
                 <tr>
                     <th width='15%'>Mã khách hàng</th>
@@ -20,7 +20,7 @@
         <table class="table table-condensed">
             <tbody>
                 <tr>
-                    <th colspan="8"><h4>Thông tin đơn hàng</h4></th>
+                    <th colspan="8"><h3 style="color:green;">Thông tin đơn hàng</h3></th>
                 </tr>
                 <tr>
                     <th width='10%'>Mã đơn</th>
@@ -33,14 +33,10 @@
                     <td>{{$details->full_address_to}}</td>
                 </tr>
                 <tr>
-                    <th>Người nhận</th>
-                    <td>{{$details->recipient_name}}</td>
-                    <th>SĐT người nhận</th>
-                    <td>{{$details->recipient_phone}}</td>
-                    <th>Người nhận</th>
-                    <td>{{$details->recipient_name}}</td>
-                    <th>SĐT người nhận</th>
-                    <td>{{$details->recipient_phone}}</td>
+                    <th colspan="2">Người nhận</th>
+                    <td colspan="2">{{$details->recipient_name}}</td>
+                    <th colspan="2">SĐT người nhận</th>
+                    <td colspan="2">{{$details->recipient_phone}}</td>
                 </tr>
                 <tr>
                     <th>Giá trị</th>
@@ -67,7 +63,7 @@
                             $status = 'Vận chuyển thành công';
                             break;
                         case 6:
-                            $status = 'Đã trả tiền';
+                            $status = 'Đã thanh toán';
                             break;
                         case 7:
                             $status = 'Hủy đơn hàng';
@@ -96,24 +92,22 @@
                     <td>{{$details->base_freight}}</td>
                 </tr>
                 <tr>
-                    <th>Nhận đơn</th>
+                    <th>TG nhận đơn</th>
                     <td>{{$details->taken_order_at}}</td>
-                    <th>Nhận hàng</th>
+                    <th>TG nhận hàng</th>
                     <td>{{$details->taken_items_at}}</td>
-                    <th>Chuyển hàng</th>
-                    <td>{{$details->shipping_at}}</td>
-                    <th>Chuyển thành công</th>
+                    <th>TG chuyển thành công</th>
                     <td>{{$details->ship_success_at}}</td>
+                    <th>TG thanh toán</th>
+                    <td>{{$details->payed_at}}</td>
                 </tr>
                 <tr>
-                    <th>Thanh toán</th>
-                    <td>{{$details->payed_at}}</td>
-                    <th>Hủy đơn</th>
+                    <th>TG hủy đơn</th>
                     <td>{{$details->shop_cancel_at}}</td>
-                    <th>Đang trả</th>
+                    <th>TG đang trả</th>
                     <td>{{$details->returning_at}}</td>
-                    <th>Đã trả</th>
-                    <td>{{$details->return_items_at}}</td>
+                    <th>TG đã trả</th>
+                    <td colspan="3">{{$details->return_items_at}}</td>
                 </tr>
                 <tr>
                     <th>Bắt đầu</th>
@@ -130,7 +124,7 @@
         <table class="table table-condensed">
             <tbody>
                 <tr>
-                    <th colspan="6"><h4>Thông tin người vận chuyển</h4></th>
+                    <th colspan="6"><h3 style="color:green;">Thông tin người vận chuyển</h3></th>
                 </tr>
                 <tr>
                     <th width='10%'>Mã</th>
