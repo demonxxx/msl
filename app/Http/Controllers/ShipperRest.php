@@ -324,6 +324,7 @@ class ShipperRest extends Controller
                 ->where('shipper_order_histories.shipper_id', $shipper_id)
                 ->where('shipper_order_histories.deleted_at')
                 ->select('orders.*', 'shipper_order_histories.id as shipper_order_id')
+                ->orderBy("shipper_order_histories.id", "desc")
                 ->get();
         return Response::json(
                         array(
