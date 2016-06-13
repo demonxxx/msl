@@ -91,15 +91,15 @@
                                     <!--<input class="text-center" style="max-width: 100px;" name="status" value="" placeholder="Trạng thái" />-->
                                     <select style="max-width: 100px;">
                                         <option value="">Trạng thái</option>
-                                        <option value="1">Pending</option>
-                                        <option value="2">Taken order</option>
-                                        <option value="3">Taken order</option>
-                                        <option value="4">Shipping</option>
-                                        <option value="5">Ship Success</option>
-                                        <option value="6">Payed</option>
-                                        <option value="7">Shop Cancel</option>
-                                        <option value="8">Return Items</option>
-                                        <option value="9">Returning</option>
+                                        <option value="1">Đang xử lý</option>
+                                        <option value="2">Đã nhận đơn</option>
+                                        <option value="3">Đã nhận hàng</option>
+                                        <option value="4">Đang vận chuyển</option>
+                                        <option value="5">Vận chuyển thành công</option>
+                                        <option value="6">Đã thanh toán</option>
+                                        <option value="7">Hủy đơn hàng</option>
+                                        <option value="8">Đã trả hàng</option>
+                                        <option value="9">Đang trả hàng</option>
                                     </select>
                                 </th>
                                 <th class="text-center clear-filter"></th>
@@ -147,34 +147,34 @@
                 var status = '';
                 switch (parseInt(data)) {
                     case 1:
-                        status = 'Pending';
+                        status = 'Đang xử lý';
                         break;
                     case 2:
-                        status = 'Taken order';
+                        status = 'Đã nhận đơn';
                         break;
                     case 3:
-                        status = 'Taken Items';
+                        status = 'Đã nhận hàng';
                         break;
                     case 4:
-                        status = 'Shipping';
+                        status = 'Đang vận chuyển';
                         break;
                     case 5:
-                        status = 'Ship Success';
+                        status = 'Vận chuyển thành công';
                         break;
                     case 6:
-                        status = 'Payed';
+                        status = 'Đã thanh toán';
                         break;
                     case 7:
-                        status = 'Shop Cancel';
+                        status = 'Hủy đơn hàng';
                         break;
                     case 8:
-                        status = 'Return Items';
+                        status = 'Đã trả hàng';
                         break;
                     case 9:
-                        status = 'Returning';
+                        status = 'Đang trả hàng';
                         break;
                     default:
-                        status = 'Pending';
+                        status = 'Đang xử lý';
                 }
 
                 return "<div class='text-center'>" + status + "</div>";
@@ -183,7 +183,7 @@
         };
         var function_render = {
             "render": function (data, type, row) {
-                return "<div class='text-center'><button class='btn btn-success btn-sm' onclick='orderDetails(" + row.id + ")'>Chi tiết</button></div>";
+                return "<div class='text-center'><button class='btn btn-primary btn-sm' onclick='orderDetails(" + row.id + ")'>Chi tiết</button></div>";
             },
             "targets": [8]
         };
