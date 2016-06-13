@@ -19,6 +19,9 @@ Route::post('api/v1/login', 'UserRest@login');
 Route::get('api/v1/logout', 'UserRest@logout');
 Route::post('api/v1/register', 'Auth\AuthController@mobile_register');
 Route::post("api/v1/shop/findFreight", "OrderRest@findFreight");
+Route::get("api/v1/loadLocations", "UserRest@loadLocations");
+Route::get("api/v1/loadAddedServices", "UserRest@loadAddedServices");
+Route::get("api/v1/loadVehicleTypes", "UserRest@loadVehicleTypes");
 Route::get('/', function () {
     return view('welcome');
 });
