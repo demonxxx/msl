@@ -488,7 +488,7 @@ class OrderRest extends Controller
                             return Response::json(
                                 array(
                                     'accept'   => 0,
-                                    'messages' => $order->shipper_id,
+                                    'messages' => "Không tồn tại tài xế",
                                 ),
                                 200
                             );
