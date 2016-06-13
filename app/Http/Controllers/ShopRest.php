@@ -149,6 +149,7 @@ class ShopRest extends Controller
             ->where('shop_order_histories.shop_id', $shop_id)
             ->where('shop_order_histories.deleted_at')
             ->select('orders.*', 'shop_order_histories.id as shop_order_id')
+            ->orderBy("shop_order_histories.id", "desc")
             ->get();
         return Response::json(
             array(
