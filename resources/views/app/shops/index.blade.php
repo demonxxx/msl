@@ -1,5 +1,13 @@
 @extends('app.shops.shop')
 @section('shop')
+<style>
+    .modal70 > .modal-dialog {
+        width:70% !important;
+    }
+    .modal-body {
+        padding: 10px 30px 0px 30px !important;
+    }
+</style>
 <div class="row">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
@@ -120,7 +128,8 @@
 
                             }
                         }
-                    }
+                    },
+                    className: "modal70"
                 });
             }, error: function (jqXHR, textStatus, errorThrown) {
                 $.notify("Không thể lấy thông tin shop, kiểm tra lại!", "error");
@@ -169,7 +178,9 @@
         config['fnRowCallback'] = function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
             var rowClass = (aData.isActive == 2) ? "danger" : "";
             $(nRow).addClass(rowClass);
-            $('td', nRow).eq(0).find('div').addClass('text-info').bind("click", function (e) {
+            $('td', nRow).eq(0).find('div').addClass('text-info').hover(function () {
+                $(this).css('cursor', 'pointer');
+            }).bind("click", function (e) {
                 getShopDetails($(this).attr("shop-id"));
             });
         };
