@@ -96,14 +96,13 @@ class OrderRest extends Controller
             $order->description = $request->description;
             $order->start_time = empty($request->start_time) ? null : $request->start_time;
             $order->end_time = empty($request->end_time) ? null : $request->end_time;
+            
             $order->save();
             $shopOrderHistory = new ShopOrderHistory;
             $shopOrderHistory->shop_id = $user->id;
             $shopOrderHistory->order_id = $order->id;
             $shopOrderHistory->save();
-            // run push notification service
             $this->pushOrderNotification($order);
-
             return Response::json(
                 array(
                     'accept'   => 1,
@@ -488,7 +487,7 @@ class OrderRest extends Controller
                             return Response::json(
                                 array(
                                     'accept'   => 0,
-                                    'messages' => $order->shipper_id,
+                                    'messages' => "Không tồn tại tài xế",
                                 ),
                                 200
                             );

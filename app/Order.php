@@ -100,4 +100,17 @@ class Order extends Model {
         return $builder;
     }
 
+    public function details($order_id) {
+        $builder = DB::table("orders");
+        $builder->select("users.code as customer_code", "users.name as customer_name", "users.email as customer_email", "users.phone_number as customer_phone_number", "orders.*", "order_types.name as order_type_name", "vehicle_types.name as vehicle_name", "shipper.*")
+                ->leftJoin("order_types", "orders.order_type_id", "=", "order_types.id")
+                ->leftJoin("vehicle_types", "orders.vehicle_type_id", "=", "vehicle_types.id")
+                ->leftJoin(DB::raw("(select shippers.id, shippers.code as shipper_code, users.name as shipper_name, users.phone_number as shipper_phone_number
+                            from shippers join users on shippers.user_id = users.id) as shipper"), "orders.shipper_id", "=", "shipper.id")
+                ->join("users", "orders.user_id", "=", "users.id")
+                ->where("orders.id", "=", $order_id);
+        $data = $builder->first();
+        return $data;
+    }
+
 }
