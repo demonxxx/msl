@@ -114,7 +114,7 @@
                     title: "Thông tin chi tiết",
                     buttons: {
                         main: {
-                            label: "Okie",
+                            label: "Đóng",
                             className: "btn-primary",
                             callback: function () {
 
