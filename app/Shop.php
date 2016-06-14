@@ -104,6 +104,13 @@ class Shop extends Model {
                 ->where("agencys.user_id", "=", $shop->user_id)
                 ->count();
         $shop->agency_number = $agency;
+        $account = DB::table("accounts")->where("user_id", "=", $shop->user_id)->first();
+        $shop->account_main = 0;
+        $shop->account_second = 0;
+        if (!empty($account)) {
+            $shop->account_main = $account->main;
+            $shop->account_second = $account->second;
+        }
         return $shop;
     }
 
