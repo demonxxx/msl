@@ -156,7 +156,14 @@ class OrderRest extends Controller
                 }
 
                 if ($discount->type == DISCOUNT_PERCENT) {
-                    $discount_freight = (((int) $discount->amount ) / 100) * $baseFreight;
+                    $discount_freight = (((int) $discount->amount ) / 100) * (int) $baseFreight->freight;
+                    return Response::json(
+                        array(
+                            'accept'   => 0,
+                            'messages' => $discount_freight,
+                        ),
+                        200
+                    );
                     $discount->use_count += 1;
                     $discount_user->count += 1;
                     $discount_user->save();
