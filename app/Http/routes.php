@@ -47,12 +47,14 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::post('/shipper/load_notable_list', 'ShippersController@load_notable_list');
         Route::get('/shipper/{shipper_id}/{shop_id}/{notable}/notable_shipper', 'ShippersController@notable_shipper');
         Route::post('/shipper/register_shipper', 'ShippersController@register_shipper');
+        Route::get('/order/{order_id}/details', 'OrdersController@details');
     });
     Route::group(['roles' => ['shipper', 'admin']], function () {
         Route::get('/shipper', 'ShippersController@index')->name("shippers");
         Route::get('/shipper/create', 'ShippersController@create');
         Route::post('/shipper/store', 'ShippersController@store');
         Route::get('/shipper/{shipper_id}/edit', 'ShippersController@edit');
+        Route::get('/shipper/{shipper_id}/update_isActive', 'ShippersController@update_isActive');
         Route::post('/shipper/{id}/update', 'ShippersController@update');
         Route::post('/shipper/load_list', 'ShippersController@load_list');
         Route::post('/shipper/check_new_user_duplicate', 'ShippersController@check_new_user_duplicate');
@@ -92,6 +94,7 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::get('/discount/{id}/lock', 'DiscountsController@lock');
         Route::get('/discount/{id}/show', 'DiscountsController@show');
         Route::post('/discount/load_list', 'DiscountsController@load_list');
+        Route::post('/discount/load_list_user', 'DiscountsController@load_list_user');
         Route::post('/discount/check_new_duplicate', 'DiscountsController@check_new_duplicate');
     });
 
@@ -158,7 +161,8 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
     Route::post("shop/updateBaseFreight/{id}", "OrderRest@freightBaseDistance");
     Route::get("shop/cancelOrder/{id}", "ShopRest@cancelOrder");
     Route::post("shop/rateShipper/{id}", "OrderRest@rateShipper");
-
+    Route::post('shop/feedback', 'ShopRest@feedback');
+    
     Route::resource('shop', 'ShopRest');
     Route::resource('shipper', 'ShipperRest');
     Route::resource('order', 'OrderRest');

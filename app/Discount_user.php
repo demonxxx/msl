@@ -17,4 +17,13 @@ class Discount_user extends Model {
      */
     protected $dates = ['deleted_at'];
     protected $table = 'discount_user';
+
+    public function list_discount_users($id){
+        $builder = DB::table("discount_user");
+        $builder->select("users.id", "users.code", "users.name")
+                ->join("users", "discount_user.user_id", "=", "users.id")
+                ->where("discount_id", $id);
+        $data = $builder->get();
+        return $data;
+    }
 }

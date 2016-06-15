@@ -1,5 +1,13 @@
 @extends('app.shops.shop')
 @section('shop')
+<style>
+    .modal70 > .modal-dialog {
+        width:70% !important;
+    }
+    .modal-body {
+        padding: 10px 30px 0px 30px !important;
+    }
+</style>
 <div class="row">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
@@ -12,19 +20,12 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-wrench"></i>
                     </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#">Config option 1</a>
-                        </li>
-                        <li><a href="#">Config option 2</a>
-                        </li>
-                    </ul>
                     <a class="close-link">
                         <i class="fa fa-times"></i>
                     </a>
                 </div>
             </div>
             <div class="ibox-content">
-
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered table-hover dataTables-example" id="shops-list">
                         <thead>
@@ -83,6 +84,7 @@
 <script>
     var shopTable;
     var blockShopFunction = function (id, name, message) {
+        name = (name !== null) ? name : "";
         swal({
             title: "Bạn có chắc muốn " + message + " shop " + name + "?",
             type: "warning",
@@ -120,16 +122,17 @@
                     title: "Thông tin chi tiết",
                     buttons: {
                         main: {
-                            label: "Okie",
+                            label: "Đóng",
                             className: "btn-primary",
                             callback: function () {
 
                             }
                         }
-                    }
+                    },
+                    className: "modal70"
                 });
             }, error: function (jqXHR, textStatus, errorThrown) {
-
+                $.notify("Không thể lấy thông tin shop, kiểm tra lại!", "error");
             }
         });
     }
@@ -154,7 +157,7 @@
                 var text = (row.isActive == 2) ? "Mở" : "Khóa";
                 return "<div class='text-center'>" +
                         "<a class='btn btn-primary btn-sm' href='" + edit_url + "'>Sửa</a>" +
-                        "<button class='btn btn-danger btn-sm' onclick='blockShopFunction(" + row.id + ",\"" + row.shop_name + "\",\"" + text + "\")' style='margin-left: 10px;'>" + text + "</button>" +
+                        "<button class='btn btn-danger btn-sm' onclick='blockShopFunction(" + row.shop_id + ",\"" + row.shop_name + "\",\"" + text + "\")' style='margin-left: 10px;'>" + text + "</button>" +
                         "</div>";
             },
             "targets": [8]
@@ -165,7 +168,7 @@
         renders.push(common_render);
         renders.push(profile_status_render);
         renders.push(function_render);
-        config['colums'] = ["shop_code", "name", "shop_name", "phone_number", "count_order", "count_agency", "office_district", "profile_status", "id"];
+        config['colums'] = ["user_code", "name", "shop_name", "phone_number", "count_order", "count_agency", "office_district", "profile_status", "id"];
         config['url'] = "/shop/load_list";
         config['id'] = "shops-list";
         config['data_array'] = renders;
@@ -175,7 +178,9 @@
         config['fnRowCallback'] = function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
             var rowClass = (aData.isActive == 2) ? "danger" : "";
             $(nRow).addClass(rowClass);
-            $('td', nRow).eq(0).find('div').addClass('text-info').bind("click", function (e) {
+            $('td', nRow).eq(0).find('div').addClass('text-info').hover(function () {
+                $(this).css('cursor', 'pointer');
+            }).bind("click", function (e) {
                 getShopDetails($(this).attr("shop-id"));
             });
         };

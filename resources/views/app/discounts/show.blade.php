@@ -111,7 +111,14 @@
                                     </span>
                                 </div>
                             </div>
-                            
+                            <hr class="line-dashed line-full"/>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Danh sách người được khuyến mại</label>
+                                <div class="col-md-10">
+                                    <textarea class="form-control" id="list_discount_users">@foreach ($discount_users as $user ){{$user->code}} : {{$user->name}}, @endforeach
+                                    </textarea>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

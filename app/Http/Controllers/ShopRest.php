@@ -14,6 +14,7 @@ use DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\Order;
+use App\Feedback;
 
 class ShopRest extends Controller
 {
@@ -257,6 +258,42 @@ class ShopRest extends Controller
         }
     }
 
+    public function feedback(Request $request){
+        $user = User::find(Auth::guard('api')->id());
+        if (!empty($user)) {
+            if (empty($request->content)) {
+                return Response::json(
+                    array(
+                        'accept'   => 0,
+                        'messages' => MSG_FEEDBACK_EMPTY,
+                    ),
+                    200
+                );
+            } else {
+                $feedback = new Feedback();
+                $feedback->user_id = $user->id;
+                $feedback->content = $request->content;
+                $feedback->save();
+                return Response::json(
+                    array(
+                        'accept'   => 1,
+                        'messages' => MSG_FEEDBACK_SUCCESSFULLY
+                    ),
+                    200
+                );
+            }
+        } else {
+            return Response::json(
+                array(
+                    'accept'   => 0,
+                    'messages' => MSG_SHOP_NOT_EXIST,
+                ),
+                200
+            );
+        }
+        
+    }
+    
     /**
      * Remove the specified resource from storage.
      *
