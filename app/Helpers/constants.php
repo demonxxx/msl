@@ -51,3 +51,11 @@ define("WARD_UNIT", 2);
 // ajax result
 define("AJAX_SUCCESS", 1);
 define("AJAX_FAILED", 0);
+
+define("DISCOUNT_ACTIVE", 1);
+define("DISCOUNT_DEACTIVE", 0);
+
+define("DISCOUNT_PERCENT", 0);
+define("DISCOUNT_MONEY", 1);
+define("DISCOUNT_GIFT", 2);
+    
