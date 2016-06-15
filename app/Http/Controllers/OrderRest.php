@@ -92,7 +92,7 @@ class OrderRest extends Controller
                     200
                 );
             }
-            
+
             $baseFreight = $distance_freight->getFreightByDistance($request->distance, $request->vehicle_type_id);
             if (empty($baseFreight)) {
                 return Response::json(
@@ -156,7 +156,7 @@ class OrderRest extends Controller
                 }
 
                 if ($discount->type == DISCOUNT_PERCENT) {
-                    $discount_freight = ($discount->amount / 100) * $baseFreight;
+                    $discount_freight = (((int) $discount->amount ) / 100) * $baseFreight;
                     $discount->use_count += 1;
                     $discount_user->count += 1;
                     $discount_user->save();
