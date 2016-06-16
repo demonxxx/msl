@@ -468,7 +468,7 @@ class UserRest extends Controller
                 }
                 if ($file->isValid()) {
                     $file->move(UPLOAD_AVATAR_DIR, $user->id."_avatar.jpg");
-                    $avatar = Avatar::where('user_id', '=', $user->id);
+                    $avatar = Avatar::where('user_id', '=', $user->id)->first();
                     if (empty($avatar)) {
                         $avatar = new Avatar();
                         $avatar->user_id = $user->id;
