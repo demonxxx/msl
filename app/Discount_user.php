@@ -26,5 +26,4 @@ class Discount_user extends Model {
         $data = $builder->get();
         return $data;
     }
-
 }
