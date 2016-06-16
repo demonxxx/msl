@@ -21,6 +21,7 @@ define("ORDER_RETURN_ITEMS", 8);
 define("ORDER_RETURNING", 9);
 
 define("MSG_ORDER_NOT_EXIST", "Đơn hàng không tồn tại!");
+define("MSG_SHOP_NOT_EXIST", "Khách hàng không tồn tại!");
 define("MSG_NOT_HAVE_PERMISSION", "Bạn không có quyền này!");
 define("MSG_DISTANCE_FREIGHT_NOT_EXIST", "Không tồn tại giá cước này!");
 define("MSG_CAN_NOT_CANCEL_ORDER", "Bạn không thể hủy đơn hàng được, đơn hàng đã được nhận!");
@@ -30,7 +31,8 @@ define("MSG_USER_DO_NOT_EXIST", "Người dùng không tồn tại");
 define("MSG_PHONE_NUMBER_EXIST", "Đã tồn tại số điện thoại");
 define("MSG_EMAIL_EXIST", "Đã tồn tại địa chỉ email");
 define("MSG_UPDATE_USER_INFO_SUCCESSFULLY", "Cập nhật thông tin thành công");
-
+define("MSG_FEEDBACK_EMPTY", "Nội dung phản hồi trống");
+define("MSG_FEEDBACK_SUCCESSFULLY", "Phản hồi thành công");
 
 define("ACCOUNT_TYPE_MAIN", 1);
 define("ACCOUNT_TYPE_SECOND", 2);
@@ -51,3 +53,11 @@ define("WARD_UNIT", 2);
 // ajax result
 define("AJAX_SUCCESS", 1);
 define("AJAX_FAILED", 0);
+
+define("DISCOUNT_ACTIVE", 1);
+define("DISCOUNT_DEACTIVE", 0);
+
+define("DISCOUNT_PERCENT", 0);
+define("DISCOUNT_MONEY", 1);
+define("DISCOUNT_GIFT", 2);
+    
