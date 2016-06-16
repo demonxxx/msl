@@ -38,7 +38,7 @@ class OrdersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        //
+//
 //        dd($request->all());
         $validator = Validator::make($request->all(), [
                     "order_type_id" => "required",
@@ -101,7 +101,7 @@ class OrdersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        //
+//
     }
 
     /**
@@ -111,7 +111,7 @@ class OrdersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        //
+//
     }
 
     /**
@@ -122,7 +122,7 @@ class OrdersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        //
+//
     }
 
     /**
@@ -132,7 +132,7 @@ class OrdersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
-        //
+//
     }
 
     public function load_list(Request $request) {
@@ -145,9 +145,23 @@ class OrdersController extends Controller {
         return $result;
     }
 
+    public function load_list_order(Request $request, $user_id) {
+        $posts = get_post_datatable_new($request->all());
+        $order = new Order();
+        $data = $order->get_all_orders($posts, $user_id);
+        $length = $order->count_all($posts, $user_id);
+        $result = build_json_datatable_new($data, $length, $posts);
+        return $result;
+    }
+
+    public function show_list_order($user_id) {
+        $districts = Adminnistrative_units::where("level", DISTRICT_UNIT)->get();
+        $wards = Adminnistrative_units::where("level", WARD_UNIT)->get();
+        return view("app.orders.users_orders", ['user_id' => $user_id, 'districts' => $districts, 'wards' => $wards])->render();
+    }
+
     public function details($order_id) {
         $order = new Order();
-//        dd($order->details($order_id));
         return view("app.orders.details", ['details' => $order->details($order_id)])->render();
     }
 
