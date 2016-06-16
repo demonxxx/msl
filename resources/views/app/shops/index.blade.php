@@ -4,6 +4,9 @@
     .modal70 > .modal-dialog {
         width:70% !important;
     }
+    .modal80 > .modal-dialog {
+        width:80% !important;
+    }
     .modal-body {
         padding: 10px 30px 0px 30px !important;
     }
@@ -84,7 +87,7 @@
 <script>
     var shopTable;
     var blockShopFunction = function (id, name, message) {
-        name = (name !== null) ? name : "";
+        name = (name != null) ? name : "";
         swal({
             title: "Bạn có chắc muốn " + message + " shop " + name + "?",
             type: "warning",
@@ -136,6 +139,34 @@
             }
         });
     }
+
+
+    var getOrders = function (shop_id, shop_name) {
+        $.ajax({
+            url: base_url + "/order/" + shop_id + "/show_list_order",
+            type: 'GET',
+            dataType: 'html',
+            success: function (data, textStatus, jqXHR) {
+                bootbox.dialog({
+                    message: data,
+                    title: "Lịch sử đơn hàng của khách hàng " + shop_name,
+                    buttons: {
+                        main: {
+                            label: "Đóng",
+                            className: "btn-primary",
+                            callback: function () {
+
+                            }
+                        }
+                    },
+                    className: "modal80"
+                });
+            }, error: function (jqXHR, textStatus, errorThrown) {
+                $.notify("Không thể lấy lịch sử đơn hàng, hãy thử lại!", "error");
+            }
+        });
+    }
+
     $(document).ready(function () {
         var common_render = {
             "render": function (data, type, row) {
@@ -183,6 +214,12 @@
             }).bind("click", function (e) {
                 getShopDetails($(this).attr("shop-id"));
             });
+            $('td', nRow).eq(4).find('div').addClass('text-info').hover(function () {
+                $(this).css('cursor', 'pointer');
+            }).bind("click", function (e) {
+                getOrders($(this).attr("shop-id"), aData.shop_name);
+            });
+            console.log(aData);
         };
         shopTable = setAjaxDataTable(config);
     });

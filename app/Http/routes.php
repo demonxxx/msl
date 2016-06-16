@@ -48,6 +48,8 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::get('/shipper/{shipper_id}/{shop_id}/{notable}/notable_shipper', 'ShippersController@notable_shipper');
         Route::post('/shipper/register_shipper', 'ShippersController@register_shipper');
         Route::get('/order/{order_id}/details', 'OrdersController@details');
+        Route::post('/order/{user_id}/load_list_order', 'OrdersController@load_list_order');
+        Route::get('/order/{user_id}/show_list_order', 'OrdersController@show_list_order');
     });
     Route::group(['roles' => ['shipper', 'admin']], function () {
         Route::get('/shipper', 'ShippersController@index')->name("shippers");
@@ -162,7 +164,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
     Route::get("shop/cancelOrder/{id}", "ShopRest@cancelOrder");
     Route::post("shop/rateShipper/{id}", "OrderRest@rateShipper");
     Route::post('shop/feedback', 'ShopRest@feedback');
-    
+
     Route::resource('shop', 'ShopRest');
     Route::resource('shipper', 'ShipperRest');
     Route::resource('order', 'OrderRest');

@@ -5,6 +5,7 @@ $.extend(true, $.fn.dataTable.defaults, {
         "zeroRecords": "Không tìm thấy thông tin",
         "info": "Hiển thị trang _PAGE_ trên _PAGES_",
         "infoEmpty": "Không có thông tin",
+        "emptyTable": "Không có thông tin",
         "infoFiltered": "(lọc từ _MAX_ tổng số kết quả)",
         "paginate": {
             "first": "Trang đầu",
@@ -157,7 +158,7 @@ function setAjaxDataTable(config) {
             beforeCallback(config);
         }
     }
-
+    var pageLength = (!config['pageLength'] !== undefined) ? config['pageLength'] : 10;
     // init datatable
     var oTable = $(table).DataTable({
         "bProcessing": false,
@@ -222,7 +223,9 @@ function setAjaxDataTable(config) {
             }
         },
         "aoColumns": convert_colums,
-        "aoColumnDefs": colums_render
+        "aoColumnDefs": colums_render,
+        "lengthMenu": [[5, 10, 25, 50], [5, 10, 25, 50]],
+        "pageLength": pageLength
     });
     config['oTable'] = oTable;
     // add action listener
@@ -270,6 +273,6 @@ function setAjaxDataTable(config) {
             callback(config);
         }
     }
-   
+
     return oTable;
 }
