@@ -41,6 +41,7 @@
                         <li><a href="{{url( '/shop/create' )}}"> Thêm khách hàng mới</a></li>
                         <li><a href="{{url('/shop')}}">Danh sách khách hàng</a></li>
                         <li><a href="{{url('/admin/transaction/index')}}"> Quản lý giao dịch</a></li>
+                        <li><a href="{{url('/feedback')}}">Danh sách phản hồi</a></li>
                     </ul>
                 </li>
                 <li>
