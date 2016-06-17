@@ -34,7 +34,16 @@ class ShopsController extends Controller {
         $districts = Adminnistrative_units::where("level", DISTRICT_UNIT)->get();
         return view('app.shops.index', ["districts" => $districts]);
     }
-
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function feedback() {
+        return view('app.feedbacks.index');
+    }
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -203,7 +212,16 @@ class ShopsController extends Controller {
         $result = build_json_datatable_new($data, $length, $posts);
         return $result;
     }
-
+    
+    public function load_list_feedback(Request $request) {
+        $posts = get_post_datatable_new($request->all());
+        $feedback = new \App\Feedback();
+        $data = $feedback->get_all_feedbacks($posts);
+        $length = $feedback->count_all_feedbacks($posts);
+        $result = build_json_datatable_new($data, $length, $posts);
+        return $result;
+    }
+    
     public function check_user_duplicate(Request $request) {
         $params = $request->all();
         $colum = $params['colum_name'];

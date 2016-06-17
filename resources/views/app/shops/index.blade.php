@@ -51,7 +51,7 @@
                                     <input class="text-center" style="max-width: 90px;" name="name" value="" placeholder="Họ và tên" />
                                 </th>
                                 <th class="text-center">
-                                    <input class="text-center" style="max-width: 100px;" name="shop_name" value="" placeholder="CMT" />
+                                    <input class="text-center" style="max-width: 100px;" name="shop_name" value="" placeholder="Tên CH" />
                                 </th>
                                 <th class="text-center">
                                     <input class="text-center" style="max-width: 100px;" name="phone_number" value="" placeholder="SĐT" />
