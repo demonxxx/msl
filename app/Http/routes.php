@@ -143,7 +143,8 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
     Route::get("user/getMyInfo", "UserRest@getMyInfo");
     Route::get("user/getUserInfo/{id}", "UserRest@getUserInfo");
     Route::post("user/updateMyInfo", "UserRest@updateMyInfo");
-
+    Route::post("user/uploadAvatar", "UserRest@uploadAvatar");
+    
     Route::post('shipper/find', 'ShipperRest@findByLocation');
     Route::get('shipper/take/{id}', 'ShipperRest@takeOrder');
     Route::get('shipper/getTakenOrder/{id}', 'ShipperRest@getTakenOrder');
