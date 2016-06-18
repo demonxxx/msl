@@ -55,7 +55,7 @@
                                     <input class="text-center" style="max-width: 100px;" name="phone_number" value="" placeholder="SĐT" />
                                 </th>
                                 <th class="text-center">
-                                    <input class="text-center" style="max-width: 250px;" name="content" value="" placeholder="Phản hồi" />
+                                    <input class="text-center" style="max-width: 250px;" name="feedback" value="" placeholder="Phản hồi" />
                                 </th>
                                 <th class="text-center">
                                     <input class="text-center" style="max-width: 90px;" name="created_at" value="" placeholder="Thời gian" />
@@ -93,7 +93,7 @@
         var renders = [];
         renders.push(common_render);
         renders.push(function_render);
-        config['colums'] = ["code", "name", "email", "phone_number", "content", "created_at", "id"];
+        config['colums'] = ["code", "name", "email", "phone_number", "feedback", "created_at", "id"];
         config['url'] = "/feedback/load_list";
         config['id'] = "feedbacks-list";
         config['data_array'] = renders;
