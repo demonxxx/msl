@@ -576,6 +576,7 @@ class OrderRest extends Controller
                 if (!empty($order->shipper_id)) {
                     $validator = Validator::make($request->all(), [
                         "score" => "required|integer|between:1,5",
+
                     ]);
                     if ($validator->fails()) {
                         return Response::json(
@@ -587,6 +588,7 @@ class OrderRest extends Controller
                         );
                     } else {
                         $order->rate_score = $request->score;
+                        $order->rate_message = empty($request->rate_message) ? null : $request->rate_message;
                         $order->save();
                         if (empty($order->shipper_id))
                             return Response::json(
