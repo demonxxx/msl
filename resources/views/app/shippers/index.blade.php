@@ -24,14 +24,14 @@
                     <table class="table table-striped table-bordered table-hover" id="shippers-list" style="width: 100%;">
                         <thead>
                             <tr>
-                                <th class="text-center" width="4%">Mã TX</th>
+                                <th class="text-center">Mã TX</th>
                                 <th class="text-center">Họ và tên</th>
                                 <th class="text-center">CMT</th>
                                 <th class="text-center">Quận/huyện</th>
                                 <th class="text-center">SĐT</th>
-                                <th class="text-center" width="10%">Đánh giá</th>
-                                <th class="text-center" width="15%">Tổng đơn hàng</th>
-                                <th class="text-center" width="15%">Tình trạng hồ sơ</th>
+                                <th class="text-center">Đánh giá</th>
+                                <th class="text-center">Tổng đơn hàng</th>
+                                <th class="text-center">Tình trạng<br>hồ sơ</th>
                                 <th class="text-center">Chức năng</th>
                             </tr>
                             <tr class="table-header-search">

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Response;
 use App\AddedService;
 use App\VehicleType;
 use App\Adminnistrative_units;
+use App\Avatar;
 
 class UserRest extends Controller
 {
@@ -440,6 +441,68 @@ class UserRest extends Controller
                 );
         }
 
+        
+        public function uploadAvatar(Request $request){
+            $user = User::find(Auth::guard('api')->id());
+            if (!empty($user)) {
+                if ($request->hasFile('photo')) {
+                    $file = $request->file('photo');
+                    if ($file->getClientSize() >= AVATAR_SIZE*1000000) {
+                        return Response::json(
+                            array(
+                                'accept'   => 0,
+                                'messages' => MSG_UPLOAD_AVATAR_SIZE,
+                            ),
+                           200
+                        );
+                    }
+                }
+                else {
+                    return Response::json(
+                        array(
+                            'accept'   => 0,
+                            'messages' => MSG_UPLOAD_AVATAR_EMPTY,
+                        ),
+                       200
+                    );
+                }
+                if ($file->isValid()) {
+                    $file->move(UPLOAD_AVATAR_DIR, $user->id."_avatar.jpg");
+                    $avatar = Avatar::where('user_id', '=', $user->id)->first();
+                    if (empty($avatar)) {
+                        $avatar = new Avatar();
+                        $avatar->user_id = $user->id;
+                        $avatar->name = $user->id."_avatar.jpg";
+                        $avatar->save();
+                    }
+                    
+                    return Response::json(
+                        array(
+                            'accept'   => 1,
+                            'messages' => MSG_UPLOAD_AVATAR_SUCCEEDED,
+                        ),
+                       200
+                    );
+                } else {
+                    return Response::json(
+                        array(
+                            'accept'   => 0,
+                            'messages' => MSG_UPLOAD_AVATAR_FAILED,
+                        ),
+                       200
+                    );
+                }
+            } else {
+                return Response::json(
+                    array(
+                        'accept'   => 0,
+                        'messages' => MSG_USER_DO_NOT_EXIST,
+                    ),
+                    200
+                );
+            }
+        }
+        
         public function index()
         {
                 //

@@ -25,6 +25,12 @@ Route::get("api/v1/loadVehicleTypes", "UserRest@loadVehicleTypes");
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/images/{imagetype}/{image}/', function($imagetype = null, $image = null) {
+    $path = UPLOAD_DIR.$imagetype.'/'.$image;
+    if (file_exists($path)) { 
+        return Response::download($path);
+    }
+});
 
 Route::group(['middleware' => ['auth', 'permissions']], function () {
     Route::get('/administration', 'HomeController@index');
@@ -48,6 +54,9 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::get('/shipper/{shipper_id}/{shop_id}/{notable}/notable_shipper', 'ShippersController@notable_shipper');
         Route::post('/shipper/register_shipper', 'ShippersController@register_shipper');
         Route::get('/order/{order_id}/details', 'OrdersController@details');
+        Route::post('/order/{user_id}/load_list_order', 'OrdersController@load_list_order');
+        Route::get('/order/{user_id}/show_list_order', 'OrdersController@show_list_order');
+        
     });
     Route::group(['roles' => ['shipper', 'admin']], function () {
         Route::get('/shipper', 'ShippersController@index')->name("shippers");
@@ -96,6 +105,8 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::post('/discount/load_list', 'DiscountsController@load_list');
         Route::post('/discount/load_list_user', 'DiscountsController@load_list_user');
         Route::post('/discount/check_new_duplicate', 'DiscountsController@check_new_duplicate');
+        Route::get('/feedback', 'ShopsController@feedback');
+        Route::post('/feedback/load_list', 'ShopsController@load_list_feedback');
     });
 
 
@@ -141,7 +152,8 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
     Route::get("user/getMyInfo", "UserRest@getMyInfo");
     Route::get("user/getUserInfo/{id}", "UserRest@getUserInfo");
     Route::post("user/updateMyInfo", "UserRest@updateMyInfo");
-
+    Route::post("user/uploadAvatar", "UserRest@uploadAvatar");
+    
     Route::post('shipper/find', 'ShipperRest@findByLocation');
     Route::get('shipper/take/{id}', 'ShipperRest@takeOrder');
     Route::get('shipper/getTakenOrder/{id}', 'ShipperRest@getTakenOrder');
@@ -162,7 +174,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
     Route::get("shop/cancelOrder/{id}", "ShopRest@cancelOrder");
     Route::post("shop/rateShipper/{id}", "OrderRest@rateShipper");
     Route::post('shop/feedback', 'ShopRest@feedback');
-    
+
     Route::resource('shop', 'ShopRest');
     Route::resource('shipper', 'ShipperRest');
     Route::resource('order', 'OrderRest');
