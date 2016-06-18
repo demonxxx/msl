@@ -46,7 +46,7 @@
                                 </th>
                                 <th class="text-center">
                                     <!--<input class="text-center" name="home_district" value="" placeholder="Quận/huyện" />-->
-                                    <select>
+                                    <select style="max-width: 100px;">
                                         <option value="">Tất cả</option>
                                         @foreach($districts AS $district)
                                         <option value="{{$district->id}}">{{$district->name}}</option>
