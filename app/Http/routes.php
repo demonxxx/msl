@@ -25,6 +25,12 @@ Route::get("api/v1/loadVehicleTypes", "UserRest@loadVehicleTypes");
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/images/{imagetype}/{image}/', function($imagetype = null, $image = null) {
+    $path = UPLOAD_DIR.$imagetype.'/'.$image;
+    if (file_exists($path)) { 
+        return Response::download($path);
+    }
+});
 
 Route::group(['middleware' => ['auth', 'permissions']], function () {
     Route::get('/administration', 'HomeController@index');
@@ -50,6 +56,7 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::get('/order/{order_id}/details', 'OrdersController@details');
         Route::post('/order/{user_id}/load_list_order', 'OrdersController@load_list_order');
         Route::get('/order/{user_id}/show_list_order', 'OrdersController@show_list_order');
+        
     });
     Route::group(['roles' => ['shipper', 'admin']], function () {
         Route::get('/shipper', 'ShippersController@index')->name("shippers");
@@ -98,6 +105,8 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::post('/discount/load_list', 'DiscountsController@load_list');
         Route::post('/discount/load_list_user', 'DiscountsController@load_list_user');
         Route::post('/discount/check_new_duplicate', 'DiscountsController@check_new_duplicate');
+        Route::get('/feedback', 'ShopsController@feedback');
+        Route::post('/feedback/load_list', 'ShopsController@load_list_feedback');
     });
 
 

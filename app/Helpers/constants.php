@@ -40,6 +40,7 @@ define("MSG_UPLOAD_AVATAR_EMPTY", "Sai định dạng ảnh hoặc chưa đính 
 define("MSG_UPLOAD_AVATAR_SIZE", "Kích cỡ ảnh quá quy định!");
 define("AVATAR_SIZE", 1);
 define("UPLOAD_AVATAR_DIR", "/var/www/upload/avatar/");
+define("UPLOAD_DIR", "/var/www/upload/");
 
 define("ACCOUNT_TYPE_MAIN", 1);
 define("ACCOUNT_TYPE_SECOND", 2);
