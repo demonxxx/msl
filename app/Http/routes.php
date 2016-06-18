@@ -26,8 +26,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/images/{imagetype}/{image}/', function($imagetype = null, $image = null) {
-    $path = UPLOAD_DIR.$imagetype.'/'.$image;
-    if (file_exists($path)) { 
+    $path = UPLOAD_DIR . $imagetype . '/' . $image;
+    if (file_exists($path)) {
         return Response::download($path);
     }
 });
@@ -56,7 +56,6 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::get('/order/{order_id}/details', 'OrdersController@details');
         Route::post('/order/{user_id}/load_list_order', 'OrdersController@load_list_order');
         Route::get('/order/{user_id}/show_list_order', 'OrdersController@show_list_order');
-        
     });
     Route::group(['roles' => ['shipper', 'admin']], function () {
         Route::get('/shipper', 'ShippersController@index')->name("shippers");
@@ -90,6 +89,7 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::post('/account/load_list', 'AccountsController@load_list');
         Route::post('/account/update_money', 'AccountsController@update_money');
         Route::get('/admin/settings/administrative_units', 'SettingsController@show_administrative_units');
+        Route::get('/admin/settings/administrative_units_template', 'SettingsController@show_administrative_units_template');
         Route::get('/admin/settings/administrative_units/{unit_id}/delete', 'SettingsController@delete_administrative_units');
         Route::post('/admin/settings/administrative_units/edit', 'SettingsController@edit_administrative_units');
         Route::post('/admin/settings/administrative_units/add', 'SettingsController@add_administrative_units');
@@ -153,7 +153,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
     Route::get("user/getUserInfo/{id}", "UserRest@getUserInfo");
     Route::post("user/updateMyInfo", "UserRest@updateMyInfo");
     Route::post("user/uploadAvatar", "UserRest@uploadAvatar");
-    
+
     Route::post('shipper/find', 'ShipperRest@findByLocation');
     Route::get('shipper/take/{id}', 'ShipperRest@takeOrder');
     Route::get('shipper/getTakenOrder/{id}', 'ShipperRest@getTakenOrder');
