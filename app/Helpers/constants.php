@@ -34,12 +34,15 @@ define("MSG_UPDATE_USER_INFO_SUCCESSFULLY", "Cập nhật thông tin thành côn
 define("MSG_FEEDBACK_EMPTY", "Nội dung phản hồi trống");
 define("MSG_FEEDBACK_SUCCESSFULLY", "Phản hồi thành công");
 
-define("MSG_UPLOAD_AVATAR_SUCCEEDED", "Gửi tệp tin thành công!");
-define("MSG_UPLOAD_AVATAR_FAILED", "Gửi tệp tin không thành công!");
-define("MSG_UPLOAD_AVATAR_EMPTY", "Sai định dạng ảnh hoặc chưa đính kèm!");
-define("MSG_UPLOAD_AVATAR_SIZE", "Kích cỡ ảnh quá quy định!");
+define("MSG_UPLOAD_FILE_SUCCEEDED", "Gửi tệp tin thành công!");
+define("MSG_UPLOAD_FILE_FAILED", "Gửi tệp tin không thành công!");
+define("MSG_UPLOAD_FILE_EMPTY", "Chưa đính kèm!");
+define("MSG_UPLOAD_FILE_SIZE", "Kích cỡ ảnh quá quy định!");
+define("MSG_UPLOAD_WRONG_IMAGE_TYPE", "Sai định dạng ảnh!");
 define("AVATAR_SIZE", 1);
+define("IMAGE_SIZE", 5);
 define("UPLOAD_AVATAR_DIR", "/var/www/upload/avatar/");
+define("UPLOAD_ORDER_DIR", "/var/www/upload/order/");
 define("UPLOAD_DIR", "/var/www/upload/");
 
 define("ACCOUNT_TYPE_MAIN", 1);
