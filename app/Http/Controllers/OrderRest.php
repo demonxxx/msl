@@ -188,6 +188,39 @@ class OrderRest extends Controller
 
             $order_count = Order::max('id');
             $order_code = "OD" . ($order_count + 1);
+            
+            $file = $request->file('photo');
+            if (!empty($file)) {
+                if ($file->getClientSize() >= IMAGE_SIZE*1000000) {
+                    return Response::json(
+                        array(
+                            'accept'   => 0,
+                            'messages' => MSG_UPLOAD_FILE_SIZE,
+                        ),
+                       200
+                    );
+                } else if ($file->getClientSize() == 0) {
+                    return Response::json(
+                        array(
+                            'accept'   => 0,
+                            'messages' => MSG_UPLOAD_WRONG_IMAGE_TYPE,
+                        ),
+                       200
+                    );
+                }
+                if ($file->isValid()) {
+                    $file->move(UPLOAD_ORDER_DIR, $order_code.".jpg");
+                } else {
+                    return Response::json(
+                        array(
+                            'accept'   => 0,
+                            'messages' => MSG_UPLOAD_FILE_FAILED,
+                        ),
+                       200
+                    );
+                }
+            }
+            
             $order = new Order;
             $order->code = $order_code;
             $order->user_id = $user->id;
@@ -209,6 +242,7 @@ class OrderRest extends Controller
             $order->discounts = empty($request->discount_code) ? null : $request->discount_code;
             $order->discount_freight = $discount_freight;
             $order->main_freight = (int) ($order->base_freight + $order->vas_freight - $order->discount_freight);
+            $order->image_url = empty($file) ? null : "/images/order/".$order_code.".jpg";
             $order->save();
             $shopOrderHistory = new ShopOrderHistory;
             $shopOrderHistory->shop_id = $user->id;
