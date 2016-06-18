@@ -430,6 +430,24 @@ class SettingsController extends Controller {
         return view('app.settings.administrative_units', ['cities' => $cities]);
     }
 
+    public function show_administrative_units_template() {
+        $admin_unit = new Adminnistrative_units();
+        $unit_list = $admin_unit->get_all();
+        $cities = $admin_unit->get_city();
+
+        foreach ($cities as $key => $city) {
+            $cities[$key]->districts = [];
+            $districts = $admin_unit->get_district($city->id);
+            if (!empty($districts)) {
+                foreach ($districts as $key_1 => $district) {
+                    $districts[$key_1]->wards = $admin_unit->get_ward($district->id);
+                }
+            }
+            $cities[$key]->districts = $districts;
+        }
+        return view('app.settings.administrative_units_templpate', ['cities' => $cities])->render();
+    }
+
     public function delete_administrative_units($unit_id) {
         $admin_unit = new Adminnistrative_units();
         $check_children = $admin_unit::where('parent_id', $unit_id)->take(1)->get()->toArray();
@@ -474,9 +492,10 @@ class SettingsController extends Controller {
             $add_unit['parent_id'] = $unit['id'];
             $add_unit['level'] = ($unit['level'] + 1);
             $add_unit->save();
-            echo AJAX_SUCCESS;
+            echo json_encode(['inserted_id' => $add_unit->id, 'status' => AJAX_SUCCESS]);
         }
     }
+
     public function add_city(Request $request) {
         $add_info = $request->all();
         $admin_unit = new Adminnistrative_units();
