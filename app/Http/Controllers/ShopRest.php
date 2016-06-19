@@ -167,7 +167,7 @@ class ShopRest extends Controller
         if (empty($order)) {
             return Response::json(
                 array(
-                    'accept'   => 1,
+                    'accept'   => 0,
                     'messages' => MSG_ORDER_NOT_EXIST,
                 ),
                 200

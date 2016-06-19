@@ -37,28 +37,44 @@ class UserRest extends Controller
                                         'info'   => $info
                                 ),
                                 200
-                        );
+                        );              
                 } else {
-                        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-                                $user = Auth::user();
-                                $info = $user->shop;
-                                $user->isOnline = ONLINE;
-                                $user->save();
+                        $validator = Validator::make($request->all(), [
+                            "password" => "required",
+                                "email" => "required"
+                        ]);
+                        if ($validator->fails()) {
                                 return Response::json(
-                                        array(
+                                    array(
+                                        'accept'   => 0,
+                                        'messages' => $validator->messages(),
+                                    ),
+                                    200
+                                );
+                        } else {
+                                $field = filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) ? 'email' : 'phone_number';
+                                $request->merge([$field => $request->input('email')]);
+                                if (Auth::attempt($request->only($field, 'password'))) {
+                                        $user = Auth::user();
+                                        $info = $user->shop;
+                                        $user->isOnline = ONLINE;
+                                        $user->save();
+                                        return Response::json(
+                                            array(
                                                 'accept' => 1,
                                                 'user'   => Auth::user()->toArray(),
                                                 'info'   => $info
-                                        ),
-                                        200
-                                );
-                        } else {
-                                return Response::json(
-                                        array(
+                                            ),
+                                            200
+                                        );
+                                } else {
+                                        return Response::json(
+                                            array(
                                                 'accept' => 0,
-                                        ),
-                                        200
-                                );
+                                            ),
+                                            200
+                                        );
+                                }
                         }
                 }
         }
