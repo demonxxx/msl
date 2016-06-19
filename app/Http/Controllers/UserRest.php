@@ -443,15 +443,23 @@ class UserRest extends Controller
 
         
         public function uploadAvatar(Request $request){
+            $file = $request->file('photo');
             $user = User::find(Auth::guard('api')->id());
             if (!empty($user)) {
-                if ($request->hasFile('photo')) {
-                    $file = $request->file('photo');
+                if (!empty($file)) {
                     if ($file->getClientSize() >= AVATAR_SIZE*1000000) {
                         return Response::json(
                             array(
                                 'accept'   => 0,
-                                'messages' => MSG_UPLOAD_AVATAR_SIZE,
+                                'messages' => MSG_UPLOAD_FILE_SIZE,
+                            ),
+                           200
+                        );
+                    } else if ($file->getClientSize() == 0) {
+                        return Response::json(
+                            array(
+                                'accept'   => 0,
+                                'messages' => MSG_UPLOAD_WRONG_IMAGE_TYPE,
                             ),
                            200
                         );
@@ -461,7 +469,7 @@ class UserRest extends Controller
                     return Response::json(
                         array(
                             'accept'   => 0,
-                            'messages' => MSG_UPLOAD_AVATAR_EMPTY,
+                            'messages' => MSG_UPLOAD_FILE_EMPTY,
                         ),
                        200
                     );
@@ -479,7 +487,7 @@ class UserRest extends Controller
                     return Response::json(
                         array(
                             'accept'   => 1,
-                            'messages' => MSG_UPLOAD_AVATAR_SUCCEEDED,
+                            'messages' => MSG_UPLOAD_FILE_SUCCEEDED,
                         ),
                        200
                     );
@@ -487,7 +495,7 @@ class UserRest extends Controller
                     return Response::json(
                         array(
                             'accept'   => 0,
-                            'messages' => MSG_UPLOAD_AVATAR_FAILED,
+                            'messages' => MSG_UPLOAD_FILE_FAILED,
                         ),
                        200
                     );

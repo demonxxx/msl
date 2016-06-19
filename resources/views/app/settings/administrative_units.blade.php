@@ -17,21 +17,21 @@
                     <div id="administrative_units">
                         <ul>
                             @foreach($cities as $city)
-                            <li>
+                            <li id="js_node_{{$city->id}}">
                                 <span class="city_name">{{$city->name}}</span>
                                 <span style="margin-left: 5px; color: blue;" onclick="addUnit({{$city->id}},'{{$city->name}}',{{$city->level}})">Thêm</span>&nbsp;
                                 <span style="margin-left: 5px; color: blue;" onclick="editUnit({{$city->id}},'{{$city->name}}')">Sửa</span>&nbsp;
                                 <span style="margin-left: 5px; color: blue;" onclick="deleteUnit({{$city->id}})">Xóa</span>
                                 <ul>
                                     @foreach($city->districts as $district)
-                                    <li>
+                                    <li id="js_node_{{$district->id}}">
                                         <span class="district_name">{{$district->name}}</span>
                                         <span style="margin-left: 5px; color: blue;" onclick="addUnit({{$district->id}},'{{$district->name}}',{{$district->level}})">Thêm</span>&nbsp;
                                         <span style="margin-left: 5px; color: blue;" onclick="editUnit({{$district->id}},'{{$district->name}}')">Sửa</span>&nbsp;
                                         <span style="margin-left: 5px; color: blue;" onclick="deleteUnit({{$district->id}})">Xóa</span>
                                         <ul>
                                             @foreach($district->wards as $ward)
-                                            <li>
+                                            <li id="js_node_{{$ward->id}}">
                                                 <span class="ward_name">{{$ward->name}}</span>
                                                 <span style="margin-left: 5px; color: blue;" onclick="editUnit({{$ward->id}},'{{$ward->name}}')">Sửa</span>&nbsp;
                                                 <span style="margin-left: 5px; color: blue;" onclick="deleteUnit({{$ward->id}})">Xóa</span>
@@ -72,7 +72,7 @@
                     text: "Đơn vị hành chính đã được xóa.",
                     type: "success",
             }, function () {
-            window.location.reload();
+            $("#js_node_" + id).remove();
             });
             } else {
             swal("Lỗi", "Xóa không thành công, kiểm tra có đơn vị hành chính trực thuộc không?", "error");
@@ -117,7 +117,11 @@
                                             text: "Đơn vị hành chính đã được cập nhật.",
                                             type: "success",
                                     }, function () {
-                                    window.location.reload();
+                                    $.get(base_url + "/admin/settings/administrative_units_template", function(data, status){
+                                    $(".ibox-content").html(data);
+                                    $('#administrative_units').jstree();
+                                    expand_unit(unit_id);
+                                    });
                                     });
                                     } else {
                                     swal("Lỗi", "Cập nhật không thành công, kiểm tra có đơn vị hành chính cùng cấp trùng tên không?", "error");
@@ -158,15 +162,20 @@
                             $.ajax({
                             url: base_url + "/admin/settings/administrative_units/add",
                                     type: 'post',
+                                    dataType: 'json',
                                     data:{parent_id:unit_id, unit_name:document.getElementById('add_unit_input').value},
                                     success: function (result) {
-                                    if (parseInt(result) == AJAX_SUCCESS) {
+                                    if (parseInt(result.status) == AJAX_SUCCESS) {
                                     swal({
                                     title: "Thành Công!",
                                             text: "Đơn vị hành chính đã được thêm.",
                                             type: "success",
                                     }, function () {
-                                    window.location.reload();
+                                    $.get(base_url + "/admin/settings/administrative_units_template", function(data, status){
+                                    $(".ibox-content").html(data);
+                                    $('#administrative_units').jstree();
+                                    expand_unit(result.inserted_id);
+                                    });
                                     });
                                     } else {
                                     swal("Lỗi", "Thêm không thành công, kiểm tra có đơn vị hành chính cùng cấp trùng tên không?", "error");
@@ -213,7 +222,10 @@
                                             text: "Thành phố đã được thêm.",
                                             type: "success",
                                     }, function () {
-                                    window.location.reload();
+                                    $.get(base_url + "/admin/settings/administrative_units_template", function(data, status){
+                                    $(".ibox-content").html(data);
+                                    $('#administrative_units').jstree();
+                                    });
                                     });
                                     } else {
                                     swal("Lỗi", "Thêm không thành công, kiểm tra có đơn vị hành chính cùng cấp trùng tên không?", "error");
@@ -228,6 +240,10 @@
                     }
             }
     });
+    }
+    function expand_unit(unit_id) {
+    $('#administrative_units').jstree("select_node", '#js_node_' + unit_id, true);
+    return true;
     }
 
     $(function () {

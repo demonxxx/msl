@@ -20,7 +20,7 @@ class Feedback extends Model
     public function get_all_feedbacks($post) {
         $builder = DB::table("users");
         $builder->select(array("users.id", "users.code", "users.name", "users.email", "users.phone_number",
-                    "feedbacks.content", "feedbacks.created_at"))
+                    "feedbacks.feedback", "feedbacks.created_at"))
                 ->join("feedbacks", "feedbacks.user_id", "=", "users.id");
         $search_params = $post['searchParams'];
         $this->table_condition($builder, $search_params);
@@ -44,8 +44,8 @@ class Feedback extends Model
             if (array_key_exists('phone_number', $search_params)) {
                 $builder->where('users.phone_number', 'like', '%' . $search_params['phone_number'] . '%');
             }
-            if (array_key_exists('content', $search_params)) {
-                $builder->where('feedbacks.content', 'like', '%' . $search_params['content'] . '%');
+            if (array_key_exists('feedback', $search_params)) {
+                $builder->where('feedbacks.feedback', 'like', '%' . $search_params['feedback'] . '%');
             }
             if (array_key_exists('created_at', $search_params)) {
                 $builder->where('feedbacks.created_at', 'like', '%' . $search_params['created_at'] . '%');
