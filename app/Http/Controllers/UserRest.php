@@ -15,6 +15,7 @@ use App\AddedService;
 use App\VehicleType;
 use App\Adminnistrative_units;
 use App\Avatar;
+use Illuminate\Support\Str;
 
 class UserRest extends Controller
 {
@@ -179,6 +180,34 @@ class UserRest extends Controller
                         );
                 }
 
+        }
+
+        public function changePassword(Request $request){
+                $user_id = Auth::guard('api')->id();
+                $user = User::find($user_id);
+                $validator = Validator::make($request->all(), [
+                    "password" => "required|min:6|confirmed",
+                ]);
+                if ($validator->fails()) {
+                        return Response::json(
+                            array(
+                                'accept'   => 0,
+                                'messages' => $validator->messages(),
+                            ),
+                            200
+                        );
+                }
+                $user->forceFill([
+                    'password' => bcrypt($request->password),
+                    'remember_token' => Str::random(60),
+                ])->save();
+                return Response::json(
+                    array(
+                        'accept'   => 1,
+                        'messages' => "Đổi mật khẩu thành công!",
+                    ),
+                    200
+                );
         }
 
         public function getMyInfo()
