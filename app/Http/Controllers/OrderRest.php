@@ -71,6 +71,7 @@ class OrderRest extends Controller
             "latitude"          => "required",
             "start_time"        => "date",
             "end_time"          => "date",
+            "order_values"      =>"required",
             "distance"          => "required"
         ]);
         if ($validator->fails()) {
@@ -232,6 +233,8 @@ class OrderRest extends Controller
             $order->order_values = empty($request->order_values) ? null : $request->order_values;
             $order->longitude = empty($request->longitude) ? null : $request->longitude;
             $order->latitude = empty($request->latitude) ? null : $request->latitude;
+            $order->longitude_dest = empty($request->longitude_dest) ? null : $request->longitude_dest;
+            $order->latitude_dest = empty($request->latitude_dest) ? null : $request->latitude_dest;
             $order->description = empty($request->description) ? null : $request->description;
             $order->start_time = empty($request->start_time) ? null : $request->start_time;
             $order->end_time = empty($request->end_time) ? null : $request->end_time;
