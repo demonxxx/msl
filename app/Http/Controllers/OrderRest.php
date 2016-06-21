@@ -71,6 +71,7 @@ class OrderRest extends Controller
             "latitude"          => "required",
             "start_time"        => "date",
             "end_time"          => "date",
+            "order_values"      =>"required",
             "distance"          => "required"
         ]);
         if ($validator->fails()) {
@@ -188,6 +189,39 @@ class OrderRest extends Controller
 
             $order_count = Order::max('id');
             $order_code = "OD" . ($order_count + 1);
+            
+            $file = $request->file('photo');
+            if (!empty($file)) {
+                if ($file->getClientSize() >= IMAGE_SIZE*1000000) {
+                    return Response::json(
+                        array(
+                            'accept'   => 0,
+                            'messages' => MSG_UPLOAD_FILE_SIZE,
+                        ),
+                       200
+                    );
+                } else if ($file->getClientSize() == 0) {
+                    return Response::json(
+                        array(
+                            'accept'   => 0,
+                            'messages' => MSG_UPLOAD_WRONG_IMAGE_TYPE,
+                        ),
+                       200
+                    );
+                }
+                if ($file->isValid()) {
+                    $file->move(UPLOAD_ORDER_DIR, $order_code.".jpg");
+                } else {
+                    return Response::json(
+                        array(
+                            'accept'   => 0,
+                            'messages' => MSG_UPLOAD_FILE_FAILED,
+                        ),
+                       200
+                    );
+                }
+            }
+            
             $order = new Order;
             $order->code = $order_code;
             $order->user_id = $user->id;
@@ -199,6 +233,8 @@ class OrderRest extends Controller
             $order->order_values = empty($request->order_values) ? null : $request->order_values;
             $order->longitude = empty($request->longitude) ? null : $request->longitude;
             $order->latitude = empty($request->latitude) ? null : $request->latitude;
+            $order->longitude_dest = empty($request->longitude_dest) ? null : $request->longitude_dest;
+            $order->latitude_dest = empty($request->latitude_dest) ? null : $request->latitude_dest;
             $order->description = empty($request->description) ? null : $request->description;
             $order->start_time = empty($request->start_time) ? null : $request->start_time;
             $order->end_time = empty($request->end_time) ? null : $request->end_time;
@@ -209,6 +245,7 @@ class OrderRest extends Controller
             $order->discounts = empty($request->discount_code) ? null : $request->discount_code;
             $order->discount_freight = $discount_freight;
             $order->main_freight = (int) ($order->base_freight + $order->vas_freight - $order->discount_freight);
+            $order->image_url = empty($file) ? null : "/images/order/".$order_code.".jpg";
             $order->save();
             $shopOrderHistory = new ShopOrderHistory;
             $shopOrderHistory->shop_id = $user->id;
@@ -237,7 +274,7 @@ class OrderRest extends Controller
         if (empty($order)) {
             return Response::json(
                 array(
-                    'accept'   => 1,
+                    'accept'   => 0,
                     'messages' => MSG_ORDER_NOT_EXIST,
                 ),
                 200
@@ -302,7 +339,7 @@ class OrderRest extends Controller
         if (empty($order)) {
             return Response::json(
                 array(
-                    'accept'   => 1,
+                    'accept'   => 0,
                     'messages' => MSG_ORDER_NOT_EXIST,
                 ),
                 200

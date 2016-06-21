@@ -31,15 +31,20 @@ define("MSG_USER_DO_NOT_EXIST", "Người dùng không tồn tại");
 define("MSG_PHONE_NUMBER_EXIST", "Đã tồn tại số điện thoại");
 define("MSG_EMAIL_EXIST", "Đã tồn tại địa chỉ email");
 define("MSG_UPDATE_USER_INFO_SUCCESSFULLY", "Cập nhật thông tin thành công");
-define("MSG_FEEDBACK_EMPTY", "Nội dung phản hồi trống");
-define("MSG_FEEDBACK_SUCCESSFULLY", "Phản hồi thành công");
+define("MSG_FEEDBACK_EMPTY", "Nội dung phản hồi trống!");
+define("MSG_FEEDBACK_SUCCESSFULLY", "Phản hồi thành công!");
+define("FEEDBACK_STRING_LIMIT", 1000);
+define("MSG_FEEDBACK_STRING_LIMIT", "Nội dung phản hồi quá ".FEEDBACK_STRING_LIMIT." kí tự!");
 
-define("MSG_UPLOAD_AVATAR_SUCCEEDED", "Gửi tệp tin thành công!");
-define("MSG_UPLOAD_AVATAR_FAILED", "Gửi tệp tin không thành công!");
-define("MSG_UPLOAD_AVATAR_EMPTY", "Sai định dạng ảnh hoặc chưa đính kèm!");
-define("MSG_UPLOAD_AVATAR_SIZE", "Kích cỡ ảnh quá quy định!");
+define("MSG_UPLOAD_FILE_SUCCEEDED", "Gửi tệp tin thành công!");
+define("MSG_UPLOAD_FILE_FAILED", "Gửi tệp tin không thành công!");
+define("MSG_UPLOAD_FILE_EMPTY", "Chưa đính kèm!");
+define("MSG_UPLOAD_FILE_SIZE", "Kích cỡ ảnh quá quy định!");
+define("MSG_UPLOAD_WRONG_IMAGE_TYPE", "Sai định dạng ảnh!");
 define("AVATAR_SIZE", 1);
+define("IMAGE_SIZE", 5);
 define("UPLOAD_AVATAR_DIR", "/var/www/upload/avatar/");
+define("UPLOAD_ORDER_DIR", "/var/www/upload/order/");
 define("UPLOAD_DIR", "/var/www/upload/");
 
 define("ACCOUNT_TYPE_MAIN", 1);

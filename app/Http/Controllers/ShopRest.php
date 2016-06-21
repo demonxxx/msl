@@ -167,7 +167,7 @@ class ShopRest extends Controller
         if (empty($order)) {
             return Response::json(
                 array(
-                    'accept'   => 1,
+                    'accept'   => 0,
                     'messages' => MSG_ORDER_NOT_EXIST,
                 ),
                 200
@@ -261,7 +261,7 @@ class ShopRest extends Controller
     public function feedback(Request $request){
         $user = User::find(Auth::guard('api')->id());
         if (!empty($user)) {
-            if (empty($request->content)) {
+            if (empty($request->feedback)) {
                 return Response::json(
                     array(
                         'accept'   => 0,
@@ -270,9 +270,18 @@ class ShopRest extends Controller
                     200
                 );
             } else {
+                if (strlen($request->feedback) >= FEEDBACK_STRING_LIMIT){
+                    return Response::json(
+                        array(
+                            'accept'   => 0,
+                            'messages' => MSG_FEEDBACK_STRING_LIMIT,
+                        ),
+                        200
+                    );
+                }
                 $feedback = new Feedback();
                 $feedback->user_id = $user->id;
-                $feedback->content = $request->content;
+                $feedback->feedback = $request->feedback;
                 $feedback->save();
                 return Response::json(
                     array(
