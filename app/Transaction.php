@@ -21,7 +21,7 @@ class Transaction extends Model
     public function get_all_transactions($post) {
         $builder = DB::table("transactions");
         $builder->select("transactions.*","users.name as creator_name")
-            ->join("users", "transactions.creator_id", "=", "users.id");
+            ->leftjoin("users", "transactions.creator_id", "=", "users.id");
         $search_params = $post['searchParams'];
         $this->table_condition($builder, $search_params);
         $builder->skip($post["iDisplayStart"])->take($post["iDisplayLength"])
@@ -33,7 +33,7 @@ class Transaction extends Model
     public function count_all($post) {
         $builder = DB::table("transactions");
         $builder->select("transactions.id")
-            ->join("users", "transactions.creator_id", "=", "users.id");
+            ->leftjoin("users", "transactions.creator_id", "=", "users.id");
         $search_params = $post['searchParams'];
         $this->table_condition($builder, $search_params);
         $count = $builder->count();

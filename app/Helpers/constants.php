@@ -20,6 +20,9 @@ define("ORDER_SHOP_CANCEL", 7);
 define("ORDER_RETURN_ITEMS", 8);
 define("ORDER_RETURNING", 9);
 
+define("FREIGHT_SHIP", 0.15);
+define("MSG_TRANSACTION_SHIPPER", "Trừ tiền ship");
+
 define("MSG_ORDER_NOT_EXIST", "Đơn hàng không tồn tại!");
 define("MSG_SHOP_NOT_EXIST", "Khách hàng không tồn tại!");
 define("MSG_NOT_HAVE_PERMISSION", "Bạn không có quyền này!");

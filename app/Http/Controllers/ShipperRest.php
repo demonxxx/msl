@@ -14,6 +14,9 @@ use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Response;
 use App\ShipperOrderHistory;
+use App\Account;
+use App\TransactionUser;
+use App\Transaction;
 
 
 class ShipperRest extends Controller
@@ -267,6 +270,7 @@ class ShipperRest extends Controller
                     $status = $request->status;
                     $description = empty($request->description) ? null : $request->description;
                     if ($status == ORDER_PENDING) {
+                        if ($order->status == ORDER_PENDING) return;
                         return Response::json(
                                         array(
                                     'accept' => 0,
@@ -277,22 +281,51 @@ class ShipperRest extends Controller
                         $order->taken_order_at = Carbon::now()->toDateTimeString();
                     } else if ($status == ORDER_TAKEN_ITEMS) {
                         $order->taken_items_at = Carbon::now()->toDateTimeString();
-                    } else if ($status == ORDER_SHIPPING) {
-                        $order->shipping_at = Carbon::now()->toDateTimeString();
                     } else if ($status == ORDER_SHIP_SUCCESS) {
+                        if ((int)$order->status == ORDER_SHIP_SUCCESS) return Response::json(
+                            array(
+                                'accept' => 0,
+                                'messages' => 'Đơn hàng đang trong trạng thái chuyển thành công!',
+                            ), 200
+                        );
+                        $isSuccess = $this->shipTransaction($order);
+                        if ($isSuccess == false){
+                            return Response::json(
+                                array(
+                                    'accept' => 0,
+                                    'messages' => 'Giao dịch không thành công!',
+                                ), 200
+                            );
+                        }
                         $order->ship_success_at = Carbon::now()->toDateTimeString();
                     } else if ($status == ORDER_PAYED) {
+                        if ($order->status == ORDER_PAYED) return;
                         $order->payed_at = Carbon::now()->toDateTimeString();
                     } else if ($status == ORDER_RETURNING) {
                         $order->returning_at = Carbon::now()->toDateTimeString();
                     } else if ($status == ORDER_SHOP_CANCEL) {
                         return Response::json(
                                         array(
-                                    'accept' => 0,
-                                    'messages' => 'Không thể chuyển trạngshop cancel',
+                                            'accept' => 0,
+                                            'messages' => 'Không thể chuyển trạngshop cancel',
                                         ), 200
                         );
                     } else if ($status == ORDER_RETURN_ITEMS) {
+                        if ((int)$order->status == ORDER_RETURN_ITEMS) return Response::json(
+                            array(
+                                'accept' => 0,
+                                'messages' => 'Đơn hàng đã chuyển trạng thái này!',
+                            ), 200
+                        );
+                        $isSuccess = $this->shipTransaction($order);
+                        if (!$isSuccess){
+                            return Response::json(
+                                array(
+                                    'accept' => 0,
+                                    'messages' => 'Giao dịch không thành công!',
+                                ), 200
+                            );
+                        }
                         $order->return_items_at = Carbon::now()->toDateTimeString();
                     }else {
                         return Response::json(
@@ -315,6 +348,59 @@ class ShipperRest extends Controller
                 }
             }
         }
+    }
+
+    public function shipTransaction($order){
+        $base_freight = FREIGHT_SHIP * $order->base_freight;
+        DB::beginTransaction();
+        try{
+            if (empty($order->shipper_id)) return false;
+            $isSuccess = $this->shipTransactionHandle($order->shipper_id, $base_freight , TRANSACTION_TYPE_SUB, "Trừ phí ship", $order->id);
+            if ($order->discount_freight > 0){
+                $isSuccess = $this->shipTransactionHandle($order->shipper_id, $order->discount_freight, TRANSACTION_TYPE_ADD, "Cộng tiền khuyến mại", $order->id);
+            }
+            if ($isSuccess){
+                DB::commit();
+            }
+        }catch (\Exception $e)
+        {
+            DB::rollBack();
+            $isSuccess = false;
+            return $isSuccess;
+        }
+        return $isSuccess;
+    }
+
+    public function shipTransactionHandle($userId, $amount, $transactonType, $message = null, $orderId = null){
+        $transaction = new Transaction;
+        $transaction->amount = $amount;
+        $transaction->transaction_type = $transactonType;
+        $transaction->account_type = ACCOUNT_TYPE_MAIN;
+        $transaction->note = $message;
+        $transaction->transaction_date = Carbon::now()->toDateTimeString();
+        $transaction->total_user = 1;
+        $transaction->isSystem = 1;
+        $transaction->orderId = $orderId;
+        $transaction->save();
+        $code = "SHIP"."-".$transaction->id;
+        $transaction->code = $code;
+        $transaction->save();
+        $customer_account = Account::where("user_id", $userId)->first();
+        if(empty($customer_account)){
+            return false;
+        }
+        if ($transactonType == TRANSACTION_TYPE_ADD){
+            $customer_account->main = $customer_account->main + (int) $amount;
+        }else {
+            $customer_account->main = $customer_account->main - (int) $amount;
+        }
+
+        $customer_account->save();
+        $transactionUser = new TransactionUser;
+        $transactionUser->user_id = $userId;
+        $transactionUser->transaction_id = $transaction->id;
+        $transactionUser->save();
+        return true;
     }
 
     public function getTakenOrders() {
