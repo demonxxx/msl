@@ -289,15 +289,27 @@ class ShipperRest extends Controller
                             ), 200
                         );
                         $isSuccess = $this->shipTransaction($order);
-                        if ($isSuccess == false){
+                        if (empty($isSuccess)){
                             return Response::json(
                                 array(
                                     'accept' => 0,
                                     'messages' => 'Giao dịch không thành công!',
                                 ), 200
                             );
+                        }else {
+                            $order->ship_success_at = Carbon::now()->toDateTimeString();
+                            $order->status = $status;
+                            $order->description = $description;
+                            $order->save();
+                            return Response::json(
+                                array(
+                                    'accept' => 1,
+                                    'messages' => array("status" => $status, "description" => $description),
+                                    "transaction" => $isSuccess
+                                ), 200
+                            );
                         }
-                        $order->ship_success_at = Carbon::now()->toDateTimeString();
+
                     } else if ($status == ORDER_PAYED) {
                         if ($order->status == ORDER_PAYED) return;
                         $order->payed_at = Carbon::now()->toDateTimeString();
@@ -305,10 +317,10 @@ class ShipperRest extends Controller
                         $order->returning_at = Carbon::now()->toDateTimeString();
                     } else if ($status == ORDER_SHOP_CANCEL) {
                         return Response::json(
-                                        array(
-                                            'accept' => 0,
-                                            'messages' => 'Không thể chuyển trạngshop cancel',
-                                        ), 200
+                            array(
+                                'accept' => 0,
+                                'messages' => 'Không thể chuyển trạngshop cancel',
+                            ), 200
                         );
                     } else if ($status == ORDER_RETURN_ITEMS) {
                         if ((int)$order->status == ORDER_RETURN_ITEMS) return Response::json(
@@ -318,15 +330,27 @@ class ShipperRest extends Controller
                             ), 200
                         );
                         $isSuccess = $this->shipTransaction($order);
-                        if (!$isSuccess){
+                        if (empty($isSuccess)){
                             return Response::json(
                                 array(
                                     'accept' => 0,
                                     'messages' => 'Giao dịch không thành công!',
                                 ), 200
                             );
+                        }else {
+                            $order->return_items_at = Carbon::now()->toDateTimeString();
+                            $order->status = $status;
+                            $order->description = $description;
+                            $order->save();
+                            return Response::json(
+                                array(
+                                    'accept' => 1,
+                                    'messages' => array("status" => $status, "description" => $description),
+                                    "transaction" => $isSuccess
+                                ), 200
+                            );
                         }
-                        $order->return_items_at = Carbon::now()->toDateTimeString();
+
                     }else {
                         return Response::json(
                             array(
@@ -339,11 +363,10 @@ class ShipperRest extends Controller
                     $order->description = $description;
                     $order->save();
                     return Response::json(
-                                    array(
-                                'accept' => 1,
-                                'order' => $order->toArray(),
-                                'messages' => array("status" => $status, "description" => $description),
-                                    ), 200
+                        array(
+                            'accept' => 1,
+                            'messages' => array("status" => $status, "description" => $description),
+                        ), 200
                     );
                 }
             }
@@ -351,24 +374,37 @@ class ShipperRest extends Controller
     }
 
     public function shipTransaction($order){
+        $result = [];
         $base_freight = FREIGHT_SHIP * $order->base_freight;
         DB::beginTransaction();
+        $isSuccess = true;
         try{
             if (empty($order->shipper_id)) return false;
-            $isSuccess = $this->shipTransactionHandle($order->shipper_id, $base_freight , TRANSACTION_TYPE_SUB, "Trừ phí ship", $order->id);
+            $sub = $this->shipTransactionHandle($order->shipper_id, $base_freight , TRANSACTION_TYPE_SUB, "Trừ phí ship", $order->id);
+            if (!empty($sub)){
+                array_push($result, $sub);
+            }else {
+                $isSuccess = false;
+            }
             if ($order->discount_freight > 0){
-                $isSuccess = $this->shipTransactionHandle($order->shipper_id, $order->discount_freight, TRANSACTION_TYPE_ADD, "Cộng tiền khuyến mại", $order->id);
+                $add = $this->shipTransactionHandle($order->shipper_id, $order->discount_freight, TRANSACTION_TYPE_ADD, "Cộng tiền khuyến mại", $order->id);
+                if (!empty($add)){
+                    array_push($result, $add);
+                }else {
+                    $isSuccess = false;
+                }
             }
             if ($isSuccess){
                 DB::commit();
+            }else {
+                return null;
             }
         }catch (\Exception $e)
         {
             DB::rollBack();
-            $isSuccess = false;
-            return $isSuccess;
+            return null;
         }
-        return $isSuccess;
+        return $result;
     }
 
     public function shipTransactionHandle($userId, $amount, $transactonType, $message = null, $orderId = null){
@@ -387,7 +423,7 @@ class ShipperRest extends Controller
         $transaction->save();
         $customer_account = Account::where("user_id", $userId)->first();
         if(empty($customer_account)){
-            return false;
+            return null;
         }
         if ($transactonType == TRANSACTION_TYPE_ADD){
             $customer_account->main = $customer_account->main + (int) $amount;
@@ -400,7 +436,9 @@ class ShipperRest extends Controller
         $transactionUser->user_id = $userId;
         $transactionUser->transaction_id = $transaction->id;
         $transactionUser->save();
-        return true;
+        $transaction->main = $customer_account->main;
+        $transaction->second = $customer_account->second;
+        return $transaction;
     }
 
     public function getTakenOrders() {
@@ -413,10 +451,10 @@ class ShipperRest extends Controller
                 ->orderBy("shipper_order_histories.id", "desc")
                 ->get();
         return Response::json(
-                        array(
-                    'accept' => 1,
-                    'orders' => $taken_orders,
-                        ), 200
+            array(
+                'accept' => 1,
+                'orders' => $taken_orders,
+            ), 200
         );
     }
 
@@ -437,10 +475,10 @@ class ShipperRest extends Controller
             if ($shipperOrderHistory->shipper_id == $shipper_id) {
                 if ($shipperOrderHistory->trashed()) {
                     return Response::json(
-                                    array(
-                                'accept' => 0,
-                                'message' => 'Lịch sử nhận đã bị xóa trước đó!',
-                                    ), 200
+                        array(
+                            'accept' => 0,
+                            'message' => 'Lịch sử nhận đã bị xóa trước đó!',
+                        ), 200
                     );
                 } else {
                     $shipperOrderHistory->delete();
