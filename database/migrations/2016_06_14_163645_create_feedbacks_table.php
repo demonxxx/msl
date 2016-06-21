@@ -15,7 +15,7 @@ class CreateFeedbacksTable extends Migration
         Schema::create('feedbacks', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string("content", 10000);
+            $table->string("feedback", 1000);
             $table->timestamps();
             $table->softDeletes();
         });
