@@ -22,7 +22,6 @@ define("ORDER_RETURNING", 9);
 
 define("FREIGHT_SHIP", 0.15);
 define("MSG_TRANSACTION_SHIPPER", "Trừ tiền ship");
-
 define("MSG_ORDER_NOT_EXIST", "Đơn hàng không tồn tại!");
 define("MSG_SHOP_NOT_EXIST", "Khách hàng không tồn tại!");
 define("MSG_NOT_HAVE_PERMISSION", "Bạn không có quyền này!");
@@ -57,15 +56,12 @@ define("TRANSACTION_TYPE_ADD", 1);
 define("TRANSACTION_TYPE_SUB", 2);
 // Mobile notification
 define("IOS_CERTIFICATE_FILE", "ios_certificate.pem");
-
 // Google API
 define("GOOGLE_API_KEY", 'google_api_key');
-
 // Administrative units
 define("CITY_UNIT", 0);
 define("DISTRICT_UNIT", 1);
 define("WARD_UNIT", 2);
-
 // ajax result
 define("AJAX_SUCCESS", 1);
 define("AJAX_FAILED", 0);
