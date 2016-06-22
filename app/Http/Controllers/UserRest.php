@@ -16,6 +16,7 @@ use App\VehicleType;
 use App\Adminnistrative_units;
 use App\Avatar;
 use Illuminate\Support\Str;
+use App\Account;
 
 class UserRest extends Controller
 {
@@ -78,6 +79,27 @@ class UserRest extends Controller
                                 }
                         }
                 }
+        }
+
+        public function getAccountInfo(){
+                $user_id = Auth::guard('api')->id();
+                $customer_account = Account::where("user_id", $user_id)->select("main", "second")->first();
+                if(empty($customer_account)){
+                        return Response::json(
+                            array(
+                                'accept' => 1,
+                                'account' => "Bạn chưa có tài khoản giao dịch!",
+                            ),
+                            200
+                        );
+                }
+                return Response::json(
+                    array(
+                        'accept' => 1,
+                        'account' => $customer_account->toArray(),
+                    ),
+                    200
+                );
         }
 
         public function logout()

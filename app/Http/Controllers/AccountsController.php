@@ -37,7 +37,7 @@ class AccountsController extends Controller
             $transaction_date = $transaction->transaction_date;
             $transaction_code = $transaction->code;
             $total_user = $transaction->total_user;
-            $user = User::find($transaction->creator_id);
+            $user = (empty($transaction->creator_id)) ? null : User::find($transaction->creator_id);
         }
         return view("app.accounts.detail", ["account_type"     => $account_type,
                                              "transaction_type" => $transaction_type,
