@@ -153,6 +153,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
     Route::post("user/updateMyInfo", "UserRest@updateMyInfo");
     Route::post("user/uploadAvatar", "UserRest@uploadAvatar");
     Route::post("user/changePassword", "UserRest@changePassword");
+    Route::get("user/getAccountInfo", "UserRest@getAccountInfo");
 
     Route::post('shipper/find', 'ShipperRest@findByLocation');
     Route::get('shipper/take/{id}', 'ShipperRest@takeOrder');
