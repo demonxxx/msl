@@ -187,13 +187,15 @@ class ShipperRest extends Controller
                 $shipperOrderHistory->save();
                 return Response::json(
                                 array(
-                            'accept' => 1,
-                            'order' => $order->toArray(),
+                                    'accept' => 1,
+                                    'order' => $order->toArray(),
                                 ), 200
                 );
             }
         }
     }
+
+//    public function check
 
     public function getTakenOrder($id){
         $order = Order::find($id);
@@ -380,14 +382,14 @@ class ShipperRest extends Controller
         $isSuccess = true;
         try{
             if (empty($order->shipper_id)) return false;
-            $sub = $this->shipTransactionHandle($order->shipper_id, $base_freight , TRANSACTION_TYPE_SUB, "Trừ phí ship", $order->id);
+            $sub = $this->shipTransactionHandle($order->shipper_id, $base_freight , TRANSACTION_TYPE_SUB, "Trừ phí ship", $order->id, $order->base_freight);
             if (!empty($sub)){
                 array_push($result, $sub);
             }else {
                 $isSuccess = false;
             }
             if ($order->discount_freight > 0){
-                $add = $this->shipTransactionHandle($order->shipper_id, $order->discount_freight, TRANSACTION_TYPE_ADD, "Cộng tiền khuyến mại", $order->id);
+                $add = $this->shipTransactionHandle($order->shipper_id, $order->discount_freight, TRANSACTION_TYPE_ADD, "Cộng tiền khuyến mại", $order->id, $order->base_freight);
                 if (!empty($add)){
                     array_push($result, $add);
                 }else {
@@ -407,7 +409,7 @@ class ShipperRest extends Controller
         return $result;
     }
 
-    public function shipTransactionHandle($userId, $amount, $transactonType, $message = null, $orderId = null){
+    public function shipTransactionHandle($userId, $amount, $transactonType, $message = null, $orderId = null, $ship_freight){
         $transaction = new Transaction;
         $transaction->amount = $amount;
         $transaction->transaction_type = $transactonType;
@@ -425,6 +427,7 @@ class ShipperRest extends Controller
         if(empty($customer_account)){
             return null;
         }
+        $before_transaction = $customer_account->main;
         if ($transactonType == TRANSACTION_TYPE_ADD){
             $customer_account->main = $customer_account->main + (int) $amount;
         }else {
@@ -436,6 +439,8 @@ class ShipperRest extends Controller
         $transactionUser->user_id = $userId;
         $transactionUser->transaction_id = $transaction->id;
         $transactionUser->save();
+        $transaction->before_transaction = $before_transaction;
+        $transaction->ship_freight = $ship_freight;
         $transaction->main = $customer_account->main;
         $transaction->second = $customer_account->second;
         return $transaction;

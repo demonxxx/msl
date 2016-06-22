@@ -80,6 +80,11 @@ class UserRest extends Controller
                 }
         }
 
+        public function getAccountInfo(){
+                $user_id = Auth::guard('api')->id();
+                $user = User::find($user_id);
+        }
+
         public function logout()
         {
                 if (Auth::check()) {
