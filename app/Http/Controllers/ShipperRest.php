@@ -196,8 +196,8 @@ class ShipperRest extends Controller
                     return Response::json(
                         array(
                             'accept' => 0,
-                            'message' => "Bạn không được nhận quá 5 đơn hàng chưa thành công, " .
-                                "vui lòng giao để nhận thêm đơn hàng mới!",
+                            'message' => "Bạn còn 5 đơn hàng chưa giao,
+                            vui lòng giao để nhận thêm đơn hàng mới!",
                         ), 200
                     );
                 }
@@ -218,7 +218,8 @@ class ShipperRest extends Controller
                     return Response::json(
                         array(
                             'accept' => 0,
-                            'message' => "Bạn không đủ tiền để nhận thêm đơn hàng!",
+                            'message' => "Số tiền trong tài khoản của bạn không đủ để nhận đơn hàng,
+                            vui lòng nạp thêm để sử dụng!",
                         ), 200
                     );
                 }
