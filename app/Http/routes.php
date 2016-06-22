@@ -109,7 +109,6 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
         Route::post('/feedback/load_list', 'ShopsController@load_list_feedback');
     });
 
-
     Route::group(['prefix' => 'admin/settings', 'roles' => ['admin']], function () {
         Route::get('/vehicleTypes', 'SettingsController@showVehicleTypes')->name("vehicle_types");
         Route::post('/vehicleTypes/create', 'SettingsController@createVehicleType');
@@ -153,6 +152,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
     Route::get("user/getUserInfo/{id}", "UserRest@getUserInfo");
     Route::post("user/updateMyInfo", "UserRest@updateMyInfo");
     Route::post("user/uploadAvatar", "UserRest@uploadAvatar");
+    Route::post("user/changePassword", "UserRest@changePassword");
 
     Route::post('shipper/find', 'ShipperRest@findByLocation');
     Route::get('shipper/take/{id}', 'ShipperRest@takeOrder');

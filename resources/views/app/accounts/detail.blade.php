@@ -19,9 +19,15 @@
                     <div class="col-sm-6">
                         <address>
                             <strong>Thực hiện giao dịch</strong><br>
-                            {{$admin->name}}<br>
-                            {{$admin->email}}<br>
+                            @if(!empty($admin))
+
+                                {{$admin->name}}<br>
+                                {{$admin->email}}<br>
+
                             <abbr title="Phone">Phone:</abbr> {{$admin->phone_number}}
+                            @else
+                                Hệ thống
+                            @endif
                         </address>
                     </div>
 

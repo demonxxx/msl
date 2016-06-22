@@ -15,6 +15,7 @@ use App\AddedService;
 use App\VehicleType;
 use App\Adminnistrative_units;
 use App\Avatar;
+use Illuminate\Support\Str;
 
 class UserRest extends Controller
 {
@@ -37,28 +38,44 @@ class UserRest extends Controller
                                         'info'   => $info
                                 ),
                                 200
-                        );
+                        );              
                 } else {
-                        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-                                $user = Auth::user();
-                                $info = $user->shop;
-                                $user->isOnline = ONLINE;
-                                $user->save();
+                        $validator = Validator::make($request->all(), [
+                            "password" => "required",
+                                "email" => "required"
+                        ]);
+                        if ($validator->fails()) {
                                 return Response::json(
-                                        array(
+                                    array(
+                                        'accept'   => 0,
+                                        'messages' => $validator->messages(),
+                                    ),
+                                    200
+                                );
+                        } else {
+                                $field = filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) ? 'email' : 'phone_number';
+                                $request->merge([$field => $request->input('email')]);
+                                if (Auth::attempt($request->only($field, 'password'))) {
+                                        $user = Auth::user();
+                                        $info = $user->shop;
+                                        $user->isOnline = ONLINE;
+                                        $user->save();
+                                        return Response::json(
+                                            array(
                                                 'accept' => 1,
                                                 'user'   => Auth::user()->toArray(),
                                                 'info'   => $info
-                                        ),
-                                        200
-                                );
-                        } else {
-                                return Response::json(
-                                        array(
+                                            ),
+                                            200
+                                        );
+                                } else {
+                                        return Response::json(
+                                            array(
                                                 'accept' => 0,
-                                        ),
-                                        200
-                                );
+                                            ),
+                                            200
+                                        );
+                                }
                         }
                 }
         }
@@ -163,6 +180,34 @@ class UserRest extends Controller
                         );
                 }
 
+        }
+
+        public function changePassword(Request $request){
+                $user_id = Auth::guard('api')->id();
+                $user = User::find($user_id);
+                $validator = Validator::make($request->all(), [
+                    "password" => "required|min:6|confirmed",
+                ]);
+                if ($validator->fails()) {
+                        return Response::json(
+                            array(
+                                'accept'   => 0,
+                                'messages' => $validator->messages(),
+                            ),
+                            200
+                        );
+                }
+                $user->forceFill([
+                    'password' => bcrypt($request->password),
+                    'remember_token' => Str::random(60),
+                ])->save();
+                return Response::json(
+                    array(
+                        'accept'   => 1,
+                        'messages' => "Đổi mật khẩu thành công!",
+                    ),
+                    200
+                );
         }
 
         public function getMyInfo()
