@@ -17,8 +17,8 @@ define("ORDER_SHIPPING", 4);
 define("ORDER_SHIP_SUCCESS", 5);
 define("ORDER_PAYED", 6);
 define("ORDER_SHOP_CANCEL", 7);
-define("ORDER_RETURN_ITEMS", 8);
-define("ORDER_RETURNING", 9);
+define("ORDER_RETURNING", 8);
+define("ORDER_RETURN_ITEMS", 9);
 
 define("FREIGHT_SHIP", 0.15);
 define("MSG_TRANSACTION_SHIPPER", "Trừ tiền ship");
