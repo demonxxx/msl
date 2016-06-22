@@ -85,7 +85,13 @@ class UserRest extends Controller
                 $user_id = Auth::guard('api')->id();
                 $customer_account = Account::where("user_id", $user_id)->select("main", "second")->first();
                 if(empty($customer_account)){
-                        return null;
+                        return Response::json(
+                            array(
+                                'accept' => 1,
+                                'account' => "Bạn chưa có tài khoản giao dịch!",
+                            ),
+                            200
+                        );
                 }
                 return Response::json(
                     array(
