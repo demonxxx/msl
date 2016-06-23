@@ -196,8 +196,7 @@ class ShipperRest extends Controller
                     return Response::json(
                         array(
                             'accept' => 0,
-                            'message' => "Bạn còn 5 đơn hàng chưa giao,
-                            vui lòng giao để nhận thêm đơn hàng mới!",
+                            'message' => "Bạn còn 5 đơn hàng chưa giao, vui lòng giao để nhận thêm đơn hàng mới!",
                         ), 200
                     );
                 }
@@ -206,20 +205,13 @@ class ShipperRest extends Controller
                     ->orWhere("status", ORDER_TAKEN_ITEMS)
                     ->orWhere("status", ORDER_RETURNING)
                     ->select(DB::raw('SUM(base_freight) as total'))->first();
-//                return Response::json(
-//                    array(
-//                        'accept' => 0,
-//                        'message' => $total_base_freight_obj,
-//                    ), 200
-//                );
                 $total_freight = empty($total_base_freight_obj) ? 0 : $total_base_freight_obj->total;
                 $total_money = (int) $total_freight + (int) $order->base_freight;
                 if($user_account->main < FREIGHT_SHIP * $total_money){
                     return Response::json(
                         array(
                             'accept' => 0,
-                            'message' => "Số tiền trong tài khoản của bạn không đủ để nhận đơn hàng,
-                            vui lòng nạp thêm để sử dụng!",
+                            'message' => "Số tiền trong tài khoản của bạn không đủ để nhận đơn hàng, vui lòng nạp thêm để sử dụng!",
                         ), 200
                     );
                 }

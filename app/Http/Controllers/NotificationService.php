@@ -10,10 +10,10 @@ trait NotificationService {
         // just for test apple remote notification
         /////////////////////////////////////////////////////////////////
         // Put your device token here (without spaces):
-        $deviceToken = '5b89726d88914849d2c7534a91bf6f1c1bbd4cc799abb3ed879b6c24f55ad495';
+        $deviceToken = '104f93b8f6323e24eff605bb15e860ffc919642b1f1fdf99aa6b36ddb6765f7b';
 
         // Put your private key's passphrase here:
-        $passphrase = '';
+        $passphrase = 'Abc@@123';
 
         $ctx = stream_context_create();
         stream_context_set_option($ctx, 'ssl', 'local_cert', base_path('server/') . IOS_CERTIFICATE_FILE);
@@ -25,7 +25,7 @@ trait NotificationService {
             // Create the payload body
             $url = 'http://13.76.129.137';
             $body['aps'] = array(
-                'alert' => $order->name,
+                'alert' => $order->code,
                 'sound' => 'default',
                 'link_url' => $url,
                 'category' => "NEWS_CATEGORY",
