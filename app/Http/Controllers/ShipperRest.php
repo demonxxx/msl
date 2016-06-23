@@ -167,8 +167,8 @@ class ShipperRest extends Controller
                                 ), 200
                 );
             }
-
-            $user = User::find(Auth::guard('api')->id());
+            $user_id = Auth::guard('api')->id();
+            $user = User::find($user_id);
             if (empty($user)) {
                 return Response::json(
                                 array(
@@ -177,6 +177,52 @@ class ShipperRest extends Controller
                                 ), 200
                 );
             } else {
+                $user_account = Account::where("user_id", $user_id)->first();
+                if (empty($user_account)){
+                    return Response::json(
+                        array(
+                            'accept' => 0,
+                            'message' => "Bạn chưa có tài khoản giao dịch!",
+                        ), 200
+                    );
+                }
+                $order_number  = Order::where("shipper_id", $user_id)
+                    ->orWhere("status", ORDER_TAKEN_ORDER)
+                    ->orWhere("status", ORDER_TAKEN_ITEMS)
+                    ->orWhere("status", ORDER_RETURNING)
+                    ->count();
+
+                if ($order_number > 4){
+                    return Response::json(
+                        array(
+                            'accept' => 0,
+                            'message' => "Bạn còn 5 đơn hàng chưa giao,
+                            vui lòng giao để nhận thêm đơn hàng mới!",
+                        ), 200
+                    );
+                }
+                $total_base_freight_obj = Order::where("shipper_id", $user_id)
+                    ->orWhere("status", ORDER_TAKEN_ORDER)
+                    ->orWhere("status", ORDER_TAKEN_ITEMS)
+                    ->orWhere("status", ORDER_RETURNING)
+                    ->select(DB::raw('SUM(base_freight) as total'))->first();
+//                return Response::json(
+//                    array(
+//                        'accept' => 0,
+//                        'message' => $total_base_freight_obj,
+//                    ), 200
+//                );
+                $total_freight = empty($total_base_freight_obj) ? 0 : $total_base_freight_obj->total;
+                $total_money = (int) $total_freight + (int) $order->base_freight;
+                if($user_account->main < FREIGHT_SHIP * $total_money){
+                    return Response::json(
+                        array(
+                            'accept' => 0,
+                            'message' => "Số tiền trong tài khoản của bạn không đủ để nhận đơn hàng,
+                            vui lòng nạp thêm để sử dụng!",
+                        ), 200
+                    );
+                }
                 $order->shipper_id = $user->id;
                 $order->taken_order_at = Carbon::now();
                 $order->status = ORDER_TAKEN_ORDER;
@@ -194,8 +240,6 @@ class ShipperRest extends Controller
             }
         }
     }
-
-//    public function check
 
     public function getTakenOrder($id){
         $order = Order::find($id);
