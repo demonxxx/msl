@@ -22,6 +22,7 @@ Route::post("api/v1/shop/findFreight", "OrderRest@findFreight");
 Route::get("api/v1/loadLocations", "UserRest@loadLocations");
 Route::get("api/v1/loadAddedServices", "UserRest@loadAddedServices");
 Route::get("api/v1/loadVehicleTypes", "UserRest@loadVehicleTypes");
+Route::put("api/v1/user/updateGcmId", "UserRest@updateGcmId");
 Route::get('/', function () {
     return view('welcome');
 });
