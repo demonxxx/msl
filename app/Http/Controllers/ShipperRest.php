@@ -305,6 +305,34 @@ class ShipperRest extends Controller
                             ), 200
             );
         } else {
+
+            if ($order->status == ORDER_SHOP_CANCEL){
+                return Response::json(
+                    array(
+                        'accept' => 0,
+                        'messages' => "Đơn hàng đã bị hủy!",
+                    ), 200
+                );
+            }
+
+            if ($order->status == ORDER_SHIP_SUCCESS){
+                return Response::json(
+                    array(
+                        'accept' => 0,
+                        'messages' => "Đơn hàng đã chuyển thành công!",
+                    ), 200
+                );
+            }
+
+            if ($order->status == ORDER_RETURN_ITEMS){
+                return Response::json(
+                    array(
+                        'accept' => 0,
+                        'messages' => "Đơn hàng đã được hoàn lại!",
+                    ), 200
+                );
+            }
+
             $shipper_id = Auth::guard('api')->id();
             if ($shipper_id != $order->shipper_id) {
                 return Response::json(array(

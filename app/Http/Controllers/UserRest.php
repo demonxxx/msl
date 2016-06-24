@@ -21,6 +21,8 @@ use App\Configs;
 
 class UserRest extends Controller {
 
+    use NotificationService;
+
     /**
      * Display a listing of the resource.
      *
@@ -58,13 +60,14 @@ class UserRest extends Controller {
                     $user = Auth::user();
                     $info = $user->shop;
                     $user->isOnline = ONLINE;
+                    $user->ios_device_token = empty($request->ios_device_token) ? $user->ios_device_token : $request->ios_device_token;
                     $user->api_token = str_random(60);
                     $user->save();
                     return Response::json(
                                     array(
-                                        'accept' => 1,
-                                        'user' => Auth::user()->toArray(),
-                                        'info' => $info
+                                'accept' => 1,
+                                'user' => Auth::user()->toArray(),
+                                'info' => $info
                                     ), 200
                     );
                 } else {
@@ -579,12 +582,29 @@ class UserRest extends Controller {
         );
     }
 
-    public function pushGcm(Request $request) {
-        dd($request->all());
+    public function manualPushGcm(Request $request) {
+        $registatoin_ids = [];
+        $message = [];
+        array_push($registatoin_ids, $request->registration_id);
+        $message = (isset($request->message)) ? $request->message : "no message";
+        if ($this->send_gcm_notification($registatoin_ids, $message)) {
+            return Response::json(
+                            array(
+                        'accept' => 1,
+                        'messages' => "success",
+                            ), 200
+            );
+        } else {
+            return Response::json(
+                            array(
+                        'accept' => 0,
+                        'messages' => "fail",
+                            ), 200
+            );
+        }
     }
 
     public function index() {
-        //
         return Response::json(
                         array(
                     'values' => "User index",
