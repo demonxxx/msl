@@ -1,0 +1,44 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 22, 2016, 8:56:05 PM
+    Author     : Stiff
+*/
+
+.landing-page .header-back.one {
+    background: url('../img/landing/slide1.png') 50% 0 no-repeat;
+}
+.landing-page .header-back.two {
+    background: url('../img/landing/slide2.png') 50% 0 no-repeat;
+}
+.landing-page .header-back.three {
+    background: url('../img/landing/slide3.png') 50% 0 no-repeat;
+}
+#select_destination{
+    min-width: 80px;
+}
+#logo_menu{
+    padding-left: 30px;
+}
+.navbar .dropdown-menu {
+    background-color: #192141;
+    min-width: 200px;
+    font-size: 14px;
+    color: white;
+    padding: 10px;
+}
+#navbar{
+    display: block;
+}
+#inSlider{
+    padding-top: 50px;
+}
+.text_iphone{
+    padding: 3px;
+}
+#download_area{
+    background-color: #192141;
+}
