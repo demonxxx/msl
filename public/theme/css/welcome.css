@@ -7,7 +7,9 @@ and open the template in the editor.
     Created on : Jun 22, 2016, 8:56:05 PM
     Author     : Stiff
 */
-
+.landing-page .navbar-wrapper .navbar.navbar-scroll {
+    padding-top: 5px;
+}
 .landing-page .header-back.one {
     background: url('../img/landing/slide1.png') 50% 0 no-repeat;
 }
