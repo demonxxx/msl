@@ -79,7 +79,6 @@ trait NotificationService {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-
         // Execute post
         $result = curl_exec($ch);
         if ($result === FALSE) {
@@ -88,7 +87,7 @@ trait NotificationService {
 
         // Close connection
         curl_close($ch);
-        echo $result;
+        return $result;
     }
 
 }
