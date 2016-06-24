@@ -23,7 +23,7 @@
 </head>
 <body id="page-top" class="landing-page">
 <div class="navbar-wrapper">
-    <nav class="navbar navbar-inverse navbar-fixed-top navbar-scroll" role="navigation">
+    <nav class="navbar navbar-default navbar-fixed-top navbar-scroll" role="navigation">
         <div class="container">
             <div class="navbar-header page-scroll">
                 <div class="dropdown">
