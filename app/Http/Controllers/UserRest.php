@@ -57,6 +57,7 @@ class UserRest extends Controller {
                     $user = Auth::user();
                     $info = $user->shop;
                     $user->isOnline = ONLINE;
+                    $user->ios_device_token = empty($request->ios_device_token) ? $user->ios_device_token : $request->ios_device_token;
                     $user->api_token = str_random(60);
                     $user->save();
                     return Response::json(
