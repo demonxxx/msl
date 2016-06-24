@@ -151,6 +151,8 @@ class ShipperRest extends Controller
 
     public function takeOrder($id) {
         $order = Order::find($id);
+        $ios_device_token = null;
+        $push_message = null;
         if (empty($order)) {
             return Response::json(
                             array(
@@ -220,6 +222,12 @@ class ShipperRest extends Controller
                         ), 200
                     );
                 }
+                $owner = User::find($order->user_id);
+                if (!empty($owner)){
+
+                    $ios_device_token = $owner->ios_device_token;
+                }
+                $push_message = "Đơn hàng ".$order->code." của bạn đã được một shipper nhận!";
                 $order->shipper_id = $user->id;
                 $order->taken_order_at = Carbon::now();
                 $order->status = ORDER_TAKEN_ORDER;
@@ -228,6 +236,9 @@ class ShipperRest extends Controller
                 $shipperOrderHistory->order_id = $order->id;
                 $shipperOrderHistory->shipper_id = $user->id;
                 $shipperOrderHistory->save();
+                if(!empty($ios_device_token)){
+                    $this->pushStatusOrder($ios_device_token, $push_message);
+                }
                 return Response::json(
                                 array(
                                     'accept' => 1,
@@ -240,6 +251,7 @@ class ShipperRest extends Controller
 
     public function getTakenOrder($id){
         $order = Order::find($id);
+
         if (empty($order)) {
             return Response::json(
                 array(
@@ -355,9 +367,7 @@ class ShipperRest extends Controller
                             $order->description = $description;
                             $order->save();
                             if(!empty($ios_device_token)){
-                                if (!empty($push_message)){
                                     $this->pushStatusOrder($ios_device_token, $push_message);
-                                }
                             }
                             return Response::json(
                                 array(
@@ -403,9 +413,7 @@ class ShipperRest extends Controller
                             $order->description = $description;
                             $order->save();
                             if(!empty($ios_device_token)){
-                                if (!empty($push_message)){
                                     $this->pushStatusOrder($ios_device_token, $push_message);
-                                }
                             }
                             return Response::json(
                                 array(
@@ -427,9 +435,7 @@ class ShipperRest extends Controller
                     $order->description = $description;
                     $order->save();
                     if(!empty($ios_device_token)){
-                        if (!empty($push_message)){
                             $this->pushStatusOrder($ios_device_token, $push_message);
-                        }
                     }
                     return Response::json(
                         array(

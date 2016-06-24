@@ -18,6 +18,7 @@ use App\Feedback;
 
 class ShopRest extends Controller
 {
+    use NotificationService;
     /**
      * Display a listing of the resource.
      *
@@ -179,6 +180,15 @@ class ShopRest extends Controller
                     $order->status = ORDER_SHOP_CANCEL;
                     $order->shop_cancel_at = Carbon::now()->toDateTimeString();
                     $order->save();
+                    if (!empty($order->shipper_id)){
+                        $shipper = User::find($order->shipper_id);
+                        if (!empty($shipper)){
+                            $ios_device_token = $shipper->ios_device_token;
+                            if(!empty($ios_device_token)){
+                                $this->pushStatusOrder($ios_device_token, "Đơn hàng mã số ".$order->code." đã bị hủy!");
+                            }
+                        }
+                    }
                     return Response::json(
                         array(
                             'accept'   => 1,
