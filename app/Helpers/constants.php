@@ -55,7 +55,8 @@ define("ACCOUNT_TYPE_SECOND", 2);
 define("TRANSACTION_TYPE_ADD", 1);
 define("TRANSACTION_TYPE_SUB", 2);
 // Mobile notification
-define("IOS_CERTIFICATE_FILE", "MslPushNotify.pem");
+define("IOS_CERTIFICATE_FILE", "certificate.pem");
+
 // Google API
 define("GOOGLE_API_KEY", 'google_api_key');
 // Administrative units
