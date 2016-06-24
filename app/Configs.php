@@ -19,7 +19,11 @@ class Configs extends Model {
     }
 
     public function get_gcm_config() {
-        return DB::table($this->table)->where("name", "=", GOOGLE_API_KEY)->get();
+        return DB::table($this->table)->where("name", "=", GOOGLE_API_KEY)->first();
+    }
+
+    public function get_gcm_sender_id() {
+        return DB::table($this->table)->where("name", "=", GOOGLE_SENDER_ID)->first();
     }
 
 }
