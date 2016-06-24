@@ -318,9 +318,9 @@
                     <strong><h3><span class="navy">Nhận thông báo từ Move+</span></h3></strong><br/>
                     Hãy là người đầu tiên cập nhật những tin tức mới nhất từ Move+.
                 </address>
-                <div class="row col-lg-12">
-                    <input placeholder=" Nhập Email..." width="50">
-                    <a class="btn-sm btn-success">Đăng kí</a>
+                <div class="list-inline col-lg-12">
+                    <input class="col-lg-8"placeholder=" Nhập Email...">
+                    <a href="#" id="mail_icon"><i class="fa fa-2x fa-envelope"></i></a>
                 </div>
                 <br><br>
                 <ul class="list-inline social-icon">
