@@ -187,11 +187,13 @@ class ShipperRest extends Controller
                     );
                 }
                 $order_number  = Order::where("shipper_id", $user_id)
-                    ->orWhere("status", ORDER_TAKEN_ORDER)
-                    ->orWhere("status", ORDER_TAKEN_ITEMS)
-                    ->orWhere("status", ORDER_RETURNING)
+                    ->where(function($query)
+                    {
+                        $query->where("status", ORDER_TAKEN_ORDER)
+                            ->orWhere("status", ORDER_TAKEN_ITEMS)
+                            ->orWhere("status", ORDER_RETURNING);
+                    })
                     ->count();
-
                 if ($order_number > 4){
                     return Response::json(
                         array(
@@ -201,9 +203,12 @@ class ShipperRest extends Controller
                     );
                 }
                 $total_base_freight_obj = Order::where("shipper_id", $user_id)
-                    ->orWhere("status", ORDER_TAKEN_ORDER)
-                    ->orWhere("status", ORDER_TAKEN_ITEMS)
-                    ->orWhere("status", ORDER_RETURNING)
+                    ->where(function($query)
+                    {
+                        $query->where("status", ORDER_TAKEN_ORDER)
+                            ->orWhere("status", ORDER_TAKEN_ITEMS)
+                            ->orWhere("status", ORDER_RETURNING);
+                    })
                     ->select(DB::raw('SUM(base_freight) as total'))->first();
                 $total_freight = empty($total_base_freight_obj) ? 0 : $total_base_freight_obj->total;
                 $total_money = (int) $total_freight + (int) $order->base_freight;
