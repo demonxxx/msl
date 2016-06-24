@@ -93,7 +93,7 @@ trait NotificationService {
         // Set POST variables
         $config = new Configs;
         $gcm_config = $config->get_gcm_config();
-        $url = $gcm_config[0]->url;
+        $url = $gcm_config->url;
 
         $fields = array(
             'registration_ids' => $registatoin_ids,
@@ -101,7 +101,7 @@ trait NotificationService {
         );
 
         $headers = array(
-            'Authorization: key=' . $gcm_config[0]->description,
+            'Authorization: key=' . $gcm_config->description,
             'Content-Type: application/json'
         );
         // Open connection
@@ -118,16 +118,15 @@ trait NotificationService {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-
         // Execute post
         $result = curl_exec($ch);
         if ($result === FALSE) {
-            die('Curl failed: ' . curl_error($ch));
+            return FALSE;
         }
 
         // Close connection
         curl_close($ch);
-        echo $result;
+        return $result;
     }
 
 }

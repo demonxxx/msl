@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="Move+" content="MSLVN">
 
-    <title>INSPINIA - Landing Page</title>
+    <title>Move+</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{asset("theme/css/bootstrap.min.css")}}" rel="stylesheet">
@@ -18,29 +18,37 @@
 
     <!-- Custom styles for this template -->
     <link href="{{asset("theme/css/style.css")}}" rel="stylesheet">
+    <link href="{{asset("theme/css/welcome.css")}}" rel="stylesheet">
+    <link href="{{asset("theme/css/plugins/select2/select2.min.css")}}" rel="stylesheet">
 </head>
 <body id="page-top" class="landing-page">
 <div class="navbar-wrapper">
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-default navbar-fixed-top navbar-scroll" role="navigation">
         <div class="container">
             <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">WEBAPPLAYERS</a>
+                <div class="dropdown">
+                    <img class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" src="{{asset("theme/img/landing/button_menu.png")}}"></img>
+                    <img src="{{asset("theme/img/landing/logo_menu.png")}}" id="logo_menu"></img>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Trang chủ</a></li>
+                        <li><a href="#">Về chúng tôi</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Trợ giúp</a></li>
+                        <li><a href="#">Chính sách</a></li>
+                        <li><a href="#">Tuyển dụng</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Tin tức</a></li>
+                    </ul>
+                </div>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a class="page-scroll" href="#page-top">Home</a></li>
-                    <li><a class="page-scroll" href="#features">Features</a></li>
-                    <li><a class="page-scroll" href="#team">Team</a></li>
-                    <li><a class="page-scroll" href="#testimonials">Testimonials</a></li>
-                    <li><a class="page-scroll" href="#pricing">Pricing</a></li>
-                    <li><a class="page-scroll" href="#contact">Contact</a></li>
-                </ul>
+                <div class="nav navbar-nav navbar-right">
+                    <button type="button" class="btn btn-link">Trợ giúp</button>
+                    <button type="button" class="btn btn-link">Đăng kí</button>
+                    <button type="button" class="btn btn-sm btn-success-outline">Trở thành tài xế</button>
+                    <select id="select_destination" class="select2"><option>Hà Nội</option></select>
+                </div>
             </div>
         </div>
     </nav>
@@ -49,39 +57,49 @@
     <ol class="carousel-indicators">
         <li data-target="#inSlider" data-slide-to="0" class="active"></li>
         <li data-target="#inSlider" data-slide-to="1"></li>
+        <li data-target="#inSlider" data-slide-to="2"></li>
     </ol>
     <div class="carousel-inner" role="listbox">
         <div class="item active">
             <div class="container">
                 <div class="carousel-caption">
-                    <h1>We craft<br/>
-                        brands, web apps,<br/>
-                        and user interfaces<br/>
-                        we are IN+ studio</h1>
-                    <p>Lorem Ipsum is simply dummy text of the printing.</p>
+                    <h1><br/>MOVE PLUS<br/>
+                        NỀN TẢNG GIAO - NHẬN THÔNG MINH<br/></h1>
+                    <h3>TẢI CHỈ VỚI 1 CLICK<br/></h3>
                     <p>
-                        <a class="btn btn-lg btn-primary" href="#" role="button">READ MORE</a>
-                        <a class="caption-link" href="#" role="button">Inspinia Theme</a>
+                        <a class="btn btn-lg btn-primary" href="#" role="button">TẢI NGAY</a>
                     </p>
-                </div>
-                <div class="carousel-image wow zoomIn">
-                    <img src="{{asset("theme/img/landing/laptop.png")}}" alt="laptop"/>
                 </div>
             </div>
             <!-- Set background for slide in css -->
             <div class="header-back one"></div>
-
         </div>
         <div class="item">
             <div class="container">
-                <div class="carousel-caption blank">
-                    <h1>We create meaningful <br/> interfaces that inspire.</h1>
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
-                    <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+                <div class="carousel-caption">
+                    <h1><br/>TRỞ THÀNH ĐỐI TÁC<br/>
+                        LÁI XE CÙNG MOVE+<br/></h1>
+                    <h3>HÃY GIA NHẬP MOVE+ NGAY HÔM NAY<br/></h3>
+                    <p>
+                        <a class="btn btn-lg btn-primary" href="#" role="button">ĐĂNG KÍ</a>
+                    </p>
                 </div>
             </div>
             <!-- Set background for slide in css -->
             <div class="header-back two"></div>
+        </div>
+        <div class="item">
+            <div class="container">
+                <div class="carousel-caption">
+                    <h1><br/>CÂU CHUYỆN CỦA CHÚNG TÔI<br/></h1>
+                    <h3>HÃY LẮNG NGHE MOVE+ NÓI!<br/></h3>
+                    <p>
+                        <a class="btn btn-lg btn-primary" href="#" role="button">XEM THÊM</a>
+                    </p>
+                </div>
+            </div>
+            <!-- Set background for slide in css -->
+            <div class="header-back three"></div>
         </div>
     </div>
     <a class="left carousel-control" href="#inSlider" role="button" data-slide="prev">
@@ -94,521 +112,217 @@
     </a>
 </div>
 
-
-<section id="features" class="container services">
-    <div class="row">
-        <div class="col-sm-3">
-            <h2>Full responsive</h2>
-            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
-            <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
-        </div>
-        <div class="col-sm-3">
-            <h2>LESS/SASS Files</h2>
-            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
-            <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
-        </div>
-        <div class="col-sm-3">
-            <h2>6 Charts Library</h2>
-            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
-            <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
-        </div>
-        <div class="col-sm-3">
-            <h2>Advanced Forms</h2>
-            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
-            <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
-        </div>
-    </div>
-</section>
-
-<section  class="container features">
+    
+<section class="container features">
     <div class="row">
         <div class="col-lg-12 text-center">
-            <div class="navy-line"></div>
-            <h1>Over 40+ unique view<br/> <span class="navy"> with many custom components</span> </h1>
-            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. </p>
+            <br><br><br><br><h1><b>Bạn đang muốn tối ưu dịch vụ giao hàng của mình? Hãy trải nghiệm dịch vụ của chúng tôi.</b></h1><br><br>
         </div>
     </div>
     <div class="row">
         <div class="col-md-3 text-center wow fadeInLeft">
-            <div>
-                <i class="fa fa-mobile features-icon"></i>
-                <h2>Full responsive</h2>
-                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+            <div id="top_left_phone" class="text_iphone">
+                <h2><b>Trải nghiệm ứng dụng</b></h2>
+                <p>Đặt đơn hàng chỉ với 3 bước đơn giản. Bạn hãy điền đầy đủ thông tin đơn hàng để tài xế Move+ phục vụ bạn tốt nhất!</p>
             </div>
-            <div class="m-t-lg">
-                <i class="fa fa-bar-chart features-icon"></i>
-                <h2>6 Charts Library</h2>
-                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+            <div id="bot_left_phone" class="m-t-lg text_iphone">
+                <h2><b>Cá nhân hóa trải nghiệm</b></h2>
+                <p>Sẽ là tuyệt vời khi bạn có thể dõi theo đơn hàng bất kỳ lúc nào bạn muốn!</p>
             </div>
         </div>
         <div class="col-md-6 text-center  wow zoomIn">
-            <img src="{{asset("theme/img/landing/perspective.png")}}" alt="dashboard" class="img-responsive">
+            <img id="iphone" src="{{asset("theme/img/landing/perspective.png")}}" alt="dashboard" class="img-responsive">
         </div>
         <div class="col-md-3 text-center wow fadeInRight">
-            <div>
-                <i class="fa fa-envelope features-icon"></i>
-                <h2>Mail pages</h2>
-                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+            <div id="top_right_phone" class="text_iphone">
+                <h2><b>Sẵn sàng đáp ứng</b></h2>
+                <p>Move+ luôn sẵn sàng đáp ứng tất cả đơn hàng của bạn và kết nối bạn với những tài xế thân thiện nhất.</p>
             </div>
-            <div class="m-t-lg">
-                <i class="fa fa-google features-icon"></i>
-                <h2>AngularJS version</h2>
-                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+            <div id="bot_right_phone" class="m-t-lg text_iphone">
+                <h2><b>Hãy phản hồi cho chúng tôi!</b></h2>
+                <p>Đánh giá tài xế để giúp chúng tôi hoàn thiện công việc. Trải nghiệm của bạn sẽ tạo thêm động lực cho chúng tôi. Cảm ơn bạn!</p>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-12 text-center">
-            <div class="navy-line"></div>
-            <h1>Discover great feautres</h1>
-            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. </p>
-        </div>
-    </div>
+<!----------------------------------------------------------------------------------------------------------------->
     <div class="row features-block">
         <div class="col-lg-6 features-text wow fadeInLeft">
-            <small>INSPINIA</small>
-            <h2>Perfectly designed </h2>
-            <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with latest jQuery plugins.</p>
-            <a href="" class="btn btn-primary">Learn more</a>
+            <div class="col-lg-12 wow fadeInLeft">
+                <h2><b>Phía sau hành trình</b></h2><br>
+                <p style="font-size: 15px">Phía sau sự hài lòng của bạn và người mua hàng chính là sự chăm chỉ, nhiệt huyết với công việc của các tài xế Move+.
+                   Họ có thể là bất kì ai từ bạn bè, học sinh, sinh viên hay những người làm công việc đời thường như giáo viên, bác sĩ ... 
+                   hoặc những người đang làm cha, làm mẹ. Các đối tác của Move+ luôn nỗ lực hết mình để hoàn thành những đơn hàng của bạn, 
+                   kiếm thêm thu nhập cho bản thân và đó cũng chính là lý do họ gia nhập đội ngũ Move+. TẠI SAO NÊN GIA NHẬP MOVE+</p>
+                <br><br>
+            </div>
+            <div class="col-lg-6 wow fadeInLeft">
+                <img src="{{asset("theme/img/landing/button_join_moveplus.png")}}" class="img-responsive">
+            </div>
+            <br>
         </div>
         <div class="col-lg-6 text-right wow fadeInRight">
-            <img src="{{asset("theme/img/landing/dashboard.png")}}" alt="dashboard" class="img-responsive pull-right">
+            <img src="{{asset("theme/img/landing/img_behind_journey.png")}}" class="img-responsive pull-right">
         </div>
     </div>
-</section>
-
-<section id="team" class="gray-section team">
+<!----------------------------------------------------------------------------------------------------------------->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <br><h1><b>Move+ luôn là dịch vụ bạn mong muốn</b></h1>
+                <br><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 features-text wow fadeInLeft">
+                <h2><b>AN TÂM KHI GIAO ĐƠN HÀNG</b></h2>
+                <div class="pull-right"><img src="{{asset("theme/img/landing/ic-assurance.png")}}" class="img-responsive"></img></div>
+                <p>Sau khi tài xế nhận đơn hàng của bạn trên hệ thống, tài xế sẽ ứng tiền hàng cho bạn. 
+                Bạn có thể dõi theo từng chuyển động của tài xế mọi lúc mọi nơi thông qua hệ thống định vị GPS của Move+. quên ghi rõ số nhà bạn nhé!).</p>
+            </div>
+            <div class="col-lg-6 features-text wow fadeInLeft">
+                <h2><b>GIÁ DỊCH VỤ RÕ RÀNG, MINH BẠCH</b></h2>
+                <div class="pull-right"><img src="{{asset("theme/img/landing/ic-price.png")}}" class="img-responsive"></img></div>
+                <p>Hệ thống Move+ sẽ tối ưu quãng đường, cước dịch vụ sẽ được hiển thị sau khi bạn điền đầy đủ thông tin cho điểm đi, 
+                   điểm đến (Đừng quên ghi rõ số nhà bạn nhé!). </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 features-text wow fadeInRight">
+                <h2><b>SỰ HÀI LÒNG CỦA NGƯỜI MUA HÀNG</b></h2>
+                <div class="pull-right"><img src="{{asset("theme/img/landing/ic-satisfied.png")}}" class="img-responsive"></img></div>
+                <p>Tùy vào nhu cầu thực tế của người mua hàng, tài xế Move+ sẽ giao hàng chính xác thời gian mà người mua hàng muốn.</p>
+            </div>
+            <div class="col-lg-6 features-text wow fadeInRight">
+                <h2><b>DỊCH VỤ GIAO HÀNG “THẦN TỐC”</b></h2>
+                <div class="pull-right"><img src="{{asset("theme/img/landing/ic-fast.png")}}" class="img-responsive"></img></div>
+                <p>Tài xế của Move+ sẽ lao đến, lao đi như một cơn lốc ngay sau khi nhận hàng để đảm bảo quá trình giao nhận diễn ra <45’.</p>
+            </div>
+        </div>
+    </div>
+<!----------------------------------------------------------------------------------------------------------------->
+    <div class="row features-block">
+        <div class="col-lg-6 text-left wow fadeInLeft">
+            <img src="{{asset("theme/img/landing/img_benefit.png")}}" class="img-responsive pull-left" style="padding-bottom: 10px;">
+        </div>
+        <div class="col-lg-6 features-text wow fadeInRight">
+            <h2><b>Vì lợi ích của tất cả</b></h2><br>
+            <p style="font-size: 15px">Nền tảng Move+ sẽ giúp tạo việc làm cho nhiều người hơn 
+                và góp phần giải quyết một trong những nút thắt quan trọng nhất của trị trường thương mại điện tử.</p>
+            <br><br>
+            <div class="col-lg-6 wow fadeInRight">
+                <img src="{{asset("theme/img/landing/button_destiny.png")}}" class="img-responsive">
+            </div>
+            <br>
+        </div>
+    </div>
+<!----------------------------------------------------------------------------------------------------------------->
     <div class="container">
         <div class="row m-b-lg">
             <div class="col-lg-12 text-center">
-                <div class="navy-line"></div>
-                <h1>Our Team</h1>
-                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
+                <h1><b>Khách hàng</b></h2>
+                <h2><b>Nói gì về chúng tôi?</b></h3>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-4 wow fadeInLeft">
-                <div class="team-member">
-                    <img src="{{asset("theme/img/landing/avatar3.jpg")}}" class="img-responsive img-circle img-small" alt="">
-                    <h4><span class="navy">Amelia</span> Smith</h4>
-                    <p>Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus. </p>
-                    <ul class="list-inline social-icon">
-                        <li><a href="#"><i class="fa fa-twitter"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-linkedin"></i></a>
-                        </li>
-                    </ul>
+                <div>
+                    <img src="{{asset("theme/img/landing/feedback1.png")}}" class="img-responsive">
+                    <br>
+                    <p>“Mình có rất nhiều đơn hàng 1 ngày, và với Move+ mình đã làm hài lòng tất cả Khách hàng của mình. Cảm ơn Move+”.</p>
+                    <h4><span class="navy">Nguyễn Thị Mẹt</span></h4>
+                    <h4><span class="orange">Khách hàng quận Đống Đa</span></h4>
                 </div>
             </div>
-            <div class="col-sm-4">
-                <div class="team-member wow zoomIn">
-                    <img src="{{asset("theme/img/landing/avatar1.jpg")}}" class="img-responsive img-circle" alt="">
-                    <h4><span class="navy">John</span> Novak</h4>
-                    <p>Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus.</p>
-                    <ul class="list-inline social-icon">
-                        <li><a href="#"><i class="fa fa-twitter"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-linkedin"></i></a>
-                        </li>
-                    </ul>
+            <div class="col-sm-4 wow zoomIn">
+                <div>
+                    <img src="{{asset("theme/img/landing/feedback2.png")}}" class="img-responsive">
+                    <br>
+                    <p>“Tôi rất sợ bị trễ đơn hàng với khách, bời vì điều đó có thể làm thay đổi quyết định mua hàng của họ”..</p>
+                    <h4><span class="navy">Nguyễn Văn Tèo</span></h4>
+                    <h4><span class="orange">Khách hàng quận Hoàn Kiếm</span></h4>
                 </div>
             </div>
             <div class="col-sm-4 wow fadeInRight">
-                <div class="team-member">
-                    <img src="{{asset("theme/img/landing/avatar2.jpg")}}" class="img-responsive img-circle img-small" alt="">
-                    <h4><span class="navy">Peter</span> Johnson</h4>
-                    <p>Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus.</p>
-                    <ul class="list-inline social-icon">
-                        <li><a href="#"><i class="fa fa-twitter"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-linkedin"></i></a>
-                        </li>
-                    </ul>
+                <div>
+                    <img src="{{asset("theme/img/landing/feedback3.png")}}" class="img-responsive">
+                    <br>
+                    <p>“Tôi rất lo ngại việc tính toán tiền, và dịch vụ tương tác của Move+ giúp tôi an tâm vì điều đó”.</p>
+                    <h4><span class="navy">Nguyễn Thị Nở</span></h4>
+                    <h4><span class="orange">Khách hàng quận Ba Đình</span></h4>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 text-center m-t-lg m-b-lg">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p>
             </div>
         </div>
     </div>
-</section>
-
-<section class="features">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="navy-line"></div>
-                <h1>Even more great feautres</h1>
-                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. </p>
+<!----------------------------------------------------------------------------------------------------------------->
+    <div class="row features-block">
+        <div class="col-lg-6 features-text wow fadeInLeft">
+            <h1><br><b>Move+ đề cao sự an toàn</b></h1><br>
+            <p style="font-size: 15px">Trong bất cứ hoàn cảnh nào trải nghiệm của Move+ đều hướng tới sự an toàn và tính bảo mật.</p>
+            <br><br>
+            <div class="col-lg-6 features-text wow fadeInLeft">
+                <img src="{{asset("theme/img/landing/safety_shop.png")}}" class="img-responsive">
             </div>
+            <div class="col-lg-6 features-text wow fadeInLeft">
+                <img src="{{asset("theme/img/landing/safety_shipper.png")}}" class="img-responsive">
+            </div>
+            <br>
         </div>
-        <div class="row features-block">
-            <div class="col-lg-3 features-text wow fadeInLeft">
-                <small>INSPINIA</small>
-                <h2>Perfectly designed </h2>
-                <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with latest jQuery plugins.</p>
-                <a href="" class="btn btn-primary">Learn more</a>
-            </div>
-            <div class="col-lg-6 text-right m-t-n-lg wow zoomIn">
-                <img src="{{asset("theme/img/landing/iphone.jpg")}}" class="img-responsive" alt="dashboard">
-            </div>
-            <div class="col-lg-3 features-text text-right wow fadeInRight">
-                <small>INSPINIA</small>
-                <h2>Perfectly designed </h2>
-                <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with latest jQuery plugins.</p>
-                <a href="" class="btn btn-primary">Learn more</a>
-            </div>
+        <div class="col-lg-6 text-right wow fadeInRight">
+            <img src="{{asset("theme/img/landing/img_safety.png")}}" class="img-responsive pull-right">
         </div>
     </div>
-
-</section>
-
-<section class="timeline gray-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="navy-line"></div>
-                <h1>Our workflow</h1>
-                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. </p>
-            </div>
+<!----------------------------------------------------------------------------------------------------------------->
+    <div class="row features-block">
+        <div class="col-lg-12 text-center">
+            <br><h1><b>Tin tức mới nhất</b></h1><br>
         </div>
-        <div class="row features-block">
-
-            <div class="col-lg-12">
-                <div id="vertical-timeline" class="vertical-container light-timeline center-orientation">
-                    <div class="vertical-timeline-block">
-                        <div class="vertical-timeline-icon navy-bg">
-                            <i class="fa fa-briefcase"></i>
-                        </div>
-
-                        <div class="vertical-timeline-content">
-                            <h2>Meeting</h2>
-                            <p>Conference on the sales results for the previous year. Monica please examine sales trends in marketing and products. Below please find the current status of the sale.
-                            </p>
-                            <a href="#" class="btn btn-xs btn-primary"> More info</a>
-                            <span class="vertical-date"> Today <br/> <small>Dec 24</small> </span>
-                        </div>
-                    </div>
-
-                    <div class="vertical-timeline-block">
-                        <div class="vertical-timeline-icon navy-bg">
-                            <i class="fa fa-file-text"></i>
-                        </div>
-
-                        <div class="vertical-timeline-content">
-                            <h2>Decision</h2>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.</p>
-                            <a href="#" class="btn btn-xs btn-primary"> More info</a>
-                            <span class="vertical-date"> Tomorrow <br/> <small>Dec 26</small> </span>
-                        </div>
-                    </div>
-
-                    <div class="vertical-timeline-block">
-                        <div class="vertical-timeline-icon navy-bg">
-                            <i class="fa fa-cogs"></i>
-                        </div>
-
-                        <div class="vertical-timeline-content">
-                            <h2>Implementation</h2>
-                            <p>Go to shop and find some products. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's. </p>
-                            <a href="#" class="btn btn-xs btn-primary"> More info</a>
-                            <span class="vertical-date"> Monday <br/> <small>Jan 02</small> </span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
+        <div class="col-lg-4 wow fadeInRight">
+            <img src="{{asset("theme/img/landing/news1.png")}}" class="img-responsive pull-right" style="height:300px">
+        </div>
+        <div class="col-lg-8 wow fadeInRight">
+            <img src="{{asset("theme/img/landing/news2.png")}}" class="img-responsive pull-right" style="height:300px">
         </div>
     </div>
-
 </section>
+    
 
-<section id="testimonials" class="navy-section testimonials" style="margin-top: 0">
-
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center wow zoomIn">
-                <i class="fa fa-comment big-icon"></i>
-                <h1>
-                    What our users say
-                </h1>
-                <div class="testimonials-text">
-                    <i>"Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."</i>
-                </div>
-                <small>
-                    <strong>12.02.2014 - Andy Smith</strong>
-                </small>
-            </div>
-        </div>
-    </div>
-
-</section>
-
-<section class="comments gray-section" style="margin-top: 0">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="navy-line"></div>
-                <h1>What our partners say</h1>
-                <p>Donec sed odio dui. Etiam porta sem malesuada. </p>
-            </div>
-        </div>
-        <div class="row features-block">
-            <div class="col-lg-4">
-                <div class="bubble">
-                    "Uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
-                </div>
-                <div class="comments-avatar">
-                    <a href="" class="pull-left">
-                        <img alt="image" src="{{asset("theme/img/landing/avatar3.jpg")}}">
-                    </a>
-                    <div class="media-body">
-                        <div class="commens-name">
-                            Andrew Williams
-                        </div>
-                        <small class="text-muted">Company X from California</small>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="bubble">
-                    "Uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
-                </div>
-                <div class="comments-avatar">
-                    <a href="" class="pull-left">
-                        <img alt="image" src="{{asset("theme/img/landing/avatar1.jpg")}}">
-                    </a>
-                    <div class="media-body">
-                        <div class="commens-name">
-                            Andrew Williams
-                        </div>
-                        <small class="text-muted">Company X from California</small>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="bubble">
-                    "Uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
-                </div>
-                <div class="comments-avatar">
-                    <a href="" class="pull-left">
-                        <img alt="image" src="{{asset("theme/img/landing/avatar2.jpg")}}">
-                    </a>
-                    <div class="media-body">
-                        <div class="commens-name">
-                            Andrew Williams
-                        </div>
-                        <small class="text-muted">Company X from California</small>
-                    </div>
-                </div>
-            </div>
-
-
-
-        </div>
-    </div>
-
-</section>
-
-<section class="features">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="navy-line"></div>
-                <h1>More and more extra great feautres</h1>
-                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-5 col-lg-offset-1 features-text">
-                <small>INSPINIA</small>
-                <h2>Perfectly designed </h2>
-                <i class="fa fa-bar-chart big-icon pull-right"></i>
-                <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
-            </div>
-            <div class="col-lg-5 features-text">
-                <small>INSPINIA</small>
-                <h2>Perfectly designed </h2>
-                <i class="fa fa-bolt big-icon pull-right"></i>
-                <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-5 col-lg-offset-1 features-text">
-                <small>INSPINIA</small>
-                <h2>Perfectly designed </h2>
-                <i class="fa fa-clock-o big-icon pull-right"></i>
-                <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
-            </div>
-            <div class="col-lg-5 features-text">
-                <small>INSPINIA</small>
-                <h2>Perfectly designed </h2>
-                <i class="fa fa-users big-icon pull-right"></i>
-                <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
-            </div>
-        </div>
-    </div>
-
-</section>
-<section id="pricing" class="pricing">
+<section class="gray-section contact">
     <div class="container">
         <div class="row m-b-lg">
-            <div class="col-lg-12 text-center">
-                <div class="navy-line"></div>
-                <h1>App Pricing</h1>
-                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-4 wow zoomIn">
-                <ul class="pricing-plan list-unstyled">
-                    <li class="pricing-title">
-                        Basic
-                    </li>
-                    <li class="pricing-desc">
-                        Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus.
-                    </li>
-                    <li class="pricing-price">
-                        <span>$16</span> / month
-                    </li>
-                    <li>
-                        Dashboards
-                    </li>
-                    <li>
-                        Projects view
-                    </li>
-                    <li>
-                        Contacts
-                    </li>
-                    <li>
-                        Calendar
-                    </li>
-                    <li>
-                        AngularJs
-                    </li>
-                    <li>
-                        <a class="btn btn-primary btn-xs" href="#">Signup</a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="col-lg-4 wow zoomIn">
-                <ul class="pricing-plan list-unstyled selected">
-                    <li class="pricing-title">
-                        Standard
-                    </li>
-                    <li class="pricing-desc">
-                        Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus.
-                    </li>
-                    <li class="pricing-price">
-                        <span>$22</span> / month
-                    </li>
-                    <li>
-                        Dashboards
-                    </li>
-                    <li>
-                        Projects view
-                    </li>
-                    <li>
-                        Contacts
-                    </li>
-                    <li>
-                        Calendar
-                    </li>
-                    <li>
-                        AngularJs
-                    </li>
-                    <li>
-                        <strong>Support platform</strong>
-                    </li>
-                    <li class="plan-action">
-                        <a class="btn btn-primary btn-xs" href="#">Signup</a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="col-lg-4 wow zoomIn">
-                <ul class="pricing-plan list-unstyled">
-                    <li class="pricing-title">
-                        Premium
-                    </li>
-                    <li class="pricing-desc">
-                        Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus.
-                    </li>
-                    <li class="pricing-price">
-                        <span>$160</span> / month
-                    </li>
-                    <li>
-                        Dashboards
-                    </li>
-                    <li>
-                        Projects view
-                    </li>
-                    <li>
-                        Contacts
-                    </li>
-                    <li>
-                        Calendar
-                    </li>
-                    <li>
-                        AngularJs
-                    </li>
-                    <li>
-                        <a class="btn btn-primary btn-xs" href="#">Signup</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="row m-t-lg">
-            <div class="col-lg-8 col-lg-offset-2 text-center m-t-lg">
-                <p>*Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. <span class="navy">Various versions</span>  have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>
-            </div>
-        </div>
-    </div>
-
-</section>
-
-<section id="contact" class="gray-section contact">
-    <div class="container">
-        <div class="row m-b-lg">
-            <div class="col-lg-12 text-center">
-                <div class="navy-line"></div>
-                <h1>Contact Us</h1>
-                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
-            </div>
-        </div>
-        <div class="row m-b-lg">
-            <div class="col-lg-3 col-lg-offset-3">
+            <br><br><br>
+            <div class="col-lg-3">
                 <address>
-                    <strong><span class="navy">Company name, Inc.</span></strong><br/>
-                    795 Folsom Ave, Suite 600<br/>
-                    San Francisco, CA 94107<br/>
-                    <abbr title="Phone">P:</abbr> (123) 456-7890
+                    <strong><h3><span class="navy">Move+</span></h3></strong><br/>
+                    8/68 Nghi Tàm, Tây Hồ, Hà Nội<br/>
+                    Hotline: (04) 85 822 228<br/>
+                    <abbr title="Email">Email:</abbr> Contact@move.plus
                 </address>
             </div>
-            <div class="col-lg-4">
-                <p class="text-color">
-                    Consectetur adipisicing elit. Aut eaque, totam corporis laboriosam veritatis quis ad perspiciatis, totam corporis laboriosam veritatis, consectetur adipisicing elit quos non quis ad perspiciatis, totam corporis ea,
-                </p>
+            <div class="col-lg-3">
+                <address>
+                    <strong><h3><span class="navy">Công ty</span></h3></strong><br/>
+                    <a href="#">Về chúng tôi</a><br/>
+                    <a href="#">Truyền thông</a><br/>
+                    <a href="#">Tuyển dụng</a><br/>
+                    <a href="#">Tin tức</a>
+                </address>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <a href="mailto:test@email.com" class="btn btn-primary">Send us mail</a>
-                <p class="m-t-sm">
-                    Or follow us on social platform
-                </p>
+            <div class="col-lg-3">
+                <address>
+                    <strong><h3><span class="navy">Dịch vụ</span></h3></strong><br/>
+                    <a href="#">Move+ Express</a>
+                </address>
+            </div>
+            <div class="col-lg-3">
+                <address>
+                    <strong><h3><span class="navy">Nhận thông báo từ Move+</span></h3></strong><br/>
+                    Hãy là người đầu tiên cập nhật những tin tức mới nhất từ Move+.
+                </address>
+                <div class="row col-lg-12">
+                    <input placeholder=" Nhập Email..." width="50">
+                    <a class="btn-sm btn-success">Đăng kí</a>
+                </div>
+                <br><br>
                 <ul class="list-inline social-icon">
                     <li><a href="#"><i class="fa fa-twitter"></i></a>
                     </li>
@@ -619,14 +333,25 @@
                 </ul>
             </div>
         </div>
+    </div>
+</section>
+
+<section id="download_area">
+    <div class="container">
+        <div class="m-b-lg"></div>
+        <div  class="col-lg-12 text-center row">
+            <img src="{{asset("theme/img/landing/google_store.png")}}">
+            <img src="{{asset("theme/img/landing/qr_code.png")}}" style="padding-left: 10px; padding-right: 10px;">
+            <img src="{{asset("theme/img/landing/apple_store.png")}}">
+        </div>
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 text-center m-t-lg m-b-lg">
-                <p><strong>&copy; 2015 Company Name</strong><br/> consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p>
+            <div class="col-lg-12 text-center m-t-lg">
+                <p><strong>&copy; 2016 Moveplus</strong><br/> </p>
             </div>
         </div>
     </div>
 </section>
-
+    
 <!-- Mainly scripts -->
 <script src="{{asset("theme/js/jquery-2.1.1.js")}}"></script>
 <script src="{{asset("theme/js/bootstrap.min.js")}}"></script>
@@ -637,7 +362,7 @@
 <script src="{{asset("theme/js/inspinia.js")}}"></script>
 <script src="{{asset("theme/js/plugins/pace/pace.min.js")}}"></script>
 <script src="{{asset("theme/js/plugins/wow/wow.min.js")}}"></script>
-
+<script src="{{asset("theme/js/plugins/select2/select2.full.min.js")}}"></script>
 
 <script>
 
@@ -657,37 +382,39 @@
             event.preventDefault();
             $("#navbar").collapse('hide');
         });
+        
+        $('#select_destination').select2({
+            minimumResultsForSearch: -1
+        });
+        $("#top_left_phone").hover(function(){
+            $("#iphone").attr("src",'{{asset("theme/img/landing/header_two.jpg")}}');
+            $("#top_left_phone").css("box-shadow","0 0 20px 20px rgba(221, 227, 239, 0.7)");
+            $("#bot_right_phone").css("box-shadow","none");
+            $("#top_right_phone").css("box-shadow","none");
+            $("#bot_left_phone").css("box-shadow","none");
+        });
+        $("#bot_left_phone").hover(function(){
+            $("#iphone").attr("src",'{{asset("theme/img/landing/laptop.png")}}');
+            $("#bot_left_phone").css("box-shadow","0 0 20px 20px rgba(221, 227, 239, 0.7)");
+            $("#top_left_phone").css("box-shadow","none");
+            $("#bot_right_phone").css("box-shadow","none");
+            $("#top_right_phone").css("box-shadow","none");
+        });
+        $("#top_right_phone").hover(function(){
+            $("#iphone").attr("src",'{{asset("theme/img/landing/avatar_all.png")}}');
+            $("#top_right_phone").css("box-shadow","0 0 20px 20px rgba(221, 227, 239, 0.7)");
+            $("#top_left_phone").css("box-shadow","none");
+            $("#bot_right_phone").css("box-shadow","none");
+            $("#bot_left_phone").css("box-shadow","none");
+        });
+        $("#bot_right_phone").hover(function(){
+            $("#iphone").attr("src",'{{asset("theme/img/landing/dashboard.png")}}');
+            $("#bot_right_phone").css("box-shadow","0 0 20px 20px rgba(221, 227, 239, 0.7)");
+            $("#top_left_phone").css("box-shadow","none");
+            $("#top_right_phone").css("box-shadow","none");
+            $("#bot_left_phone").css("box-shadow","none");
+        });
     });
-
-    var cbpAnimatedHeader = (function() {
-        var docElem = document.documentElement,
-                header = document.querySelector( '.navbar-default' ),
-                didScroll = false,
-                changeHeaderOn = 200;
-        function init() {
-            window.addEventListener( 'scroll', function( event ) {
-                if( !didScroll ) {
-                    didScroll = true;
-                    setTimeout( scrollPage, 250 );
-                }
-            }, false );
-        }
-        function scrollPage() {
-            var sy = scrollY();
-            if ( sy >= changeHeaderOn ) {
-                $(header).addClass('navbar-scroll')
-            }
-            else {
-                $(header).removeClass('navbar-scroll')
-            }
-            didScroll = false;
-        }
-        function scrollY() {
-            return window.pageYOffset || docElem.scrollTop;
-        }
-        init();
-
-    })();
 
     // Activate WOW.js plugin for animation on scrol
     new WOW().init();

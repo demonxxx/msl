@@ -59,6 +59,7 @@ define("IOS_CERTIFICATE_FILE", "certificate.pem");
 
 // Google API
 define("GOOGLE_API_KEY", 'google_api_key');
+define("GOOGLE_SENDER_ID", 'google_sender_id');
 // Administrative units
 define("CITY_UNIT", 0);
 define("DISTRICT_UNIT", 1);

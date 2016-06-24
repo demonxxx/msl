@@ -17,8 +17,11 @@ use App\Adminnistrative_units;
 use App\Avatar;
 use Illuminate\Support\Str;
 use App\Account;
+use App\Configs;
 
 class UserRest extends Controller {
+
+    use NotificationService;
 
     /**
      * Display a listing of the resource.
@@ -62,9 +65,9 @@ class UserRest extends Controller {
                     $user->save();
                     return Response::json(
                                     array(
-                                        'accept' => 1,
-                                        'user' => Auth::user()->toArray(),
-                                        'info' => $info
+                                'accept' => 1,
+                                'user' => Auth::user()->toArray(),
+                                'info' => $info
                                     ), 200
                     );
                 } else {
@@ -559,8 +562,49 @@ class UserRest extends Controller {
         }
     }
 
+    public function getGcmConfig(Request $request) {
+        $config = new Configs();
+        return Response::json(
+                        array(
+                    'accept' => 1,
+                    'messages' => $config->get_gcm_config(),
+                        ), 200
+        );
+    }
+
+    public function getGcmSenderId(Request $request) {
+        $config = new Configs();
+        return Response::json(
+                        array(
+                    'accept' => 1,
+                    'messages' => $config->get_gcm_sender_id(),
+                        ), 200
+        );
+    }
+
+    public function manualPushGcm(Request $request) {
+        $registatoin_ids = [];
+        $message = [];
+        array_push($registatoin_ids, $request->registration_id);
+        $message = (isset($request->message)) ? $request->message : "no message";
+        if ($this->send_gcm_notification($registatoin_ids, $message)) {
+            return Response::json(
+                            array(
+                        'accept' => 1,
+                        'messages' => "success",
+                            ), 200
+            );
+        } else {
+            return Response::json(
+                            array(
+                        'accept' => 0,
+                        'messages' => "fail",
+                            ), 200
+            );
+        }
+    }
+
     public function index() {
-        //
         return Response::json(
                         array(
                     'values' => "User index",

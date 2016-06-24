@@ -145,7 +145,6 @@ Route::group(['middleware' => ['auth', 'permissions']], function () {
 
 
 Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
-
     Route::post('user/changeType', 'UserRest@changeUserType');
     Route::post('user/update/onlineStatus', 'UserRest@updateOnlineStatus');
     Route::get('check/isShipper', 'ShipperRest@isShipper');
@@ -155,6 +154,9 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
     Route::post("user/uploadAvatar", "UserRest@uploadAvatar");
     Route::post("user/changePassword", "UserRest@changePassword");
     Route::get("user/getAccountInfo", "UserRest@getAccountInfo");
+    Route::get("user/getGcmConfig", "UserRest@getGcmConfig");
+    Route::get("user/getGcmSenderId", "UserRest@getGcmSenderId");
+    Route::post("user/manualPushGcm", "UserRest@manualPushGcm");
 
     Route::post('shipper/find', 'ShipperRest@findByLocation');
     Route::get('shipper/take/{id}', 'ShipperRest@takeOrder');
