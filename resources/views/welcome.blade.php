@@ -320,7 +320,7 @@
                 </address>
                 <div class="list-inline col-lg-12">
                     <input class="col-lg-8"placeholder=" Nhập Email...">
-                    <a href="#" id="mail_icon"><i class="fa fa-2x fa-envelope"></i></a>
+                    <a href="#"><i id="mail_icon" class="fa fa-2x fa-envelope"></i></a>
                 </div>
                 <br><br>
                 <ul class="list-inline social-icon">
