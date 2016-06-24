@@ -57,12 +57,13 @@ class UserRest extends Controller {
                     $user = Auth::user();
                     $info = $user->shop;
                     $user->isOnline = ONLINE;
+                    $user->api_token = str_random(60);
                     $user->save();
                     return Response::json(
                                     array(
-                                'accept' => 1,
-                                'user' => Auth::user()->toArray(),
-                                'info' => $info
+                                        'accept' => 1,
+                                        'user' => Auth::user()->toArray(),
+                                        'info' => $info
                                     ), 200
                     );
                 } else {
