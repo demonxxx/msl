@@ -17,6 +17,7 @@ use App\Adminnistrative_units;
 use App\Avatar;
 use Illuminate\Support\Str;
 use App\Account;
+use App\Configs;
 
 class UserRest extends Controller {
 
@@ -57,12 +58,13 @@ class UserRest extends Controller {
                     $user = Auth::user();
                     $info = $user->shop;
                     $user->isOnline = ONLINE;
+                    $user->api_token = str_random(60);
                     $user->save();
                     return Response::json(
                                     array(
-                                'accept' => 1,
-                                'user' => Auth::user()->toArray(),
-                                'info' => $info
+                                        'accept' => 1,
+                                        'user' => Auth::user()->toArray(),
+                                        'info' => $info
                                     ), 200
                     );
                 } else {
@@ -555,6 +557,30 @@ class UserRest extends Controller {
                             ), 200
             );
         }
+    }
+
+    public function getGcmConfig(Request $request) {
+        $config = new Configs();
+        return Response::json(
+                        array(
+                    'accept' => 1,
+                    'messages' => $config->get_gcm_config(),
+                        ), 200
+        );
+    }
+
+    public function getGcmSenderId(Request $request) {
+        $config = new Configs();
+        return Response::json(
+                        array(
+                    'accept' => 1,
+                    'messages' => $config->get_gcm_sender_id(),
+                        ), 200
+        );
+    }
+
+    public function pushGcm(Request $request) {
+        dd($request->all());
     }
 
     public function index() {
