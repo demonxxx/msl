@@ -55,7 +55,8 @@ define("ACCOUNT_TYPE_SECOND", 2);
 define("TRANSACTION_TYPE_ADD", 1);
 define("TRANSACTION_TYPE_SUB", 2);
 // Mobile notification
-define("IOS_CERTIFICATE_FILE", "MslPushNotify.pem");
+define("IOS_CERTIFICATE_FILE", "cer.pem");
+
 // Google API
 define("GOOGLE_API_KEY", 'google_api_key');
 define("GOOGLE_SENDER_ID", 'google_sender_id');
