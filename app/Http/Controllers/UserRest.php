@@ -534,29 +534,20 @@ class UserRest extends Controller {
     }
 
     public function updateGcmId(Request $request) {
-        if (Auth::check()) {
-            $user = Auth::user();
-            $user->gcm_id = $request->gcm_id;
-            if ($user->save()) {
-                return Response::json(
-                                array(
-                            'accept' => 1,
-                            'messages' => MSG_UPDATE_GCM_ID_SUCCESS,
-                                ), 200
-                );
-            } else {
-                return Response::json(
-                                array(
-                            'accept' => 0,
-                            'messages' => MSG_UPDATE_GCM_ID_FAILED,
-                                ), 200
-                );
-            }
+        $user = User::find(Auth::guard('api')->id());
+        $user->gcm_id = $request->gcm_id;
+        if ($user->save()) {
+            return Response::json(
+                            array(
+                        'accept' => 1,
+                        'messages' => MSG_UPDATE_GCM_ID_SUCCESS,
+                            ), 200
+            );
         } else {
             return Response::json(
                             array(
                         'accept' => 0,
-                        'messages' => MSG_LOGIN_REQUIRE,
+                        'messages' => MSG_UPDATE_GCM_ID_FAILED,
                             ), 200
             );
         }
