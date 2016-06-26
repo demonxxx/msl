@@ -227,7 +227,7 @@ class ShipperRest extends Controller
 
                     $ios_device_token = $owner->ios_device_token;
                 }
-                $push_message = "Đơn hàng ".$order->code." của bạn đã được một shipper nhận!";
+                $push_message = "Đơn hàng mã ".$order->code." đã được nhận!";
                 $order->shipper_id = $user->id;
                 $order->taken_order_at = Carbon::now();
                 $order->status = ORDER_TAKEN_ORDER;

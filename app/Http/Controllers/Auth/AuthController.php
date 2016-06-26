@@ -7,6 +7,7 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use App\Account;
 
 class AuthController extends Controller
 {
@@ -78,6 +79,9 @@ class AuthController extends Controller
         $shop->code = 'KH'.($max_shop_id + 1);
         $user_create->shop()->save($shop);
         $user_create->roles()->sync([SHOP_TYPE]);
+        $account = new Account();
+        $account->user_id = $user_create->id;
+        $account->save();
         return $user_create;
     }
 }
