@@ -185,7 +185,7 @@ class ShopRest extends Controller
                         if (!empty($shipper)){
                             $ios_device_token = $shipper->ios_device_token;
                             if(!empty($ios_device_token)){
-                                $this->pushStatusOrder($ios_device_token, "Đơn hàng mã số ".$order->code." đã bị hủy!", $order->id);
+                                $this->pushStatusOrder($ios_device_token, "Đơn hàng mã ".$order->code." đã bị hủy!", $order->id);
                             }
                         }
                     }
