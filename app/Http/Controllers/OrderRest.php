@@ -75,6 +75,16 @@ class OrderRest extends Controller
             "distance"          => "required"
         ]);
         if ($validator->fails()) {
+            $failedRules = $validator->failed();
+            if(isset($failedRules['order_values']['Required'])) {
+                return Response::json(
+                    array(
+                        'accept'   => 0,
+                        'messages' => "Chưa điền số tiền ứng trước",
+                    ),
+                    200
+                );
+            }
             return Response::json(
                 array(
                     'accept'   => 0,
@@ -150,7 +160,7 @@ class OrderRest extends Controller
                     return Response::json(
                         array(
                             'accept'   => 0,
-                            'messages' => "Không thể dùng mã khuyến mại",
+                            'messages' => "Mã khuyến mại đã hết hạn!",
                         ),
                         200
                     );
@@ -230,7 +240,7 @@ class OrderRest extends Controller
             $order->recipient_phone = empty($request->recipient_phone) ? null : $request->recipient_phone;
             $order->full_address_to = empty($request->full_address_to) ? null : $request->full_address_to;
             $order->full_address_from = empty($request->full_address_from) ? null : $request->full_address_from;
-            $order->order_values = empty($request->order_values) ? null : $request->order_values;
+            $order->order_values = empty($request->order_values) ? 0 : $request->order_values;
             $order->longitude = empty($request->longitude) ? null : $request->longitude;
             $order->latitude = empty($request->latitude) ? null : $request->latitude;
             $order->longitude_dest = empty($request->longitude_dest) ? null : $request->longitude_dest;
