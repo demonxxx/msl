@@ -86,7 +86,7 @@ class Shop extends Model {
         $search_params = $post['searchParams'];
         $this->table_condition($builder, $search_params);
         $builder->groupBy("shops.id");
-        $count = $builder->count();
+        $count = count($builder->get());
         return $count;
     }
 
