@@ -389,7 +389,7 @@ class ShipperRest extends Controller
                                 ), 200
                             );
                         }else {
-                            $push_message = "Giao hàng thành công";
+                            $push_message = "Đơn hàng mã ".$order->code." đã được giao.";
                             $order->ship_success_at = Carbon::now()->toDateTimeString();
                             $order->status = $status;
                             $order->description = $description;
@@ -408,10 +408,10 @@ class ShipperRest extends Controller
                     } else if ($status == ORDER_PAYED) {
                         if ($order->status == ORDER_PAYED) return;
                         $order->payed_at = Carbon::now()->toDateTimeString();
-                        $push_message = "Thanh toán thành công";
+                        $push_message = "Đơn hàng mã ".$order->code." thanh toán thành công";
                     } else if ($status == ORDER_RETURNING) {
                         $order->returning_at = Carbon::now()->toDateTimeString();
-                        $push_message = "Đơn hàng đang được hoàn lại!";
+                        $push_message = "Đơn hàng mã ".$order->code." đang được hoàn lại.";
                     } else if ($status == ORDER_SHOP_CANCEL) {
                         return Response::json(
                             array(
@@ -435,7 +435,7 @@ class ShipperRest extends Controller
                                 ), 200
                             );
                         }else {
-                            $push_message = "Hoàn hàng thành công";
+                            $push_message = "Đơn hàng mã ".$order->code." đã được hoàn lại.";
                             $order->return_items_at = Carbon::now()->toDateTimeString();
                             $order->status = $status;
                             $order->description = $description;
