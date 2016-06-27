@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Configs;
-
+use Illuminate\Support\Facades\Response;
 trait NotificationService {
 
     public function pushOrderNotification($order) {
@@ -45,15 +45,8 @@ trait NotificationService {
 //        fclose($fp);
     }
 
-    public function pushStatusOrder($deviceToken, $message) {
-        // just for test apple remote notification
-        /////////////////////////////////////////////////////////////////
-        // Put your device token here (without spaces):
-//        $deviceToken = '104f93b8f6323e24eff605bb15e860ffc919642b1f1fdf99aa6b36ddb6765f7b';
-
-        // Put your private key's passphrase here:
+    public function pushStatusOrder($deviceToken, $message, $order_id = null) {
         $passphrase = '123456';
-
         $ctx = stream_context_create();
         stream_context_set_option($ctx, 'ssl', 'local_cert', base_path('server/') . IOS_CERTIFICATE_FILE);
         stream_context_set_option($ctx, 'ssl', 'passphrase', $passphrase);
@@ -63,11 +56,12 @@ trait NotificationService {
         if ($fp) {
             // Create the payload body
             $url = 'http://13.76.129.137';
+
             $body['aps'] = array(
                 'alert' => $message,
                 'sound' => 'default',
                 'link_url' => $url,
-                'category' => "NEWS_CATEGORY",
+                'order_id' => $order_id
             );
 
             // Encode the payload as JSON
