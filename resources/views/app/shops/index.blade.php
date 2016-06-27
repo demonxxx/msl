@@ -205,6 +205,7 @@
         config['data_array'] = renders;
         config['clear_filter'] = true;
         config['sort_off'] = [8];
+        config["pageLength"] = 10;
         config['hidden_global_seach'] = true;
         config['fnRowCallback'] = function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
             var rowClass = (aData.isActive == 2) ? "danger" : "";
