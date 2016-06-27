@@ -23,6 +23,7 @@ class Shop extends Model {
     }
 
     public function get_all_shops($post) {
+//        DB::enableQueryLog();
         $builder = DB::table("shops");
         $builder->select(array("users.id", "users.name", "users.email", "users.identity_card", "users.phone_number",
                     DB::raw('COUNT(orders.id) as count_order'), DB::raw('COUNT(agencys.id) as count_agency'),
@@ -41,6 +42,7 @@ class Shop extends Model {
                 ->orderBy($post["orderBy"], $post["orderSort"])
                 ->groupBy("shops.id");
         $data = $builder->get();
+//        dd(DB::getQueryLog());
         return $data;
     }
 
@@ -75,18 +77,19 @@ class Shop extends Model {
     }
 
     public function count_all($post) {
-        $builder = DB::table('shops');
-        $builder->select("shops.id")
+//        DB::enableQueryLog();
+        $count = Shop::select('*', function ($builder) use($post){
+            $builder->select("shops.id")
                 ->join("users", "shops.user_id", "=", "users.id")
                 ->leftjoin("orders", "orders.user_id", "=", "users.id")
                 ->leftjoin("administrative_units as city", "city.id", "=", "shops.office_city_id")
                 ->leftjoin("administrative_units as district", "district.id", "=", "shops.office_district_id")
                 ->leftjoin("administrative_units as ward", "ward.id", "=", "shops.office_ward_id")
                 ->leftjoin("agencys", "agencys.user_id", "=", "users.id");
-        $search_params = $post['searchParams'];
-        $this->table_condition($builder, $search_params);
-        $builder->groupBy("shops.id");
-        $count = $builder->count();
+            $search_params = $post['searchParams'];
+            $this->table_condition($builder, $search_params);
+            $builder->groupBy("shops.id");
+        })->count();
         return $count;
     }
 
