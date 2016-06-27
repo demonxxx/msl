@@ -66,7 +66,7 @@ class Order extends Model {
                 ->where("orders.user_id", $user_id);
         $search_params = $post['searchParams'];
         $this->table_condition($builder, $search_params);
-        $count = count($builder->get());
+        $count = $builder->count();
         return $count;
     }
 
