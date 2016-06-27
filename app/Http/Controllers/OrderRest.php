@@ -75,6 +75,16 @@ class OrderRest extends Controller
             "distance"          => "required"
         ]);
         if ($validator->fails()) {
+            $failedRules = $validator->failed();
+            if(isset($failedRules['order_values']['Required'])) {
+                return Response::json(
+                    array(
+                        'accept'   => 0,
+                        'messages' => "Chưa điền số tiền ứng trước",
+                    ),
+                    200
+                );
+            }
             return Response::json(
                 array(
                     'accept'   => 0,
@@ -150,7 +160,7 @@ class OrderRest extends Controller
                     return Response::json(
                         array(
                             'accept'   => 0,
-                            'messages' => "Không thể dùng mã khuyến mại",
+                            'messages' => "Mã khuyến mại đã hết hạn!",
                         ),
                         200
                     );

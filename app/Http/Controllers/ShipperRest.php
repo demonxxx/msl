@@ -237,7 +237,7 @@ class ShipperRest extends Controller
                 $shipperOrderHistory->shipper_id = $user->id;
                 $shipperOrderHistory->save();
                 if(!empty($ios_device_token)){
-                    $this->pushStatusOrder($ios_device_token, $push_message);
+                    $this->pushStatusOrder($ios_device_token, $push_message, $order->id);
                 }
                 return Response::json(
                                 array(
@@ -395,7 +395,7 @@ class ShipperRest extends Controller
                             $order->description = $description;
                             $order->save();
                             if(!empty($ios_device_token)){
-                                    $this->pushStatusOrder($ios_device_token, $push_message);
+                                    $this->pushStatusOrder($ios_device_token, $push_message, $order->id);
                             }
                             return Response::json(
                                 array(
@@ -441,7 +441,7 @@ class ShipperRest extends Controller
                             $order->description = $description;
                             $order->save();
                             if(!empty($ios_device_token)){
-                                    $this->pushStatusOrder($ios_device_token, $push_message);
+                                    $this->pushStatusOrder($ios_device_token, $push_message, $order->id);
                             }
                             return Response::json(
                                 array(
@@ -463,7 +463,7 @@ class ShipperRest extends Controller
                     $order->description = $description;
                     $order->save();
                     if(!empty($ios_device_token)){
-                            $this->pushStatusOrder($ios_device_token, $push_message);
+                            $this->pushStatusOrder($ios_device_token, $push_message, $order->id);
                     }
                     return Response::json(
                         array(
