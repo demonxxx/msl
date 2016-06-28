@@ -223,7 +223,7 @@ class ShipperRest extends Controller
                     ->select(DB::raw('SUM(base_freight) as total'))->first();
                 $total_freight = empty($total_base_freight_obj) ? 0 : $total_base_freight_obj->total;
                 $total_money = (int) $total_freight + (int) $order->base_freight;
-                if($user_account->main < FREIGHT_SHIP * $total_money){
+                if(($user_account->main + $user_account->second) < FREIGHT_SHIP * $total_money){
                     return Response::json(
                         array(
                             'accept' => 0,
@@ -541,7 +541,13 @@ class ShipperRest extends Controller
         if ($transactonType == TRANSACTION_TYPE_ADD){
             $customer_account->main = $customer_account->main + (int) $amount;
         }else {
-            $customer_account->main = $customer_account->main - (int) $amount;
+            if ($amount > $customer_account->second){
+                $second_left = $amount - $customer_account->second;
+                $customer_account->main = $customer_account->main - (int) $second_left;
+                $customer_account->second = 0;
+            }else {
+                $customer_account->second = $customer_account->second - (int) $amount;
+            }
         }
 
         $customer_account->save();
