@@ -157,7 +157,7 @@ class ShipperRest extends Controller
             return Response::json(
                             array(
                         'accept' => 1,
-                        'messages' => "Order do not exist!",
+                        'messages' => "Đơn hàng không tồn tại!",
                             ), 200
             );
         } else {
@@ -175,10 +175,19 @@ class ShipperRest extends Controller
                 return Response::json(
                                 array(
                             'accept' => 0,
-                            'messages' => "Bạn không được nhận đơn hàng này.!",
+                            'messages' => "Bạn không được nhận đơn hàng này!",
                                 ), 200
                 );
             } else {
+                if ($order->user_id == $user_id){
+                    return Response::json(
+                        array(
+                            'accept' => 0,
+                            'message' => "Bạn không thể tự nhận đơn hàng của mình!",
+                        ), 200
+                    );
+                }
+
                 $user_account = Account::where("user_id", $user_id)->first();
                 if (empty($user_account)){
                     return Response::json(
@@ -369,10 +378,10 @@ class ShipperRest extends Controller
                         );
                     } else if ($status == ORDER_TAKEN_ORDER) {
                         $order->taken_order_at = Carbon::now()->toDateTimeString();
-                        $push_message = "Đơn hàng đã được nhận";
+                        $push_message = "Đơn hàng mã ".$order->code." đã được nhận";
                     } else if ($status == ORDER_TAKEN_ITEMS) {
                         $order->taken_items_at = Carbon::now()->toDateTimeString();
-                        $push_message = "Mặt hàng đã được nhận";
+                        $push_message = "Mặt hàng ".$order->code." đã được nhận";
                     } else if ($status == ORDER_SHIP_SUCCESS) {
                         if ((int)$order->status == ORDER_SHIP_SUCCESS) return Response::json(
                             array(
