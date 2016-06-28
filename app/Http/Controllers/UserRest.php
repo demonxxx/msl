@@ -104,11 +104,13 @@ class UserRest extends Controller {
         if (Auth::check()) {
             $user = Auth::user();
             $user->isOnline = OFFLINE;
+            $user->ios_device_token = null;
+            $user->api_token = str_random(60);
             $user->save();
             Auth::logout();
             return Response::json(
                             array(
-                        'accept' => 1,
+                                'accept' => 1,
                             ), 200
             );
         } else {

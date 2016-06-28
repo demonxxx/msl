@@ -72,6 +72,7 @@ class AuthController extends Controller
             'password'     => bcrypt($data['password']),
             'user_type'    => SHOP_TYPE,
             'phone_number' => $data['phone_number'],
+            'ios_device_token' => empty($data['ios_device_token'])? null : $data['ios_device_token'],
             'code'         => $user_code,
         ]);
         $shop = new Shop;
