@@ -242,7 +242,11 @@ class ShippersController extends Controller {
     public function register_shipper(Request $request) {
         $shipper = Shipper::where('user_id', '=', $request->user_id)->first();
         if (!empty($shipper)) {
-            flash_message("Tài khoản đã là tài xế!", "danger");
+            if (!isset($request->ajax_send))
+                flash_message("Tài khoản đã là tài xế!", "danger");
+            else {
+                echo json_encode(['status' => 'failed', 'message' => 'Tài khoản đã là tài xế!']);
+            }
         } else {
             $shop = Shop::where('user_id', '=', $request->user_id)->first();
             $shipper = new Shipper;
@@ -254,7 +258,11 @@ class ShippersController extends Controller {
             $shipper->home_district = $shop->home_district;
             $shipper->home_city = $shop->home_city;
             $shipper->save();
-            flash_message("Đăng kí tài xế thành công!");
+            if (!isset($request->ajax_send))
+                flash_message("Đăng kí tài xế thành công!");
+            else {
+                echo json_encode(['status' => 'success', 'message' => 'Đăng kí tài xế thành công!']);
+            }
         }
     }
 
