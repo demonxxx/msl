@@ -189,7 +189,7 @@
         var common_render = {
             "render": function (data, type, row) {
                 data = (data !== null) ? data : "";
-                return "<div class='text-center' shop-id='" + row.shop_id + "'>" + data + "</div>";
+                return "<div class='text-center' shop-id='" + row.id + "'>" + data + "</div>";
             },
             "targets": [0, 1, 2, 3, 4, 5, 6]
         };
