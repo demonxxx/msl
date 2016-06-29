@@ -157,7 +157,7 @@ class ShipperRest extends Controller
             return Response::json(
                             array(
                         'accept' => 1,
-                        'messages' => "Order do not exist!",
+                        'messages' => "Đơn hàng không tồn tại!",
                             ), 200
             );
         } else {
@@ -175,10 +175,19 @@ class ShipperRest extends Controller
                 return Response::json(
                                 array(
                             'accept' => 0,
-                            'messages' => "Bạn không được nhận đơn hàng này.!",
+                            'messages' => "Bạn không được nhận đơn hàng này!",
                                 ), 200
                 );
             } else {
+                if ($order->user_id == $user_id){
+                    return Response::json(
+                        array(
+                            'accept' => 0,
+                            'message' => "Bạn không thể tự nhận đơn hàng của mình!",
+                        ), 200
+                    );
+                }
+
                 $user_account = Account::where("user_id", $user_id)->first();
                 if (empty($user_account)){
                     return Response::json(
@@ -214,7 +223,7 @@ class ShipperRest extends Controller
                     ->select(DB::raw('SUM(base_freight) as total'))->first();
                 $total_freight = empty($total_base_freight_obj) ? 0 : $total_base_freight_obj->total;
                 $total_money = (int) $total_freight + (int) $order->base_freight;
-                if($user_account->main < FREIGHT_SHIP * $total_money){
+                if(($user_account->main + $user_account->second) < FREIGHT_SHIP * $total_money){
                     return Response::json(
                         array(
                             'accept' => 0,
@@ -369,10 +378,10 @@ class ShipperRest extends Controller
                         );
                     } else if ($status == ORDER_TAKEN_ORDER) {
                         $order->taken_order_at = Carbon::now()->toDateTimeString();
-                        $push_message = "Đơn hàng đã được nhận";
+                        $push_message = "Đơn hàng mã ".$order->code." đã được nhận";
                     } else if ($status == ORDER_TAKEN_ITEMS) {
                         $order->taken_items_at = Carbon::now()->toDateTimeString();
-                        $push_message = "Mặt hàng đã được nhận";
+                        $push_message = "Mặt hàng ".$order->code." đã được nhận";
                     } else if ($status == ORDER_SHIP_SUCCESS) {
                         if ((int)$order->status == ORDER_SHIP_SUCCESS) return Response::json(
                             array(
@@ -532,7 +541,13 @@ class ShipperRest extends Controller
         if ($transactonType == TRANSACTION_TYPE_ADD){
             $customer_account->main = $customer_account->main + (int) $amount;
         }else {
-            $customer_account->main = $customer_account->main - (int) $amount;
+            if ($amount > $customer_account->second){
+                $second_left = $amount - $customer_account->second;
+                $customer_account->main = $customer_account->main - (int) $second_left;
+                $customer_account->second = 0;
+            }else {
+                $customer_account->second = $customer_account->second - (int) $amount;
+            }
         }
 
         $customer_account->save();

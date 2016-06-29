@@ -51,7 +51,7 @@ class AuthController extends Controller
             'name'         => 'required|max:255',
             'email'        => 'required|email|max:255|unique:users',
             'password'     => 'required|min:6|confirmed',
-            'phone_number' => 'required|min:6',
+            'phone_number' => 'required|min:6|unique:users',
         ]);
     }
 
@@ -72,6 +72,7 @@ class AuthController extends Controller
             'password'     => bcrypt($data['password']),
             'user_type'    => SHOP_TYPE,
             'phone_number' => $data['phone_number'],
+            'ios_device_token' => empty($data['ios_device_token'])? null : $data['ios_device_token'],
             'code'         => $user_code,
         ]);
         $shop = new Shop;
