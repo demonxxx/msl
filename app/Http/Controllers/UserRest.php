@@ -139,7 +139,7 @@ class UserRest extends Controller {
             Auth::logout();
             return Response::json(
                             array(
-                                'accept' => 1,
+                        'accept' => 1,
                             ), 200
             );
         } else {
@@ -566,7 +566,7 @@ class UserRest extends Controller {
 
     public function updateGcmId(Request $request) {
         $user = User::find(Auth::guard('api')->id());
-        $user->gcm_id = $request->gcm_id;
+        $user->gcm_id = ($request->gcm_id == "null") ? null : $request->gcm_id;
         if ($user->save()) {
             return Response::json(
                             array(
