@@ -115,7 +115,7 @@
                             <div class="form-group{{ $errors->has('code_number') ? ' has-error' : '' }}">
                                 <label class="col-md-2 control-label">Mã quà tặng (*)</label>
                                 <div class="col-md-10">
-                                    <input type="text" name="code_number" id="code_number" maxlength="6"
+                                    <input type="text" name="code_number" id="code_number" maxlength="255"
                                            onfocusout="check_new_duplicate(this, 'code_number')"
                                            class="form-control" placeholder="Mã quà tặng" 
                                            value="{{ old('code_number') }}" required>
@@ -131,8 +131,7 @@
                                 <label class="col-md-2 control-label">Giá trị khuyến mại (*)</label>
                                 <div class="col-md-10">
                                     <input type="number" name="amount" id="amount" min="0" 
-                                           class="form-control" placeholder="Giá trị quà tặng (ngàn VNĐ)" 
-                                           onfocusout="compute_money(this)"
+                                           class="form-control" placeholder="Giá trị quà tặng (VNĐ)"
                                            value="{{ old('amount') }}" required>
                                     @if ($errors->has('amount'))
                                     <span class="help-block">
@@ -306,10 +305,6 @@
     }
     function render_user_phone_number(data) {
         return "<div class='text-center user_phone_number'>" + ((data == null) ? "N/A" :data) + "</div>";
-    }
-    function compute_money(me){
-        $( "#amount" ).val($( "#amount" ).val() *1000);
-        $( "#amount" ).text($( "#amount" ).val());
     }
     function check_new_duplicate(selector, colum_name) {
         $.ajax({

@@ -114,7 +114,7 @@
                             <div class="form-group{{ $errors->has('code_number') ? ' has-error' : '' }}">
                                 <label class="col-md-2 control-label">Mã khuyến mại (*)</label>
                                 <div class="col-md-10">
-                                    <input type="text" name="code_number" id="code_number" maxlength="6"
+                                    <input type="text" name="code_number" id="code_number" maxlength="255"
                                            onfocusout="check_new_duplicate(this, 'code_number')"
                                            class="form-control" placeholder="Mã khuyến mại" 
                                            value="{{ old('code_number') }}" required>
@@ -148,8 +148,7 @@
                                            class="form-control" placeholder="Giá trị khuyến mại (%)" 
                                            value="{{ old('amount') }}" required>
                                     <input type="number" name="amount" id="amount2" min="1"
-                                           class="form-control" placeholder="Giá trị khuyến mại (Nghìn VNĐ)" 
-                                           onfocusout="compute_money(this)"
+                                           class="form-control" placeholder="Giá trị khuyến mại (VNĐ)"
                                            value="{{ old('amount') }}" disabled style="display: none">
                                     @if ($errors->has('amount'))
                                     <span class="help-block">
@@ -355,10 +354,7 @@
             $( "#amount1" ).hide();
         }
     }
-    function compute_money(me){
-        $( "#amount2" ).val($( "#amount2" ).val() *1000);
-        $( "#amount2" ).text($( "#amount2" ).val());
-    }
+    
     function check_new_duplicate(selector, colum_name) {
         $.ajax({
             url: "/discount/check_new_duplicate",
