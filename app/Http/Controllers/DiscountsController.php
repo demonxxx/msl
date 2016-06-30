@@ -85,7 +85,7 @@ class DiscountsController extends Controller {
                 $discount_user = new Discount_user;
                 $discount_user->discount_id = $discount->id;
                 $discount_user->user_id = $user_id;
-                $discount_user->count = $discount->total_one_user;
+                $discount_user->count = 0;
                 $discount_user->save();
             }
             flash_message("Tạo khuyến mại mới thành công!");
@@ -137,7 +137,7 @@ class DiscountsController extends Controller {
                 $discount_user = new Discount_user;
                 $discount_user->discount_id = $discount->id;
                 $discount_user->user_id = $user_id;
-                $discount_user->count = 1; //default 1 time using for 1 person
+                $discount_user->count = 0;
                 $discount_user->save();
             }
             flash_message("Tạo mã quà tặng mới thành công!");
