@@ -61,6 +61,7 @@ class UserRest extends Controller {
                     $info = $user->shop;
                     $user->isOnline = ONLINE;
                     $user->ios_device_token = empty($request->ios_device_token) ? $user->ios_device_token : $request->ios_device_token;
+                    $user->gcm_id = empty($request->gcm_id) ? $user->gcm_id : $request->gcm_id;
                     $user->api_token = str_random(60);
                     $user->save();
                     return Response::json(
@@ -100,11 +101,40 @@ class UserRest extends Controller {
         );
     }
 
+    public function setDeviceNull($device_type){
+        $user_id = Auth::guard('api')->id();
+        $user = User::find($user_id);
+        if ($device_type == IOS_DEVICE){
+            $user->ios_device_token = null;
+            $user->api_token = str_random(60);
+            $user->save();
+            return Response::json(
+                array(
+                    'accept' => 1,
+                ), 200
+            );
+        }else if ($device_type == ANDROID_DEVICE) {
+            $user->gcm_id = null;
+            $user->api_token = str_random(60);
+            $user->save();
+            return Response::json(
+                array(
+                    'accept' => 1,
+                ), 200
+            );
+        }else {
+            return Response::json(
+                array(
+                    'accept' => 0,
+                ), 200
+            );
+        }
+    }
+
     public function logout() {
         if (Auth::check()) {
             $user = Auth::user();
             $user->isOnline = OFFLINE;
-            $user->ios_device_token = null;
             $user->save();
             Auth::logout();
             return Response::json(
@@ -579,7 +609,7 @@ class UserRest extends Controller {
         $message = [];
         array_push($registatoin_ids, $request->registration_id);
         $message = (isset($request->message)) ? $request->message : "no message";
-        if ($this->send_gcm_notification($registatoin_ids, $message)) {
+        if ($this->send_gcm_notification($registatoin_ids, $message, $request->registration_id)) {
             return Response::json(
                             array(
                         'accept' => 1,

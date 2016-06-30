@@ -184,8 +184,12 @@ class ShopRest extends Controller
                         $shipper = User::find($order->shipper_id);
                         if (!empty($shipper)){
                             $ios_device_token = $shipper->ios_device_token;
+                            $android_device_token = $shipper->gcm_id;
                             if(!empty($ios_device_token)){
-                                $this->pushStatusOrder($ios_device_token, "Đơn hàng mã ".$order->code." đã bị hủy!", $order->id);
+                                $this->pushStatusOrder($ios_device_token, "Đơn hàng mã ".$order->code." đã bị hủy!", $order->id, SHIPPER_TYPE);
+                            }
+                            if (!empty($android_device_token)){
+                                $this->send_gcm_notification(array($android_device_token),  "Đơn hàng mã ".$order->code." đã bị hủy!", $shipper->id);
                             }
                         }
                     }

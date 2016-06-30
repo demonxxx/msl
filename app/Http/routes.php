@@ -157,6 +157,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
     Route::get("user/getGcmSenderId", "UserRest@getGcmSenderId");
     Route::post("user/manualPushGcm", "UserRest@manualPushGcm");
     Route::post("user/updateGcmId", "UserRest@updateGcmId");
+    Route::get("user/resetDevice/{device_type}", "UserRest@setDeviceNull");
 
     Route::post('shipper/find', 'ShipperRest@findByLocation');
     Route::get('shipper/take/{id}', 'ShipperRest@takeOrder');

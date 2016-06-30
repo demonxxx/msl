@@ -75,6 +75,9 @@ define("DISCOUNT_PERCENT", 0);
 define("DISCOUNT_MONEY", 1);
 define("DISCOUNT_GIFT", 2);
 
+define("IOS_DEVICE", 1);
+define("ANDROID_DEVICE", 2);
+
 define("MSG_UPDATE_GCM_ID_SUCCESS", "Cập nhật gcm id thành công!");
 define("MSG_UPDATE_GCM_ID_FAILED", "Cập nhật gcm id không thành công!");
 define("MSG_LOGIN_REQUIRE", "Người dùng cần đăng nhập để thực hiện thao tác!");
