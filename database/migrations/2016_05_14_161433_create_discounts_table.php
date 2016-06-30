@@ -16,7 +16,7 @@ class CreateDiscountsTable extends Migration
             $table->increments('id')->unsigned();
             $table->string('code')->unique()->comment('code of discount program, ex: DC123');
             $table->string('name')->comment('name of discount program, ex: Discount abc');
-            $table->string('code_number', 6)->comment('contain a string have 6 digit, user type at put orders to discount orders, ex: ABC123');
+            $table->string('code_number', 255)->comment('contain a string have 255 digit, user type at put orders to discount orders, ex: ABC123');
             $table->float('amount')->comment('Amount of discount code, ex: 2$');
             $table->smallInteger('type')->comment('type of discount, DC - 0: % ; 1: $, Gift - 2: $');
             $table->smallInteger('status')->comment('status of discount, enable or disable, 1: enable, 0: disable');
