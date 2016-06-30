@@ -73,6 +73,7 @@ class AuthController extends Controller
             'user_type'    => SHOP_TYPE,
             'phone_number' => $data['phone_number'],
             'ios_device_token' => empty($data['ios_device_token'])? null : $data['ios_device_token'],
+            'gcm_id' => empty($data['gcm_id'])? null : $data['gcm_id'],
             'code'         => $user_code,
         ]);
         $shop = new Shop;
