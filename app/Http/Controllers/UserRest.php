@@ -609,7 +609,7 @@ class UserRest extends Controller {
         $message = [];
         array_push($registatoin_ids, $request->registration_id);
         $message = (isset($request->message)) ? $request->message : "no message";
-        if ($this->send_gcm_notification($registatoin_ids, $message)) {
+        if ($this->send_gcm_notification($registatoin_ids, $message, $request->registration_id)) {
             return Response::json(
                             array(
                         'accept' => 1,

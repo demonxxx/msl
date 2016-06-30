@@ -45,7 +45,7 @@ trait NotificationService {
 //        fclose($fp);
     }
 
-    public function pushStatusOrder($deviceToken, $message, $order_id = null) {
+    public function pushStatusOrder($deviceToken, $message, $order_id = null, $user_type = null) {
         $passphrase = '123456';
         $ctx = stream_context_create();
         stream_context_set_option($ctx, 'ssl', 'local_cert', base_path('server/') . IOS_CERTIFICATE_FILE);
@@ -61,7 +61,8 @@ trait NotificationService {
                 'alert' => $message,
                 'sound' => 'default',
                 'link_url' => $url,
-                'order_id' => $order_id
+                'order_id' => $order_id,
+                'user_type' => $user_type,
             );
 
             // Encode the payload as JSON
@@ -83,7 +84,7 @@ trait NotificationService {
      * $registatoin_ids an array id of user who get notification
      * $message message push to user
      */
-    public function send_gcm_notification($registatoin_ids, $message) {
+    public function send_gcm_notification($registatoin_ids, $message, $user_id = null) {
         // Set POST variables
         $config = new Configs;
         $gcm_config = $config->get_gcm_config();
@@ -91,7 +92,7 @@ trait NotificationService {
 
         $fields = array(
             'registration_ids' => $registatoin_ids,
-            'data' => array("message" => $message)
+            'data' => array("message" => $message, "user_id" => $user_id)
         );
 
         $headers = array(
