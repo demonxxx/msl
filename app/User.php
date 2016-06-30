@@ -12,7 +12,7 @@ class User extends Authenticatable
     public $timestamps = true;
 
     protected $fillable = [
-        'name', 'email', 'password', 'api_token','user_type','code','username','phone_number'
+        'name', 'email', 'password', 'api_token','user_type','code','username','phone_number', 'ios_device_token','gcm_id'
     ];
 
     protected $hidden = [

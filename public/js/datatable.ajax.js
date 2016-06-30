@@ -57,6 +57,7 @@ function setDatatable(data) {
                 ],
                 "processing": true,
                 "serverSide": true,
+                "pageLength": 10,
                 "pagingType": "input",
                 "ajax": {
                     "url": url,

@@ -7,6 +7,7 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use App\Account;
 
 class AuthController extends Controller
 {
@@ -50,7 +51,7 @@ class AuthController extends Controller
             'name'         => 'required|max:255',
             'email'        => 'required|email|max:255|unique:users',
             'password'     => 'required|min:6|confirmed',
-            'phone_number' => 'required|min:6',
+            'phone_number' => 'required|min:6|unique:users',
         ]);
     }
 
@@ -71,6 +72,8 @@ class AuthController extends Controller
             'password'     => bcrypt($data['password']),
             'user_type'    => SHOP_TYPE,
             'phone_number' => $data['phone_number'],
+            'ios_device_token' => empty($data['ios_device_token'])? null : $data['ios_device_token'],
+            'gcm_id' => empty($data['gcm_id'])? null : $data['gcm_id'],
             'code'         => $user_code,
         ]);
         $shop = new Shop;
@@ -78,6 +81,9 @@ class AuthController extends Controller
         $shop->code = 'KH'.($max_shop_id + 1);
         $user_create->shop()->save($shop);
         $user_create->roles()->sync([SHOP_TYPE]);
+        $account = new Account();
+        $account->user_id = $user_create->id;
+        $account->save();
         return $user_create;
     }
 }

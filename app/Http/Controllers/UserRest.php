@@ -61,6 +61,7 @@ class UserRest extends Controller {
                     $info = $user->shop;
                     $user->isOnline = ONLINE;
                     $user->ios_device_token = empty($request->ios_device_token) ? $user->ios_device_token : $request->ios_device_token;
+                    $user->gcm_id = empty($request->gcm_id) ? $user->gcm_id : $request->gcm_id;
                     $user->api_token = str_random(60);
                     $user->save();
                     return Response::json(
@@ -98,6 +99,36 @@ class UserRest extends Controller {
                     'account' => $customer_account->toArray(),
                         ), 200
         );
+    }
+
+    public function setDeviceNull($device_type){
+        $user_id = Auth::guard('api')->id();
+        $user = User::find($user_id);
+        if ($device_type == IOS_DEVICE){
+            $user->ios_device_token = null;
+            $user->api_token = str_random(60);
+            $user->save();
+            return Response::json(
+                array(
+                    'accept' => 1,
+                ), 200
+            );
+        }else if ($device_type == ANDROID_DEVICE) {
+            $user->gcm_id = null;
+            $user->api_token = str_random(60);
+            $user->save();
+            return Response::json(
+                array(
+                    'accept' => 1,
+                ), 200
+            );
+        }else {
+            return Response::json(
+                array(
+                    'accept' => 0,
+                ), 200
+            );
+        }
     }
 
     public function logout() {
@@ -535,7 +566,7 @@ class UserRest extends Controller {
 
     public function updateGcmId(Request $request) {
         $user = User::find(Auth::guard('api')->id());
-        $user->gcm_id = $request->gcm_id;
+        $user->gcm_id = ($request->gcm_id == "null") ? null : $request->gcm_id;
         if ($user->save()) {
             return Response::json(
                             array(

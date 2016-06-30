@@ -167,6 +167,24 @@
         });
     }
 
+    var register_shipper = function (user_id) {
+        $.ajax({
+            url: "/shipper/register_shipper",
+            type: 'POST',
+            data: {user_id: user_id, ajax_send: true},
+            dataType: 'json',
+            success: function (result) {
+                if (result.status == "failed")
+                    swal("Không thành công!", result.message, "error");
+                else
+                    swal("Thành công!", result.message, "success");
+            },
+            error: function (result) {
+                swal("Không thành công!", "Đăng ký thành tài xế không thành công, mời thử lại", "error");
+            }
+        });
+    }
+
     $(document).ready(function () {
         var common_render = {
             "render": function (data, type, row) {
@@ -189,7 +207,7 @@
                 return "<div class='text-center'>" +
                         "<a class='btn btn-primary btn-sm' href='" + edit_url + "'>Sửa</a>" +
                         "<button class='btn btn-danger btn-sm' onclick='blockShopFunction(" + row.shop_id + ",\"" + row.shop_name + "\",\"" + text + "\")' style='margin-left: 10px;'>" + text + "</button>" +
-                        "</div>";
+                        "</div><div class='text-center'><button onclick='register_shipper(" + row.id + ")' class='btn btn-sm btn-success'>Đăng ký tài xế</button></div>";
             },
             "targets": [8]
         };
@@ -205,6 +223,7 @@
         config['data_array'] = renders;
         config['clear_filter'] = true;
         config['sort_off'] = [8];
+        config["pageLength"] = 10;
         config['hidden_global_seach'] = true;
         config['fnRowCallback'] = function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
             var rowClass = (aData.isActive == 2) ? "danger" : "";
@@ -219,7 +238,6 @@
             }).bind("click", function (e) {
                 getOrders($(this).attr("shop-id"), aData.shop_name);
             });
-            console.log(aData);
         };
         shopTable = setAjaxDataTable(config);
     });

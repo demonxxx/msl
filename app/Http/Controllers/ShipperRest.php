@@ -152,12 +152,13 @@ class ShipperRest extends Controller
     public function takeOrder($id) {
         $order = Order::find($id);
         $ios_device_token = null;
+        $android_device_token = null;
         $push_message = null;
         if (empty($order)) {
             return Response::json(
                             array(
                         'accept' => 1,
-                        'messages' => "Order do not exist!",
+                        'messages' => "Đơn hàng không tồn tại!",
                             ), 200
             );
         } else {
@@ -175,10 +176,19 @@ class ShipperRest extends Controller
                 return Response::json(
                                 array(
                             'accept' => 0,
-                            'messages' => "Bạn không được nhận đơn hàng này.!",
+                            'messages' => "Bạn không được nhận đơn hàng này!",
                                 ), 200
                 );
             } else {
+                if ($order->user_id == $user_id){
+                    return Response::json(
+                        array(
+                            'accept' => 0,
+                            'message' => "Bạn không thể tự nhận đơn hàng của mình!",
+                        ), 200
+                    );
+                }
+
                 $user_account = Account::where("user_id", $user_id)->first();
                 if (empty($user_account)){
                     return Response::json(
@@ -214,7 +224,7 @@ class ShipperRest extends Controller
                     ->select(DB::raw('SUM(base_freight) as total'))->first();
                 $total_freight = empty($total_base_freight_obj) ? 0 : $total_base_freight_obj->total;
                 $total_money = (int) $total_freight + (int) $order->base_freight;
-                if($user_account->main < FREIGHT_SHIP * $total_money){
+                if(($user_account->main + $user_account->second) < FREIGHT_SHIP * $total_money){
                     return Response::json(
                         array(
                             'accept' => 0,
@@ -224,10 +234,10 @@ class ShipperRest extends Controller
                 }
                 $owner = User::find($order->user_id);
                 if (!empty($owner)){
-
                     $ios_device_token = $owner->ios_device_token;
+                    $android_device_token = $owner->gcm_id;
                 }
-                $push_message = "Đơn hàng ".$order->code." của bạn đã được một shipper nhận!";
+                $push_message = "Đơn hàng mã ".$order->code." đã được nhận!";
                 $order->shipper_id = $user->id;
                 $order->taken_order_at = Carbon::now();
                 $order->status = ORDER_TAKEN_ORDER;
@@ -237,7 +247,10 @@ class ShipperRest extends Controller
                 $shipperOrderHistory->shipper_id = $user->id;
                 $shipperOrderHistory->save();
                 if(!empty($ios_device_token)){
-                    $this->pushStatusOrder($ios_device_token, $push_message);
+                    $this->pushStatusOrder($ios_device_token, $push_message, $order->id);
+                }
+                if (!empty($android_device_token)){
+                    $this->send_gcm_notification(array($android_device_token), $push_message);
                 }
                 return Response::json(
                                 array(
@@ -296,6 +309,7 @@ class ShipperRest extends Controller
     public function updateOrderStatusShipper(Request $request, $id) {
         $order = Order::find($id);
         $ios_device_token = null;
+        $android_device_token = null;
         $push_message = null;
         if (empty($order)) {
             return Response::json(
@@ -355,6 +369,7 @@ class ShipperRest extends Controller
                     $owner = User::find($order->user_id);
                     if (!empty($owner)){
                         $ios_device_token = $owner->ios_device_token;
+                        $android_device_token = $owner->gcm_id;
                     }
 
                     $status = $request->status;
@@ -369,10 +384,10 @@ class ShipperRest extends Controller
                         );
                     } else if ($status == ORDER_TAKEN_ORDER) {
                         $order->taken_order_at = Carbon::now()->toDateTimeString();
-                        $push_message = "Đơn hàng đã được nhận";
+                        $push_message = "Đơn hàng mã ".$order->code." đã được nhận";
                     } else if ($status == ORDER_TAKEN_ITEMS) {
                         $order->taken_items_at = Carbon::now()->toDateTimeString();
-                        $push_message = "Mặt hàng đã được nhận";
+                        $push_message = "Mặt hàng ".$order->code." đã được nhận";
                     } else if ($status == ORDER_SHIP_SUCCESS) {
                         if ((int)$order->status == ORDER_SHIP_SUCCESS) return Response::json(
                             array(
@@ -389,13 +404,16 @@ class ShipperRest extends Controller
                                 ), 200
                             );
                         }else {
-                            $push_message = "Giao hàng thành công";
+                            $push_message = "Đơn hàng mã ".$order->code." đã được giao.";
                             $order->ship_success_at = Carbon::now()->toDateTimeString();
                             $order->status = $status;
                             $order->description = $description;
                             $order->save();
                             if(!empty($ios_device_token)){
-                                    $this->pushStatusOrder($ios_device_token, $push_message);
+                                    $this->pushStatusOrder($ios_device_token, $push_message, $order->id);
+                            }
+                            if (!empty($android_device_token)){
+                                $this->send_gcm_notification(array($android_device_token), $push_message);
                             }
                             return Response::json(
                                 array(
@@ -408,10 +426,10 @@ class ShipperRest extends Controller
                     } else if ($status == ORDER_PAYED) {
                         if ($order->status == ORDER_PAYED) return;
                         $order->payed_at = Carbon::now()->toDateTimeString();
-                        $push_message = "Thanh toán thành công";
+                        $push_message = "Đơn hàng mã ".$order->code." thanh toán thành công";
                     } else if ($status == ORDER_RETURNING) {
                         $order->returning_at = Carbon::now()->toDateTimeString();
-                        $push_message = "Đơn hàng đang được hoàn lại!";
+                        $push_message = "Đơn hàng mã ".$order->code." đang được hoàn lại.";
                     } else if ($status == ORDER_SHOP_CANCEL) {
                         return Response::json(
                             array(
@@ -435,13 +453,16 @@ class ShipperRest extends Controller
                                 ), 200
                             );
                         }else {
-                            $push_message = "Hoàn hàng thành công";
+                            $push_message = "Đơn hàng mã ".$order->code." đã được hoàn lại.";
                             $order->return_items_at = Carbon::now()->toDateTimeString();
                             $order->status = $status;
                             $order->description = $description;
                             $order->save();
                             if(!empty($ios_device_token)){
-                                    $this->pushStatusOrder($ios_device_token, $push_message);
+                                    $this->pushStatusOrder($ios_device_token, $push_message, $order->id);
+                            }
+                            if (!empty($android_device_token)){
+                                $this->send_gcm_notification(array($android_device_token), $push_message);
                             }
                             return Response::json(
                                 array(
@@ -463,7 +484,10 @@ class ShipperRest extends Controller
                     $order->description = $description;
                     $order->save();
                     if(!empty($ios_device_token)){
-                            $this->pushStatusOrder($ios_device_token, $push_message);
+                            $this->pushStatusOrder($ios_device_token, $push_message, $order->id);
+                    }
+                    if (!empty($android_device_token)){
+                        $this->send_gcm_notification(array($android_device_token), $push_message);
                     }
                     return Response::json(
                         array(
@@ -532,7 +556,13 @@ class ShipperRest extends Controller
         if ($transactonType == TRANSACTION_TYPE_ADD){
             $customer_account->main = $customer_account->main + (int) $amount;
         }else {
-            $customer_account->main = $customer_account->main - (int) $amount;
+            if ($amount > $customer_account->second){
+                $second_left = $amount - $customer_account->second;
+                $customer_account->main = $customer_account->main - (int) $second_left;
+                $customer_account->second = 0;
+            }else {
+                $customer_account->second = $customer_account->second - (int) $amount;
+            }
         }
 
         $customer_account->save();
