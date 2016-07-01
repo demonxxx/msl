@@ -84,7 +84,7 @@ trait NotificationService {
      * $registatoin_ids an array id of user who get notification
      * $message message push to user
      */
-    public function send_gcm_notification($registatoin_ids, $message, $user_id = null) {
+    public function send_gcm_notification($registatoin_ids, $message, $user_id = null, $shipper_id = null) {
         // Set POST variables
         $config = new Configs;
         $gcm_config = $config->get_gcm_config();
@@ -92,7 +92,10 @@ trait NotificationService {
 
         $fields = array(
             'registration_ids' => $registatoin_ids,
-            'data' => array("message" => $message, "user_id" => $user_id)
+            'data' => array("message" => $message,
+                            "user_id" => $user_id,
+                            "shipper_id" => $shipper_id
+                )
         );
 
         $headers = array(
