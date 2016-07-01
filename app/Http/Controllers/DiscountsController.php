@@ -46,7 +46,7 @@ class DiscountsController extends Controller {
         
         $validator = \Validator::make($request->all(), [
                     'name' => 'required|max:255|unique:discounts',
-                    'code_number' => 'required|max:6|unique:discounts',
+                    'code_number' => 'required|max:255|unique:discounts',
                     'type' => 'required',
                     'amount' => 'required',
                     'total' => 'required',
@@ -100,7 +100,7 @@ class DiscountsController extends Controller {
         
         $validator = \Validator::make($request->all(), [
                     'name' => 'required|max:255|unique:discounts',
-                    'code_number' => 'required|max:6|unique:discounts',
+                    'code_number' => 'required|max:255|unique:discounts',
                     'amount' => 'required',
                     'total' => 'required',
                     'start_time' => 'required',

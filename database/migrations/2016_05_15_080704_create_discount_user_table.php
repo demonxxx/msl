@@ -16,7 +16,7 @@ class CreateDiscountUserTable extends Migration
             $table->increments('id')->unsigned();
             $table->integer('discount_id')->references('id')->on('discounts')->onDelete('cascade');
             $table->integer('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('count')->comment('count number of times left of discount code user can use.');
+            $table->integer('count')->comment('number of times using discount for an user.');
             $table->timestamps();
             $table->softDeletes();
         });
