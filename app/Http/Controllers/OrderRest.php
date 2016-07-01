@@ -655,12 +655,16 @@ class OrderRest extends Controller
                                 ),
                                 200
                             );
-                        $number_rate = empty($shipper->number_rate) ? 0 : $shipper->number_rate;
-                        $number_rate_update = (int) $number_rate + 1;
-                        $average_score = (int) (empty($shipper->average_score) ? 0 : $shipper->average_score) + $request->score;
-                        $average_score_update = round($average_score / $number_rate_update, 1);
-                        $shipper->number_rate = $number_rate_update;
-                        $shipper->average_score = $average_score_update;
+                        $order_rates = Order::whereNotNull("rate_score")
+                                            ->where("shipper_id", $order->shipper_id)
+                                            ->get();
+                        $sum = 0;
+                        foreach ($order_rates as $order_rate) {
+                            $sum += $order_rate->rate_score;
+                        }
+                        $number_of_rate = count($order_rates);
+                        $shipper->number_rate = count($order_rates);
+                        $shipper->average_score = round($sum / $number_of_rate, 1);
                         $shipper->save();
                         return Response::json(
                             array(
