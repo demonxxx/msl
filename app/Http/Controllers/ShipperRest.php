@@ -250,7 +250,7 @@ class ShipperRest extends Controller
                     $this->pushStatusOrder($ios_device_token, $push_message, $order->id, SHOP_TYPE);
                 }
                 if (!empty($android_device_token)){
-                    $this->send_gcm_notification(array($android_device_token), $push_message, $owner->id);
+                    $this->send_gcm_notification(array($android_device_token), $push_message, $owner->id, $order->shipper_id);
                 }
                 return Response::json(
                                 array(
@@ -413,7 +413,7 @@ class ShipperRest extends Controller
                                     $this->pushStatusOrder($ios_device_token, $push_message, $order->id, SHOP_TYPE);
                             }
                             if (!empty($android_device_token)){
-                                $this->send_gcm_notification(array($android_device_token), $push_message, $owner->id);
+                                $this->send_gcm_notification(array($android_device_token), $push_message, $owner->id, $order->shipper_id);
                             }
                             return Response::json(
                                 array(
@@ -462,7 +462,7 @@ class ShipperRest extends Controller
                                     $this->pushStatusOrder($ios_device_token, $push_message, $order->id, SHOP_TYPE);
                             }
                             if (!empty($android_device_token)){
-                                $this->send_gcm_notification(array($android_device_token), $push_message, $owner->id);
+                                $this->send_gcm_notification(array($android_device_token), $push_message, $owner->id, $order->shipper_id);
                             }
                             return Response::json(
                                 array(
@@ -487,7 +487,7 @@ class ShipperRest extends Controller
                             $this->pushStatusOrder($ios_device_token, $push_message, $order->id, SHOP_TYPE);
                     }
                     if (!empty($android_device_token)){
-                        $this->send_gcm_notification(array($android_device_token), $push_message, $owner->id);
+                        $this->send_gcm_notification(array($android_device_token), $push_message, $owner->id, $order->shipper_id);
                     }
                     return Response::json(
                         array(
